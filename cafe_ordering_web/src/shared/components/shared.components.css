@@ -1,0 +1,12 @@
+/* styles.css */
+.custom-quill .ql-editor {
+    /* Minimum yükseklik */
+    max-height: 12em;
+    /* Maksimum yükseklik */
+    overflow-y: auto;
+    /* Dikey kaydırma çubuğu */
+}
+
+.ql-editor {
+    height: 200px;
+}
