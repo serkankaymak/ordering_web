@@ -27,59 +27,62 @@ const CartPanelBottomSheet: React.FC<{
         <MyBottomSheet className='z-40' isOpen={open} onCloseButtonClicked={function (): void {
             if (onClose != null) onClose();
         }} drawerBleeding={drawerBleeding}
-            children={
-                <>
-                    {/* Başlık ve Kapatma Düğmesi */}
-                    <Box display="flex" justifyContent="space-between" alignItems="center">
-                        <Typography variant="h6" fontWeight="bold">
-                            Sepetim
+        >
+
+            <>
+                {/* Başlık ve Kapatma Düğmesi */}
+                <Box display="flex" justifyContent="space-between" alignItems="center">
+                    <Typography variant="h6" fontWeight="bold">
+                        Sepetim
+                    </Typography>
+
+                </Box>
+
+                {/* Sepet İçeriği */}
+                <Box >
+                    {orderItems.filter(x => x.quantity != 0).length === 0 ? (
+                        <Typography variant="body1" color="text.secondary">
+                            Sepetiniz boş.
                         </Typography>
+                    ) : (
+                        <>
+                            <Box className=" whitespace-nowrap scrollbar-thin    scrollbar-track-gray-200       scrollbar-thumb-gray-500"
+                                sx={{ overflowY: "auto", flex: 1 }}> {/* Kaydırma için */}
+                                {orderItems.map((item) => (
+                                    <OrderItemComponent
+                                        key={item.productId}
+                                        orderItem={item}
+                                        onIncreaseClicked={() => onIncrease(item.productId)}
+                                        onDecreaseClicked={() => onDecrease(item.productId)}
+                                        onRemoveClicked={() => onRemove(item.productId)}
+                                        onViewClicked={onViewClicked} />
+                                ))}
+                            </Box>
 
-                    </Box>
-
-                    {/* Sepet İçeriği */}
-                    <Box >
-                        {orderItems.filter(x => x.quantity != 0).length === 0 ? (
-                            <Typography variant="body1" color="text.secondary">
-                                Sepetiniz boş.
-                            </Typography>
-                        ) : (
-                            <>
-                                <Box className=" whitespace-nowrap scrollbar-thin    scrollbar-track-gray-200       scrollbar-thumb-gray-500"
-                                    sx={{ overflowY: "auto", flex: 1 }}> {/* Kaydırma için */}
-                                    {orderItems.map((item) => (
-                                        <OrderItemComponent
-                                            key={item.productId}
-                                            orderItem={item}
-                                            onIncreaseClicked={() => onIncrease(item.productId)}
-                                            onDecreaseClicked={() => onDecrease(item.productId)}
-                                            onRemoveClicked={() => onRemove(item.productId)}
-                                            onViewClicked={onViewClicked} />
-                                    ))}
-                                </Box>
-
-                            </>
-                        )}
+                        </>
+                    )}
 
 
-                    </Box>
-                    <Box sx={{ mt: 2, pt: 2, borderTop: 1, borderColor: "divider" }}>
-                        <Typography variant="h6" fontWeight="bold">
-                            Toplam: ${totalPrice.toFixed(2)}
-                        </Typography>
-                        <Button
-                            variant="contained"
-                            color="primary"
-                            fullWidth
-                            sx={{ mt: 2 }}
-                            onClick={() => { onPayed(); }}
-                        >
-                            Ödeme Yap
-                        </Button>
-                    </Box>
+                </Box>
+                <Box sx={{ mt: 2, pt: 2, borderTop: 1, borderColor: "divider" }}>
+                    <Typography variant="h6" fontWeight="bold">
+                        Toplam: ${totalPrice.toFixed(2)}
+                    </Typography>
+                    <Button
+                        variant="contained"
+                        color="primary"
+                        fullWidth
+                        sx={{ mt: 2 }}
+                        onClick={() => { onPayed(); }}
+                    >
+                        Ödeme Yap
+                    </Button>
+                </Box>
 
-                </>
-            } >
+            </>
+
+
+
         </MyBottomSheet >
     );
 };

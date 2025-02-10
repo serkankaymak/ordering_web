@@ -5,22 +5,17 @@ import {
   DialogContent,
   IconButton,
   Box,
-  Button,
 } from '@mui/material';
 import { Close } from '@mui/icons-material';
 
 interface MyModalProps {
   isOpen: boolean;
   title?: string;
-  children: React.ReactNode;
   onCloseClicked: () => void;
+  children: React.ReactNode; // ✅ İçeriği props yerine component arasından alır
 }
 
-const MyModal: React.FC<MyModalProps> = ({
-  isOpen,
-  children,
-  onCloseClicked,
-}) => {
+const MyModal: React.FC<MyModalProps> = ({ isOpen, children, onCloseClicked }) => {
   return (
     <Dialog
       open={isOpen}
@@ -36,6 +31,7 @@ const MyModal: React.FC<MyModalProps> = ({
         },
       }}
     >
+      {/* Kapatma Butonu */}
       <IconButton
         aria-label="close"
         onClick={onCloseClicked}
@@ -48,10 +44,13 @@ const MyModal: React.FC<MyModalProps> = ({
       >
         <Close />
       </IconButton>
-      <Box className=" 
-      scrollbar-none 
-       scrollbar-track-gray-200 scrollbar-thumb-gray-500" style={{ overflowY: 'scroll' }}
-        sx={{ minWidth: '100px', padding: 0, margin: 0 }}>
+
+      {/* Modal İçeriği */}
+      <Box
+        className="scrollbar-none scrollbar-track-gray-200 scrollbar-thumb-gray-500"
+        style={{ overflowY: 'scroll' }}
+        sx={{ minWidth: '100px', padding: 0, margin: 0 }}
+      >
         <DialogContent sx={{ marginTop: 0 }}>{children}</DialogContent>
       </Box>
     </Dialog>

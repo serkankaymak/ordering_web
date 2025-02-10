@@ -15,6 +15,7 @@ import AdminProductTableComponent from './components/AdminProductTableComponent'
 import { useRouter } from 'next/navigation';
 import MyModal from '@/shared/components/MyModal';
 import AdminProductCard from './components/trash/AdminProductCard';
+import { PageRoutes } from '@/app/roots/PageRoutes';
 
 
 const productService = new ProductService();
@@ -59,7 +60,7 @@ const ProductManagementPage: React.FC = () => {
           />
 
           <Button
-            onClick={() => () => { }}
+            onClick={() => { router.push(PageRoutes.ProductManagementAdd()) }}
             size="medium"
             variant="contained"
             color="primary"

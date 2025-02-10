@@ -1,43 +1,36 @@
 "use client";
 import React from 'react';
-import { Box, Grid2 } from '@mui/material';
-import dynamic from 'next/dynamic';
+import { Box } from '@mui/material';
 import 'react-quill-new/dist/quill.snow.css';
 import 'react-quill-new/dist/quill.snow.css';
-import AdminProductCard from '../admin/productmanagement/components/trash/AdminProductCard';
-import { CategoryModel, ProductModel } from '@/domain/ProductModels';
-import AdminProductAddOrUpdateCard from '../admin/productmanagement/components/AdminProductAddOrUpdateCard';
-import DiscountItemProductComponent from '../admin/discountmanagement/components/components/DiscountItemProductComponent';
-import { Discount, DiscountItem } from '@/domain/DiscountModels';
-import DiscountItemComponent from '../admin/discountmanagement/components/components/DiscountItemComponent';
-import DiscountProductBasedComponent from '../admin/discountmanagement/components/DiscountProductBasedComponent';
-import DiscountSpecialBasedComponent from '../admin/discountmanagement/components/DiscountSpecialBasedComponent';
+import MyMasonary from '@/shared/components/MyMasonary';
+import ProductSelector from '../components/ProductSelector';
+import { ProductModel } from '@/domain/ProductModels';
 
 
 
 const TestPage: React.FC = () => {
+    const imageUrlList = ["antique-cafe-bg-01.jpg", "antique-cafe-bg-02.jpg",
+        "antique-cafe-bg-03.jpg", "antique-cafe-bg-04.jpg", "menu-item-1.jpg",
+        "menu-item-2.jpg"
+    ]
+
+    const imageUrlList2 = imageUrlList.map((url) => "/images/" + url);
+    // Listeyi 10 kez tekrar etmek için
+    const repeatedImageUrlList = Array(10).fill(imageUrlList2).flat();
+
     React.useEffect(() => {
 
     }, []);
 
 
     return (
-        <Box sx={{ overflow: 'scroll' }} className=" grid  
-                   grid-cols-1  md:grid-cols-3 sm:grid-cols-2
-                   gap-2
-                   " >
 
-
-            <DiscountProductBasedComponent discount={Discount.getProductBasedExample()}>
-
-            </DiscountProductBasedComponent>
-
-            <DiscountSpecialBasedComponent discount={Discount.getSpecialBasedExample()}>
-
-            </DiscountSpecialBasedComponent>
-
-
+        <Box sx={{ overflow: 'scroll' }}>
+           <ProductSelector  products={ProductModel.getExamples()} ></ProductSelector>
         </Box>
+
+
     );
 };
 

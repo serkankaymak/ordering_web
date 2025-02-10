@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { ReactNode, useState } from 'react';
 import {
     Container,
     TextField,
@@ -12,19 +12,28 @@ import { Add } from '@mui/icons-material';
 import { ProductService } from '@/application/services/product/ProductService';
 import { Discount } from '@/domain/DiscountModels';
 import DiscountComponent from './components/DiscountComponent';
+import { useRouter } from 'next/navigation';
+import { PageRoutes } from '@/app/roots/PageRoutes';
+import MyMasonry from '@/shared/components/MyMasonary';
 
 
 const productService = new ProductService();
 
 const DiscountManagementPage: React.FC = () => {
-
+    const router = useRouter();
     const [searchQuery, setSearchQuery] = useState('');
     const [discounts] = useState<Discount[]>(Discount.getExamples());
     // Arama işlemi
     const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
         setSearchQuery(event.target.value);
     };
+    const defaultBreakpoints = { default: 3, 1100: 2, 700: 2, 500: 1, 300: 1 };
 
+    const getContent = (): ReactNode[] => {
+        return discounts.map((d, i) => (
+            <DiscountComponent key={i} discount={d} />
+        ));
+    };
 
     return (
         <Container className="flex flex-col gap-5">
@@ -43,7 +52,7 @@ const DiscountManagementPage: React.FC = () => {
                     />
 
                     <Button
-                        onClick={() => () => { }}
+                        onClick={() => { console.log("add..."); router.push(PageRoutes.DiscountManagementAdd()); }}
                         size="medium"
                         variant="contained"
                         color="primary"
@@ -54,15 +63,12 @@ const DiscountManagementPage: React.FC = () => {
                 </Box>
             </Box>
 
-            <Box className=" grid  
-             grid-cols-1  md:grid-cols-3 sm:grid-cols-2
-             gap-2
-             " >
-                {discounts.map((d, i) => <>
-                    <DiscountComponent discount={d}></DiscountComponent>
-                </>)}
 
+            <Box className="w-full">
+                <MyMasonry breakpointCols={defaultBreakpoints} items={getContent()}></MyMasonry>
             </Box>
+
+           
 
 
         </Container>

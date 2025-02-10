@@ -12,7 +12,7 @@ import {
 import { Add } from '@mui/icons-material';
 import { ProductService } from '@/application/services/product/ProductService';
 import MyModal from '@/shared/components/MyModal';
-import AdminProductAddOrUpdateCard from '../components/AdminProductAddOrUpdateCard';
+import AdminProductAddOrUpdateCard from '../components/trash/AdminProductAddOrUpdateCard';
 import ProductListComponent from '../components/trash/ProductListComponents';
 import AdminProductTableComponent from '../components/AdminProductTableComponent';
 

@@ -20,6 +20,7 @@ import Slider from "react-slick";
 interface AdminMenuItemTableComponentProps {
   menu: ProductModel;
   showActions: boolean;
+  showCategories?: boolean;
   onUpdateButtonClicked?: (boxProductId: number) => void;
   onDeleteButtonClicked?: (boxProductId: number) => void;
 }
@@ -29,6 +30,7 @@ const AdminMenuItemTableComponent: React.FC<AdminMenuItemTableComponentProps> = 
   onUpdateButtonClicked,
   onDeleteButtonClicked,
   showActions,
+  showCategories
 }) => {
 
 
@@ -68,13 +70,13 @@ const AdminMenuItemTableComponent: React.FC<AdminMenuItemTableComponentProps> = 
               </Typography>
               <Typography
                 variant="body2"
-                sx={{ textWrap: "wrap", fontSize: "0.8rem", color: "text.secondary" }}
+                sx={{ textWrap: "wrap", fontSize: "0.7rem", color: "text.secondary" }}
               >
                 {menu.productDescription}
               </Typography>
             </TableCell>
 
-            <TableCell sx={{ maxWidth: "120px" }}>
+            <TableCell sx={{ maxWidth: "70px" }}>
               <Typography
                 variant="body2"
                 sx={{ textWrap: "nowrap", fontSize: "0.8rem", color: "text.secondary" }}
@@ -101,9 +103,12 @@ const AdminMenuItemTableComponent: React.FC<AdminMenuItemTableComponentProps> = 
 
             <TableCell colSpan={3} align="right">
               <Box className='flex justify-end'>
-                <Box className=' flex flex-wrap gap-1' >{menu.categories.map((c, i) => <>
-                  <Chip size="small" label={c.name}></Chip>
-                </>)}</Box>
+                {showCategories && <>
+                  <Box className=' flex flex-wrap gap-1' >{menu.categories.map((c, i) => <>
+                    <Chip size="small" label={c.name}></Chip>
+                  </>)}</Box>
+                </>}
+
                 <Box className="text-xs" sx={{ display: "flex", flexDirection: "column" }}>
                   <span>   Products Price Sum : 20.00</span>
                   <span>   Menu Price : 20.00</span>

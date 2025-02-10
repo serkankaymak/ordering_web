@@ -9,6 +9,7 @@ import AdminMenuItemTableComponent from "./components/AdminMenuItemTableComponen
 import { Add } from "@mui/icons-material";
 import MyModal from "@/shared/components/MyModal";
 import { useRouter, useParams } from "next/navigation"; // Next.js 13 hook'ları
+import { PageRoutes } from "@/app/roots/PageRoutes";
 var productService = new ProductService();
 
 const MenuManagementPage: React.FC = () => {
@@ -48,7 +49,7 @@ const MenuManagementPage: React.FC = () => {
                     />
 
                     <Button
-                        onClick={() => { }}
+                        onClick={() => { router.push(PageRoutes.MenuManagementAdd()) }}
                         size="medium"
                         variant="contained"
                         color="primary"
@@ -62,7 +63,7 @@ const MenuManagementPage: React.FC = () => {
 
             {/* Eklenmiş Menüler */}
             <Box className=" grid  
-             grid-cols-1  md:grid-cols-3 sm:grid-cols-2
+             grid-cols-1  sm:grid-cols-2 lg:grid-cols-3
              gap-2
              " >
 
@@ -70,6 +71,7 @@ const MenuManagementPage: React.FC = () => {
                     <AdminMenuItemTableComponent
                         key={menu.id} menu={menu}
                         showActions={true}
+                        showCategories={true}
                         onUpdateButtonClicked={(id) => {
                             router.push(`menumanagement/${id}/update`);
 

@@ -33,13 +33,13 @@ const AddOrUpdateCommentBottomSheet: React.FC<AddOrUpdateCommentBottomSheetProps
                 performOnCloseClicked();
             }}
             drawerBleeding={drawerBleeding}
-
-            children={<MyRichEditor
+        >
+            <MyRichEditor
                 value={comment}
                 onChange={setComment}
                 placeholder="Write your comment here..."
                 performOnSave={handleSave}
-            />}>
+            />
 
         </MyBottomSheet>
     );

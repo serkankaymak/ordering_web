@@ -155,13 +155,15 @@ const ProductDetailBottomSheet: React.FC<ProductDetailBottomSheetProps> = ({
   return (
     <MyBottomSheet className='z-50' isOpen={isOpen} onCloseButtonClicked={function (): void {
       if (onCloseClicked != null) onCloseClicked();
-    }} drawerBleeding={drawerBleeding} children={
+    }} drawerBleeding={drawerBleeding} >
+
       <Box className="flex flex-col overflow-hidden p-1">
         {/* İçerik */}
         {_productCardSection}
         {/* Yorumlar Bölümü */}
         {_commentsSection}
-      </Box>}>
+      </Box>
+
 
     </MyBottomSheet>
   );

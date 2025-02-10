@@ -44,6 +44,7 @@ export class ProductCommentModel {
 
 export class ProductModel {
   parentBoxId: number | null;
+  parent?: ProductModel | null;
   id: number;
   productTitle: string;
   productDescription: string;
@@ -51,7 +52,7 @@ export class ProductModel {
   imageUrl: string | null;
   categories: CategoryModel[];
   products: ProductModel[] | null;
-  productComments:ProductCommentModel[];
+  productComments: ProductCommentModel[];
 
   constructor(
     id: number,
@@ -68,12 +69,36 @@ export class ProductModel {
     this.imageUrl = imageUrl;
     this.products = null;
     this.categories = [];
-    this.productComments=[];
+    this.productComments = [];
   }
+
+
+  // ✅ Yeni copy metodu
+  copy(updatedFields: Partial<ProductModel>): ProductModel {
+    return Object.assign(new ProductModel(
+      this.id,
+      this.productTitle,
+      this.productDescription,
+      this.price,
+      this.imageUrl
+    ), {
+      ...this, // Eski nesneyi kopyala
+      ...updatedFields, // Güncellenen alanları ekle
+      categories: updatedFields.categories ? [...updatedFields.categories] : [...this.categories],
+      products: updatedFields.products ? [...updatedFields.products] : this.products ? [...this.products] : null,
+      productComments: updatedFields.productComments ? [...updatedFields.productComments] : [...this.productComments]
+    });
+  }
+
+  static getEmptyInstance(): ProductModel {
+    return new ProductModel(0, '', '', 10, null);
+  }
+
 
   public isModelValid(): boolean {
     return (this.products == null && this.parentBoxId == null)
   }
+
 
   // Statik metod: Örnek bir MenuItem nesnesi döner
   static getExample(index?: number): ProductModel {
@@ -100,6 +125,8 @@ export class ProductModel {
     const child1 = this.getExample(1); child1.parentBoxId = product.id;
     const child2 = this.getExample(2); child2.parentBoxId = product.id;
     product.products = [child1, child2]
+    child1.parent = product;
+    child2.parent = product;
     CategoryModel.getExamples().forEach(c => product.categories.push(c));
     return product;
   }
@@ -117,6 +144,8 @@ export class ProductModel {
     const child1 = this.getExample(3); child1.parentBoxId = productWithNoImage.id;
     const child2 = this.getExample(4); child2.parentBoxId = productWithNoImage.id;
     productWithNoImage.products = [child1, child2];
+    child1.parent = productWithNoImage;
+    child2.parent = productWithNoImage;
     examples.add(productWithNoImage);
 
     return examples.toList();

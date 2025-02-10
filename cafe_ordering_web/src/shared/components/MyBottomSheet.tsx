@@ -6,7 +6,7 @@ interface MyBottomSheetProps {
     isOpen: boolean;
     onCloseButtonClicked: () => void;
     drawerBleeding: number;
-    children: React.ReactNode;
+    children: React.ReactNode; 
 }
 
 const MyBottomSheet: React.FC<MyBottomSheetProps> = ({ children,
