@@ -21,8 +21,8 @@ const AdminProductCard: React.FC<AdminProductCardProps> = ({
                 {/* Ürün Resmi */}
                 <CardMedia
                     component="img"
-                    image={product.imageUrl!}
-                    alt={product.productTitle}
+                    image={product.imagePath!}
+                    alt={product.name}
                     className="w-full  object-cover   transition-transform duration-300 group-hover:scale-105"
                 />
                 {/* Hover Overlay */}
@@ -36,7 +36,7 @@ const AdminProductCard: React.FC<AdminProductCardProps> = ({
                         <Box>
                             <Typography variant="h6"
                                 className=" sm:text-sm text-xs font-bold text-wrap">
-                                {product.productTitle}
+                                {product.name}
                             </Typography>
 
                             <Typography variant="subtitle1" className=" sm:text-sm text-xs font-bold sm:mt-1    mt-0"     >

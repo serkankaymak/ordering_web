@@ -74,11 +74,11 @@ const ProductComponent: React.FC<ProductComponentProps> = ({
     <Box className={`${className}`}>
       <Box className="relative group rounded-lg overflow-hidden shadow-md">
         {/* Eğer tek bir imageUrl varsa onu göster, yoksa slider ile çoklu görselleri göster */}
-        {product.imageUrl ? (
+        {product.imagePath ? (
           <CardMedia
             component="img"
-            image={product.imageUrl}
-            alt={product.productTitle}
+            image={product.imagePath}
+            alt={product.name}
             className="w-full object-cover transition-transform duration-300 group-hover:scale-110"
           />
         ) : (
@@ -89,8 +89,8 @@ const ProductComponent: React.FC<ProductComponentProps> = ({
                   <div key={prod.id || index}>
                     <CardMedia
                       component="img"
-                      image={prod.imageUrl!}
-                      alt={prod.productTitle}
+                      image={prod.imagePath!}
+                      alt={prod.name}
                       className="w-full object-cover"
                     />
                   </div>
@@ -109,7 +109,7 @@ const ProductComponent: React.FC<ProductComponentProps> = ({
             transition-transform duration-500 ease-in-out"
         >
           <Typography variant="h6" className="sm:text-sm text-xs font-bold">
-            {product.productTitle}
+            {product.name}
           </Typography>
           <Box className="flex flex-row gap-2">
             <Typography variant="subtitle1" className="sm:text-sm text-xs font-bold sm:mt-1 mt-0">

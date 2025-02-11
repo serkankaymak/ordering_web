@@ -41,7 +41,7 @@ const ProductManagementPage: React.FC = () => {
 
   // Arama sorgusuna göre ürünleri filtrele
   const filteredProducts = products.filter(product =>
-    product.productTitle.toLowerCase().includes(searchQuery.toLowerCase())
+    product.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   // Ürün kartına tıklandığında update modal'ını aç

@@ -14,10 +14,10 @@ const AdminMenuItemCardComponent: React.FC<AdminMenuItemCardComponentProps> = ({
       <Grid container spacing={1} alignItems="center">
         {/* Görseller */}
         <Grid item xs={2}>
-          {menu.imageUrl ? (
+          {menu.imagePath ? (
             <img
-              src={menu.imageUrl}
-              alt={menu.productTitle}
+              src={menu.imagePath}
+              alt={menu.name}
               style={{ width: "40px", height: "40px", objectFit: "cover", borderRadius: "4px" }}
             />
           ) : (
@@ -25,11 +25,11 @@ const AdminMenuItemCardComponent: React.FC<AdminMenuItemCardComponentProps> = ({
               {menu.products &&
                 menu.products.map(
                   (item) =>
-                    item.imageUrl && (
+                    item.imagePath && (
                       <img
                         key={item.id}
-                        src={item.imageUrl}
-                        alt={item.productTitle}
+                        src={item.imagePath}
+                        alt={item.name}
                         style={{ width: "40px", height: "40px", objectFit: "cover", borderRadius: "4px", marginRight: "4px" }}
                       />
                     )
@@ -42,7 +42,7 @@ const AdminMenuItemCardComponent: React.FC<AdminMenuItemCardComponentProps> = ({
         {/* Başlık ve Açıklama */}
         <Grid item xs={10}>
           <Typography variant="subtitle2" sx={{ textWrap: "wrap", fontSize: "0.9rem" }}>
-            {menu.productTitle}
+            {menu.name}
           </Typography>
           <Typography variant="body2" sx={{ textWrap: "wrap", fontSize: "0.8rem", color: "text.secondary" }}>
             {menu.productDescription}

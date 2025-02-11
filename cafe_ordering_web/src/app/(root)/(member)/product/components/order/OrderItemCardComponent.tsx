@@ -88,7 +88,7 @@ const OrderItemComponent: React.FC<OrderItemComponentProps> = ({
                 {/* Ürün Resmi */}
 
                 {
-                    orderItem.product?.imageUrl ?
+                    orderItem.product?.imagePath ?
                         <><CardMedia
                             component="img"
                             sx={{
@@ -96,8 +96,8 @@ const OrderItemComponent: React.FC<OrderItemComponentProps> = ({
                                 height: isSmallScreen ? "50px" : "80px",
                                 objectFit: "cover", borderRadius: 2
                             }}
-                            image={orderItem.product?.imageUrl!}
-                            alt={orderItem.product?.productTitle}
+                            image={orderItem.product?.imagePath!}
+                            alt={orderItem.product?.name}
                         /></>
                         :
                         <>
@@ -119,8 +119,8 @@ const OrderItemComponent: React.FC<OrderItemComponentProps> = ({
                                                         height: isSmallScreen ? "50px" : "80px",
                                                     }}
                                                     component="img"
-                                                    image={prod.imageUrl!}
-                                                    alt={prod.productTitle}
+                                                    image={prod.imagePath!}
+                                                    alt={prod.name}
                                                 />
                                             </div>
                                         ))}
@@ -139,7 +139,7 @@ const OrderItemComponent: React.FC<OrderItemComponentProps> = ({
 
                         <Box>
                             <Typography className="text-xs sm:text-sm" variant="h6" component="div" fontWeight="bold">
-                                {orderItem.product?.productTitle}
+                                {orderItem.product?.name}
                             </Typography>
 
                             <Typography className="text-xs sm:text-sm" variant="body1" color="text.primary" fontWeight="bold" fontSize="1.1rem">

@@ -46,10 +46,10 @@ export class ProductModel {
   parentBoxId: number | null;
   parent?: ProductModel | null;
   id: number;
-  productTitle: string;
+  name: string;
   productDescription: string;
   price: number;
-  imageUrl: string | null;
+  imagePath: string | null;
   categories: CategoryModel[];
   products: ProductModel[] | null;
   productComments: ProductCommentModel[];
@@ -63,10 +63,10 @@ export class ProductModel {
   ) {
     this.parentBoxId = null;
     this.id = id;
-    this.productTitle = productTitle;
+    this.name = productTitle;
     this.productDescription = productDescription;
     this.price = price;
-    this.imageUrl = imageUrl;
+    this.imagePath = imageUrl;
     this.products = null;
     this.categories = [];
     this.productComments = [];
@@ -77,10 +77,10 @@ export class ProductModel {
   copy(updatedFields: Partial<ProductModel>): ProductModel {
     return Object.assign(new ProductModel(
       this.id,
-      this.productTitle,
+      this.name,
       this.productDescription,
       this.price,
-      this.imageUrl
+      this.imagePath
     ), {
       ...this, // Eski nesneyi kopyala
       ...updatedFields, // Güncellenen alanları ekle
@@ -140,7 +140,7 @@ export class ProductModel {
 
 
     var productWithNoImage = ProductModel.getBoxProductExample(8);
-    productWithNoImage.imageUrl = null;
+    productWithNoImage.imagePath = null;
     const child1 = this.getExample(3); child1.parentBoxId = productWithNoImage.id;
     const child2 = this.getExample(4); child2.parentBoxId = productWithNoImage.id;
     productWithNoImage.products = [child1, child2];

@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { CategoryModel, ProductModel } from '@/domain/ProductModels';
 import {
   Container,
@@ -16,6 +16,7 @@ import { useRouter } from 'next/navigation';
 import MyModal from '@/shared/components/MyModal';
 import AdminProductCard from './components/trash/AdminProductCard';
 import { PageRoutes } from '@/app/roots/PageRoutes';
+import { GetProductsRequest } from '@/application/httpRequests/GetProductsRequest';
 
 
 const productService = new ProductService();
@@ -23,7 +24,17 @@ const initialProducts = productService.products;
 
 const ProductManagementPage: React.FC = () => {
   const router = useRouter();
-  const [products] = useState<ProductModel[]>(initialProducts.filter(x => x.products == null));
+  const [products, setPoducts] = useState<ProductModel[]>(initialProducts.filter(x => x.products == null));
+
+
+  useEffect(() => {
+
+    GetProductsRequest.send().then((products) => {
+      console.log(products);
+      setPoducts(products);
+    })
+  }, [])
+
   const [searchQuery, setSearchQuery] = useState('');
 
   const [deleteRequestProductId, setDeleteRequestProductId] = useState<number>(0);
@@ -40,7 +51,7 @@ const ProductManagementPage: React.FC = () => {
 
   // Arama sorgusuna göre ürünleri filtrele
   const filteredProducts = products.filter(product =>
-    product.productTitle.toLowerCase().includes(searchQuery.toLowerCase()) || product.productDescription.toLocaleLowerCase().includes(searchQuery.toLocaleLowerCase())
+    product.name.toLowerCase().includes(searchQuery.toLowerCase()) || product.productDescription.toLocaleLowerCase().includes(searchQuery.toLocaleLowerCase())
   );
 
   return (

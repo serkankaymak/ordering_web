@@ -30,7 +30,7 @@ const AdminProductAddOrUpdateCard: React.FC<AdminProductAddOrUpdateCardProps> = 
     onSaveClicked,
 }) => {
     // Ürün alanları için yerel state'ler
-    const [productTitle, setProductTitle] = useState(product.productTitle);
+    const [productTitle, setProductTitle] = useState(product.name);
     const [productDescription, setProductDescription] = useState(
         product.productDescription
     );
@@ -41,18 +41,18 @@ const AdminProductAddOrUpdateCard: React.FC<AdminProductAddOrUpdateCardProps> = 
 
     // Görsel dosya yükleme ve önizleme için state'ler
     const [imageFile, setImageFile] = useState<File | null>(null);
-    const [imagePreview, setImagePreview] = useState<string>(product.imageUrl ?? `/images/image_not_found.png`);
+    const [imagePreview, setImagePreview] = useState<string>(product.imagePath ?? `/images/image_not_found.png`);
 
     // Dosya inputuna erişim için referans (ref)
     const fileInputRef = useRef<HTMLInputElement>(null);
 
     // Ürün bilgileri değiştiğinde state'leri güncelle
     useEffect(() => {
-        setProductTitle(product.productTitle);
+        setProductTitle(product.name);
         setProductDescription(product.productDescription);
         setProductPrice(product.price);
         setSelectedCategoryIds(product.categories.map((cat) => cat.id));
-        setImagePreview(product.imageUrl ?? `/images/image_not_found.png`);
+        setImagePreview(product.imagePath ?? `/images/image_not_found.png`);
         setImageFile(null);
     }, [product]);
 
@@ -82,19 +82,7 @@ const AdminProductAddOrUpdateCard: React.FC<AdminProductAddOrUpdateCardProps> = 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
-        const updatedProduct: ProductModel = {
-            ...product,
-            productTitle,
-            productDescription,
-            price: productPrice,
-            categories: availableCategories.filter((cat) => selectedCategoryIds.includes(cat.id)
-            ),
-            // Görsel URL'si, önizleme üzerinden güncelleniyor.
-            imageUrl: imagePreview,
-            isModelValid: function (): boolean {
-                throw new Error("Function not implemented.");
-            }
-        };
+        const updatedProduct = ProductModel.getEmptyInstance();
 
         onSaveClicked(updatedProduct, imageFile || undefined);
     };
@@ -110,7 +98,7 @@ const AdminProductAddOrUpdateCard: React.FC<AdminProductAddOrUpdateCardProps> = 
                         <CardMedia className="flex justify-center">
                             <img
                                 src={imagePreview}
-                                alt={product.productTitle}
+                                alt={product.name}
                                 style={{ maxHeight: 200, maxWidth: 250, width: "100%", height: "auto", borderRadius: 8, cursor: "pointer", }}
                                 onClick={() => fileInputRef.current?.click()}
                             />

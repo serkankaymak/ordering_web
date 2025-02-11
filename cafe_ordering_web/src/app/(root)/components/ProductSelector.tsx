@@ -19,7 +19,7 @@ const ProductSelectorComponent: React.FC<ProductSelectorProps> = ({ products, on
 
     // Ürünleri filtreleme fonksiyonu
     const filteredProducts = products.filter(product =>
-        product.productTitle.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
         product.productDescription.toLowerCase().includes(searchTerm.toLowerCase()) ||
         product.productComments.map(x => x.comment).join(" ").toLowerCase().includes(searchTerm.toLowerCase()) ||
         product.categories.map(x => x.name).join(" ").toLowerCase().includes(searchTerm.toLowerCase())

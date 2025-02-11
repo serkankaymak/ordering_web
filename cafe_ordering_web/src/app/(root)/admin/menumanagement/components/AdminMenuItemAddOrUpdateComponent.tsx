@@ -123,7 +123,7 @@ const AdminMenuItemAddOrUpdateComponent: React.FC<AdminMenuItemAddOrUpdateCompon
                                     <Box className="flex flex-col sm:flex-row gap-3">
                                         <Box className='flex flex-col  items-start sm:items-center gap-1'>
                                             <img
-                                                src={updatedMenu.imageUrl || `/images/image_not_found.png`}
+                                                src={updatedMenu.imagePath || `/images/image_not_found.png`}
                                                 alt="Ürün Resmi"
                                                 style={{
                                                     width: "80px", height: "80px",
@@ -154,7 +154,7 @@ const AdminMenuItemAddOrUpdateComponent: React.FC<AdminMenuItemAddOrUpdateCompon
                                                     <TextField
                                                         fullWidth variant="outlined" size="small"
                                                         label="Ürün Başlığı"
-                                                        value={updatedMenu.productTitle}
+                                                        value={updatedMenu.name}
                                                         onChange={(e) => handleInputChange("productTitle", e.target.value)}
                                                     />
                                                     <TextField
@@ -168,7 +168,7 @@ const AdminMenuItemAddOrUpdateComponent: React.FC<AdminMenuItemAddOrUpdateCompon
 
                                             {menu.parentBoxId != null && <Box>
                                                 <Typography variant="subtitle2" sx={{ textWrap: "wrap", fontSize: "0.9rem" }}>
-                                                    {updatedMenu.productTitle}
+                                                    {updatedMenu.name}
                                                 </Typography>
                                                 <Typography variant="body2" sx={{
                                                     textWrap: "wrap",

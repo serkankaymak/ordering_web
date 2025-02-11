@@ -51,8 +51,8 @@ const AdminMenuItemTableComponent: React.FC<AdminMenuItemTableComponentProps> = 
             <TableCell sx={{ padding: 0, width: "40px" }}>
 
               <img
-                src={menu.imageUrl ?? `/images/image_not_found.png`}
-                alt={menu.productTitle}
+                src={menu.imagePath ?? `/images/image_not_found.png`}
+                alt={menu.name}
                 style={{
                   marginLeft: 3,
                   width: "40px",
@@ -66,7 +66,7 @@ const AdminMenuItemTableComponent: React.FC<AdminMenuItemTableComponentProps> = 
             {/* Başlık ve Açıklama */}
             <TableCell>
               <Typography variant="subtitle2" sx={{ textWrap: "wrap", fontSize: "0.9rem" }}>
-                {menu.productTitle}
+                {menu.name}
               </Typography>
               <Typography
                 variant="body2"

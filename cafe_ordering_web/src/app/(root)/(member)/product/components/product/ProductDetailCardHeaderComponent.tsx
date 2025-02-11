@@ -51,8 +51,8 @@ const ProductDetailCardHeaderComponent: React.FC<ProductDetailCardHeaderComponen
             {/* Görsel */}
             <TableCell padding="none" sx={{ minWidth: "40px", maxWidth: "80px" }}>
               <img
-                src={menu.imageUrl ?? `/images/image_not_found.png`}
-                alt={menu.productTitle}
+                src={menu.imagePath ?? `/images/image_not_found.png`}
+                alt={menu.name}
                 style={{
                   marginLeft: 3,
                   width: isSmallScreen ? "40px" : "80px",
@@ -66,7 +66,7 @@ const ProductDetailCardHeaderComponent: React.FC<ProductDetailCardHeaderComponen
             {/* Başlık ve Açıklama */}
             <TableCell padding="normal">
               <Typography variant="subtitle2" sx={{ textWrap: "wrap", fontSize: "0.9rem" }}>
-                {menu.productTitle}
+                {menu.name}
               </Typography>
               <Typography
                 variant="body2"

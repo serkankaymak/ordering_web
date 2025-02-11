@@ -24,8 +24,8 @@ const AdminProductTableComponent: React.FC<AdminProductTableComponentProps> = ({
                         {/* Görsel */}
                         <TableCell sx={{ padding: 0, width: "50px" }}>
                             <img
-                                src={product.imageUrl!}
-                                alt={product.productTitle}
+                                src={product.imagePath ?? `/images/image_not_found.png`}
+                                alt={product.name}
                                 style={{ marginLeft: 3, width: "40px", height: "40px", objectFit: "cover", borderRadius: "4px" }}
                             />
                         </TableCell>
@@ -33,7 +33,7 @@ const AdminProductTableComponent: React.FC<AdminProductTableComponentProps> = ({
                         {/* Başlık ve Açıklama */}
                         <TableCell sx={{ padding: 1 }}>
                             <Typography variant="subtitle2" sx={{ textWrap: "wrap", fontSize: "0.9rem" }}>
-                                {product.productTitle}
+                                {product.name}
                             </Typography>
                             <Typography variant="body2" sx={{ textWrap: "wrap", fontSize: "0.8rem", color: "text.secondary" }}>
                                 {product.productDescription}

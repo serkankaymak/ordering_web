@@ -38,8 +38,8 @@ const DiscountItemProductComponent: React.FC<DiscountItemProductComponentProps> 
                         <TableCell sx={{ padding: 0, width: "40px" }}>
 
                             <img
-                                src={product!.imageUrl ?? `/images/image_not_found.png`}
-                                alt={product!.productTitle}
+                                src={product!.imagePath ?? `/images/image_not_found.png`}
+                                alt={product!.name}
                                 style={{
                                     marginLeft: 3,
                                     width: "40px",
@@ -53,7 +53,7 @@ const DiscountItemProductComponent: React.FC<DiscountItemProductComponentProps> 
                         {/* Başlık ve Açıklama */}
                         <TableCell>
                             <Typography variant="subtitle2" sx={{ textWrap: "wrap", fontSize: "0.9rem" }}>
-                                {product!.productTitle}
+                                {product!.name}
                             </Typography>
                             <Typography
                                 variant="body2"

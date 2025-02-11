@@ -68,7 +68,7 @@ const AdminProductAddOrUpdateComponent: React.FC<AdminProductAddOrUpdateComponen
                                     <Box className="flex flex-col sm:flex-row gap-3">
                                         <Box className='flex flex-col items-center gap-1'>
                                             <img
-                                                src={updatedProduct.imageUrl || `/images/image_not_found.png`}
+                                                src={updatedProduct.imagePath || `/images/image_not_found.png`}
                                                 alt="Ürün Resmi"
                                                 style={{
                                                     width: "80px", height: "80px",
@@ -105,7 +105,7 @@ const AdminProductAddOrUpdateComponent: React.FC<AdminProductAddOrUpdateComponen
                                             <TextField
                                                 fullWidth variant="outlined" size="small"
                                                 label="Ürün Başlığı"
-                                                value={updatedProduct.productTitle}
+                                                value={updatedProduct.name}
                                                 onChange={(e) => handleInputChange("productTitle", e.target.value)}
                                             />
                                             <TextField

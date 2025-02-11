@@ -27,7 +27,9 @@ const TestPage: React.FC = () => {
     return (
 
         <Box sx={{ overflow: 'scroll' }}>
-           <ProductSelector  products={ProductModel.getExamples()} ></ProductSelector>
+           <ProductSelector  products={ProductModel.getExamples()} onChooseButtonClicked={function (selectedProduct: ProductModel): void {
+               
+            } } ></ProductSelector>
         </Box>
 
 

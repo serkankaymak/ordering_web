@@ -23,7 +23,7 @@ const MenuManagementPage: React.FC = () => {
     };
     // Arama sorgusuna göre ürünleri filtrele
     const filteredProducts = menus.filter(product =>
-        product.productTitle.toLowerCase().includes(searchQuery.toLowerCase()) || product.productDescription.toLocaleLowerCase().includes(searchQuery.toLocaleLowerCase())
+        product.name.toLowerCase().includes(searchQuery.toLowerCase()) || product.productDescription.toLocaleLowerCase().includes(searchQuery.toLocaleLowerCase())
     );
     const [deleteRequestProductId, setDeleteRequestProductId] = useState<number>(0);
 

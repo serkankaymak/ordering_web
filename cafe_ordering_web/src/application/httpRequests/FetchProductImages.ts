@@ -1,10 +1,9 @@
 import axios from "axios";
-
-const API_URL = "https://localhost:7106/api/Product/getProductImages";
+import UrlManager from "./HostUrl";
 
 export const fetchProductImages = async (): Promise<string[]> => {
     try {
-        const response = await axios.get<string[]>(API_URL, {
+        const response = await axios.get<string[]>(UrlManager.GetProductImagesUrl(), {
             headers: {
                 "Content-Type": "application/json",
             },
