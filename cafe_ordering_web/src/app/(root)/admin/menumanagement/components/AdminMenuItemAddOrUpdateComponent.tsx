@@ -60,7 +60,9 @@ const AdminMenuItemAddOrUpdateComponent: React.FC<AdminMenuItemAddOrUpdateCompon
         if (e.target.files && e.target.files.length > 0) {
             const file = e.target.files[0];
             const imageUrl = URL.createObjectURL(file);
-            handleInputChange("imageUrl", imageUrl);
+            //new ProductModel().imagePath
+            handleInputChange("imagePath", imageUrl);
+
         }
     };
 
@@ -123,7 +125,7 @@ const AdminMenuItemAddOrUpdateComponent: React.FC<AdminMenuItemAddOrUpdateCompon
                                     <Box className="flex flex-col sm:flex-row gap-3">
                                         <Box className='flex flex-col  items-start sm:items-center gap-1'>
                                             <img
-                                                src={updatedMenu.imagePath || `/images/image_not_found.png`}
+                                                src={updatedMenu.getImagePathForShow()}
                                                 alt="Ürün Resmi"
                                                 style={{
                                                     width: "80px", height: "80px",
@@ -151,17 +153,18 @@ const AdminMenuItemAddOrUpdateComponent: React.FC<AdminMenuItemAddOrUpdateCompon
                                         <Box className="w-full flex flex-col gap-3">
                                             {menu.parentBoxId == null &&
                                                 <>
+                                                //{ProductModel.getEmptyInstance().name}
                                                     <TextField
                                                         fullWidth variant="outlined" size="small"
                                                         label="Ürün Başlığı"
                                                         value={updatedMenu.name}
-                                                        onChange={(e) => handleInputChange("productTitle", e.target.value)}
+                                                        onChange={(e) => handleInputChange("name", e.target.value)}
                                                     />
                                                     <TextField
                                                         fullWidth multiline rows={2} variant="outlined" size="small"
                                                         label="Açıklama"
-                                                        value={updatedMenu.productDescription}
-                                                        onChange={(e) => handleInputChange("productDescription", e.target.value)}
+                                                        value={updatedMenu.description}
+                                                        onChange={(e) => handleInputChange("description", e.target.value)}
                                                     />
                                                 </>
                                             }
@@ -175,7 +178,7 @@ const AdminMenuItemAddOrUpdateComponent: React.FC<AdminMenuItemAddOrUpdateCompon
                                                     fontSize: "0.8rem",
                                                     color: "text.secondary",
                                                 }}>
-                                                    {updatedMenu.productDescription}
+                                                    {updatedMenu.description}
                                                 </Typography>
                                                 <Typography variant="body2" sx={{
                                                     textWrap: "nowrap",
@@ -326,7 +329,7 @@ const AdminMenuItemAddOrUpdateComponent: React.FC<AdminMenuItemAddOrUpdateCompon
 
                 <ImageSelectorComponent imageUrlList={repeatedImageUrlList}
                     onChooseButtonClicked={function (imageUrl: string): void {
-                        handleInputChange("imageUrl", imageUrl);
+                        handleInputChange("imagePath", imageUrl);
                         setOpenImageSelectorModal(false);
                     }} />
             </MyModal>

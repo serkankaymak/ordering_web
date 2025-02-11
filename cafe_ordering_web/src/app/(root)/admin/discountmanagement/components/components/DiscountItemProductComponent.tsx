@@ -38,7 +38,7 @@ const DiscountItemProductComponent: React.FC<DiscountItemProductComponentProps> 
                         <TableCell sx={{ padding: 0, width: "40px" }}>
 
                             <img
-                                src={product!.imagePath ?? `/images/image_not_found.png`}
+                                src={product!.getImagePathForShow()}
                                 alt={product!.name}
                                 style={{
                                     marginLeft: 3,
@@ -59,7 +59,7 @@ const DiscountItemProductComponent: React.FC<DiscountItemProductComponentProps> 
                                 variant="body2"
                                 sx={{ textWrap: "wrap", fontSize: "0.8rem", color: "text.secondary" }}
                             >
-                                {product!.productDescription}
+                                {product!.description}
                             </Typography>
                         </TableCell>
 

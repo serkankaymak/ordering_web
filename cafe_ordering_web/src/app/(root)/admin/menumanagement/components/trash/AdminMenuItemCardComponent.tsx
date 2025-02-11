@@ -28,7 +28,7 @@ const AdminMenuItemCardComponent: React.FC<AdminMenuItemCardComponentProps> = ({
                     item.imagePath && (
                       <img
                         key={item.id}
-                        src={item.imagePath}
+                        src={item.getImagePathForShow()}
                         alt={item.name}
                         style={{ width: "40px", height: "40px", objectFit: "cover", borderRadius: "4px", marginRight: "4px" }}
                       />
@@ -45,7 +45,7 @@ const AdminMenuItemCardComponent: React.FC<AdminMenuItemCardComponentProps> = ({
             {menu.name}
           </Typography>
           <Typography variant="body2" sx={{ textWrap: "wrap", fontSize: "0.8rem", color: "text.secondary" }}>
-            {menu.productDescription}
+            {menu.description}
           </Typography>
         </Grid>
       </Grid>

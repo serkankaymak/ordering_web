@@ -1,13 +1,10 @@
 import { ProductModel } from "./ProductModels";
 
-
 export enum DiscountType {
     ProductBasedDiscount = "ProductBasedDiscount",
     DynamicDiscount = "DynamicDiscount",
     // Diğer indirim türleri eklenebilir...
 }
-
-
 
 export class DiscountItem {
     id: number;

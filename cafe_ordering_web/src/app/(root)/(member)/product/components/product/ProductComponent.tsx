@@ -77,7 +77,7 @@ const ProductComponent: React.FC<ProductComponentProps> = ({
         {product.imagePath ? (
           <CardMedia
             component="img"
-            image={product.imagePath}
+            image={product.getImagePathForShow()}
             alt={product.name}
             className="w-full object-cover transition-transform duration-300 group-hover:scale-110"
           />
@@ -89,7 +89,7 @@ const ProductComponent: React.FC<ProductComponentProps> = ({
                   <div key={prod.id || index}>
                     <CardMedia
                       component="img"
-                      image={prod.imagePath!}
+                      image={prod.getImagePathForShow()!}
                       alt={prod.name}
                       className="w-full object-cover"
                     />

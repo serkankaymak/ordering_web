@@ -4,8 +4,10 @@ import { ABaseHttpRequest } from "@/shared/ABaseHttpRequest";
 import ApiUrls from "./HostUrl";
 
 // Ürün oluşturma komutunun (request) arayüzü
-export interface CreateProductCommand {
+export interface UpdateProductCommand {
+    productId: number;
     name: string;
+    description: string;
     price: number;
     categoryIds?: number[]; // İsteğe bağlı kategori ID listesi
     imageFile?: File | null;       // İsteğe bağlı dosya (formdan gelecek)
@@ -13,29 +15,22 @@ export interface CreateProductCommand {
     // Diğer alanlar eklenebilir...
 }
 
-/**
- * CreateProductRequest, API'ye ürün oluşturma isteğini göndermek için ABaseHttpRequest sınıfından türetilmiştir.
- * API URL'si UrlManager üzerinden alınır.
- */
-export class CreateProductRequest extends ABaseHttpRequest<boolean> {
-    private command: CreateProductCommand;
 
-    constructor(url: string, command: CreateProductCommand) {
+export class UpdateProductRequest extends ABaseHttpRequest<boolean> {
+    private command: UpdateProductCommand;
+
+    constructor(url: string, command: UpdateProductCommand) {
         super(url);
         this.command = command;
     }
 
-    /**
-     * API'ye ürün oluşturma isteğini gönderir.
-     * Backend yalnızca 201 (Created) statüsü döndürdüğünde başarılı kabul edilir.
-     *
-     * @returns İstek başarılı ise true, aksi halde false.
-     */
     public async execute(): Promise<boolean> {
         try {
             // FormData nesnesi oluşturulur.
             const formData = new FormData();
+            formData.append("ProductId", this.command.productId.toString());
             formData.append("Name", this.command.name);
+            formData.append("Description", this.command.description);
             formData.append("Price", this.command.price.toString());
 
             // Kategori ID'leri varsa formData'ya eklenir.
@@ -48,7 +43,7 @@ export class CreateProductRequest extends ABaseHttpRequest<boolean> {
             else if (this.command.imagePath != null) { formData.append("imagePath", this.command.imagePath); }
 
             // API'ye POST isteği gönderilir.
-            const response = await this.client.post(
+            const response = await this.client.put(
                 this.url,
                 formData,
                 {
@@ -65,17 +60,9 @@ export class CreateProductRequest extends ABaseHttpRequest<boolean> {
         }
     }
 
-    /**
-     * Statik metod, CreateProductRequest instance'ını oluşturur ve isteği yürütür.
-     *
-     * @param command Ürün oluşturma komutu
-     * @returns İstek başarılı ise true, aksi halde false.
-     */
-    public static async send(
-        command: CreateProductCommand
-    ): Promise<boolean> {
-        const url = ApiUrls.GetCreateProductUrl();
-        const request = new CreateProductRequest(url, command);
+    public static async send(command: UpdateProductCommand): Promise<boolean> {
+        const url: string = ApiUrls.GetUpdateProductUrl();
+        const request = new UpdateProductRequest(url, command);
         return await request.execute();
     }
 }

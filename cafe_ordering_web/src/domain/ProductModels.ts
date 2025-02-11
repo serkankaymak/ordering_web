@@ -1,3 +1,4 @@
+import ApiUrls from "@/application/httpRequests/HostUrl";
 import ArrayListStream from "@/shared/ArrayListStream";
 import { randomInt } from "crypto";
 
@@ -20,6 +21,25 @@ export class ProductCommentModel {
     this.userId = userId;
     this.productId = productId;
   }
+
+  static fromJson(json: Partial<ProductCommentModel>): ProductCommentModel {
+    const model = new ProductCommentModel(
+      json.id ?? 0,
+      json.comment ?? "",
+      json.userId ?? 0,
+      json.productId ?? 0
+    );
+
+    // İç içe (nested) bir product varsa, onu da ProductModel.fromJson() ile dönüştürüyoruz
+    if (json.product) {
+      model.product = ProductModel.fromJson(json.product);
+    }
+    return model;
+  }
+
+
+
+
 
 
   static getExample(index: number = 1): ProductCommentModel {
@@ -47,7 +67,7 @@ export class ProductModel {
   parent?: ProductModel | null;
   id: number;
   name: string;
-  productDescription: string;
+  description: string;
   price: number;
   imagePath: string | null;
   categories: CategoryModel[];
@@ -57,14 +77,14 @@ export class ProductModel {
   constructor(
     id: number,
     productTitle: string,
-    productDescription: string,
+    description: string,
     price: number,
     imageUrl: string | null,
   ) {
     this.parentBoxId = null;
     this.id = id;
     this.name = productTitle;
-    this.productDescription = productDescription;
+    this.description = description;
     this.price = price;
     this.imagePath = imageUrl;
     this.products = null;
@@ -73,12 +93,32 @@ export class ProductModel {
   }
 
 
+  private _getCleanedImagePath(): string { return this.imagePath!.replace(/^\/+/, ""); }
+  getImagePathWithHost(): string | null {
+    if (this.imagePath == null) return null;
+    if (!this.imagePath.includes(ApiUrls.Host())) {
+      const path =  ApiUrls.Host() + "/" + this.imagePath;
+      return path;
+    }
+    return this.imagePath;
+  }
+
+  getImagePathWithoutHost(): string | null {
+    if (this.imagePath == null) return null;
+    this.imagePath = this._getCleanedImagePath();
+    if (this.imagePath.includes(ApiUrls.Host())) {
+      return this.imagePath.replace(ApiUrls.Host() + "/", "");
+    }
+    return this.imagePath;
+  }
+  getImagePathForShow(): string { return (this.imagePath != null) ? this.getImagePathWithHost()! : `/images/image_not_found.png` }
+
   // ✅ Yeni copy metodu
   copy(updatedFields: Partial<ProductModel>): ProductModel {
-    return Object.assign(new ProductModel(
+    let copied =  Object.assign(new ProductModel(
       this.id,
       this.name,
-      this.productDescription,
+      this.description,
       this.price,
       this.imagePath
     ), {
@@ -88,16 +128,36 @@ export class ProductModel {
       products: updatedFields.products ? [...updatedFields.products] : this.products ? [...this.products] : null,
       productComments: updatedFields.productComments ? [...updatedFields.productComments] : [...this.productComments]
     });
+    //console.log("copied",copied);
+    return copied;
   }
+
+
+
+  static fromJson(json: Partial<ProductModel>): ProductModel {
+    const model = new ProductModel(
+      json.id ?? 0,
+      json.name ?? "",
+      json.description ?? "",
+      json.price ?? 0,
+      json.imagePath ?? null
+    );
+
+    model.parentBoxId = json.parentBoxId ?? null;
+    model.categories = json.categories ?? [];
+    model.productComments =
+      json.productComments?.map((c) => ProductCommentModel.fromJson(c)) ?? [];
+    model.products = json.products?.map((p) => ProductModel.fromJson(p)) ?? null;
+
+    return model;
+  }
+
 
   static getEmptyInstance(): ProductModel {
     return new ProductModel(0, '', '', 10, null);
   }
 
 
-  public isModelValid(): boolean {
-    return (this.products == null && this.parentBoxId == null)
-  }
 
 
   // Statik metod: Örnek bir MenuItem nesnesi döner
@@ -164,16 +224,22 @@ export class CategoryModel {
     this.parentId = parentId;
   }
 
-  // Statik bir örnek oluşturma metodu
-  static getExample(index?: number): CategoryModel {
-    return new CategoryModel(index ?? 1, "Example Category");
+  static fromJson(json: Partial<CategoryModel>): CategoryModel {
+    const model = new CategoryModel(
+      json.id ?? 0,
+      json.name ?? "",
+      json.parentId ?? null
+    );
+    return model;
   }
-
   // Alt kategori mi kontrolü
   isSubCategory(): boolean {
     return this.parentId !== null;
   }
-
+  // Statik bir örnek oluşturma metodu
+  static getExample(index?: number): CategoryModel {
+    return new CategoryModel(index ?? 1, "Example Category");
+  }
   static getExamples(): CategoryModel[] {
     return [
       new CategoryModel(1, "Food", null),

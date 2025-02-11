@@ -7,8 +7,8 @@ interface AdminProductTableComponentProps {
     product: ProductModel;
     showActions: boolean;
     showCategories?: boolean;
-    onUpdateButtonClicked?: (boxProductId: number) => void | null;
-    onDeleteButtonClicked?: (boxProductId: number) => void | null;
+    onUpdateButtonClicked?: (productId: number) => void | null;
+    onDeleteButtonClicked?: (productId: number) => void | null;
 
 }
 
@@ -24,7 +24,7 @@ const AdminProductTableComponent: React.FC<AdminProductTableComponentProps> = ({
                         {/* Görsel */}
                         <TableCell sx={{ padding: 0, width: "50px" }}>
                             <img
-                                src={product.imagePath ?? `/images/image_not_found.png`}
+                                src={product.getImagePathForShow()}
                                 alt={product.name}
                                 style={{ marginLeft: 3, width: "40px", height: "40px", objectFit: "cover", borderRadius: "4px" }}
                             />
@@ -36,7 +36,7 @@ const AdminProductTableComponent: React.FC<AdminProductTableComponentProps> = ({
                                 {product.name}
                             </Typography>
                             <Typography variant="body2" sx={{ textWrap: "wrap", fontSize: "0.8rem", color: "text.secondary" }}>
-                                {product.productDescription}
+                                {product.description}
                             </Typography>
                         </TableCell>
 

@@ -96,7 +96,7 @@ const OrderItemComponent: React.FC<OrderItemComponentProps> = ({
                                 height: isSmallScreen ? "50px" : "80px",
                                 objectFit: "cover", borderRadius: 2
                             }}
-                            image={orderItem.product?.imagePath!}
+                            image={orderItem.product?.getImagePathForShow()}
                             alt={orderItem.product?.name}
                         /></>
                         :
@@ -119,7 +119,7 @@ const OrderItemComponent: React.FC<OrderItemComponentProps> = ({
                                                         height: isSmallScreen ? "50px" : "80px",
                                                     }}
                                                     component="img"
-                                                    image={prod.imagePath!}
+                                                    image={prod.getImagePathForShow()!}
                                                     alt={prod.name}
                                                 />
                                             </div>

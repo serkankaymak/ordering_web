@@ -1,6 +1,6 @@
 // GetProductsRequest.ts
 import { ABaseHttpRequest } from "@/shared/ABaseHttpRequest";
-import UrlManager from "./HostUrl";
+import ApiUrls from "./HostUrl";
 import { ProductModel } from "@/domain/ProductModels";
 
 
@@ -21,14 +21,15 @@ export class GetProductsRequest extends ABaseHttpRequest<ProductModel[]> {
       });
 
       if (this.isSuccessStatusCode(response.status)) {
-        const products = response.data.map((product) => {
+        const products = response.data.map((productJson) => {
+          const product = ProductModel.fromJson(productJson);
           if (product.imagePath) {
             // imageUrl'in başındaki eğik çizgileri temizleyip base URL ile birleştiriyoruz.
-            product.imagePath = `${UrlManager.Host()}/${product.imagePath.replace(/^\/+/, "")}`;
+            //product.imagePath = `${ApiUrls.Host()}/${product.imagePath.replace(/^\/+/, "")}`;
           }
           return product;
         });
-        return products;
+        return products.map(p => ProductModel.fromJson(p));
       }
       console.error(`Request failed with status: ${response.status}`);
       return [];
@@ -42,8 +43,8 @@ export class GetProductsRequest extends ABaseHttpRequest<ProductModel[]> {
    * Statik metod; GetProductsRequest instance'ını oluşturur ve isteği yürütür.
    * @returns Ürün listesini içeren Promise<ProductModel[]>.
    */
-  public static async send(): Promise<ProductModel[]> {
-    const url = UrlManager.GetProductsUrl(); // UrlManager'dan ürünleri getiren endpoint'i alınır
+  public static async sendAsync(): Promise<ProductModel[]> {
+    const url = ApiUrls.GetProductsUrl(); // UrlManager'dan ürünleri getiren endpoint'i alınır
     const request = new GetProductsRequest(url);
     return await request.execute();
   }

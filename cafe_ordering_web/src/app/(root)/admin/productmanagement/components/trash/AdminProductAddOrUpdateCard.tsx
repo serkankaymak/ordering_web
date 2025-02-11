@@ -32,7 +32,7 @@ const AdminProductAddOrUpdateCard: React.FC<AdminProductAddOrUpdateCardProps> = 
     // Ürün alanları için yerel state'ler
     const [productTitle, setProductTitle] = useState(product.name);
     const [productDescription, setProductDescription] = useState(
-        product.productDescription
+        product.description
     );
     const [productPrice, setProductPrice] = useState(product.price);
     const [selectedCategoryIds, setSelectedCategoryIds] = useState<number[]>(
@@ -49,10 +49,10 @@ const AdminProductAddOrUpdateCard: React.FC<AdminProductAddOrUpdateCardProps> = 
     // Ürün bilgileri değiştiğinde state'leri güncelle
     useEffect(() => {
         setProductTitle(product.name);
-        setProductDescription(product.productDescription);
+        setProductDescription(product.description);
         setProductPrice(product.price);
         setSelectedCategoryIds(product.categories.map((cat) => cat.id));
-        setImagePreview(product.imagePath ?? `/images/image_not_found.png`);
+        setImagePreview(product.getImagePathForShow());
         setImageFile(null);
     }, [product]);
 

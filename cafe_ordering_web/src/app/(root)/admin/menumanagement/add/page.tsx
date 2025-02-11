@@ -7,11 +7,6 @@ import AdminMenuItemAddOrUpdateComponent from "../components/AdminMenuItemAddOrU
 
 const AddMenuPage: React.FC = () => {
 
-    // Form alanları için state tanımlamaları
-    const [title, setTitle] = useState("");
-    const [description, setDescription] = useState("");
-    const [price, setPrice] = useState<number>(0);
-    const [imageUrl, setImageUrl] = useState("");
 
     return (
         <>

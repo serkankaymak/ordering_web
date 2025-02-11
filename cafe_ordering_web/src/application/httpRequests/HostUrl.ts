@@ -1,14 +1,24 @@
 
 const HOST_URL = process.env.NEXT_PUBLIC_HOST_URL;
 const BASE_APİ_URL = process.env.NEXT_PUBLIC_HOST_URL + "/api";
-const PRODUCT_IMAGES_URL = `${BASE_APİ_URL}/Product/getProductImages`;
-const CREATE_PRODUCT_URL = `${BASE_APİ_URL}/Product`;
-const GET_PRODUCTS_URL = `${BASE_APİ_URL}/Product/products`;
+const PRODUCT_URL = `${BASE_APİ_URL}/Product`
 
 
-export default class UrlManager {
+const PRODUCT_IMAGES_URL = `${PRODUCT_URL}/productimages`;
+const CREATE_PRODUCT_URL = `${PRODUCT_URL}/createproduct`;
+const DELETE_PRODUCT_URL = `${PRODUCT_URL}/deleteproduct`;
+const UPDATE_PRODUCT_URL = `${PRODUCT_URL}/updateproduct`;
+const GET_PRODUCTS_URL = `${PRODUCT_URL}/products`;
+const GET_CATEGORİES_URL = `${PRODUCT_URL}/categories`;
+
+
+export default class ApiUrls {
+    static GetUpdateProductUrl() { return UPDATE_PRODUCT_URL; }
+    static GetCategoriesUrl() { return GET_CATEGORİES_URL; }
     static GetProductsUrl() { return GET_PRODUCTS_URL; }
     static GetCreateProductUrl(): string { return CREATE_PRODUCT_URL; }
-    public static Host(): string { return HOST_URL || ""; }
-    public static GetProductImagesUrl(): string { return PRODUCT_IMAGES_URL; }
+    static GetDeleteProductUrl(): string { return DELETE_PRODUCT_URL; }
+    static Host(): string { return HOST_URL || ""; }
+    static GetProductImagesUrl(): string { return PRODUCT_IMAGES_URL; }
+    static GetProductUrl(): string { return PRODUCT_URL; }
 }

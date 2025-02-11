@@ -11,23 +11,26 @@ import {
 import React, { ChangeEvent, useState, useRef, useEffect } from "react";
 
 interface AdminProductAddOrUpdateComponentProps {
+    categories: CategoryModel[];
     product?: ProductModel;
-    onSubmitClicked?: (updatedProduct: ProductModel, formFile: File | null) => void;
     imageUrlList: string[],
+    onSubmitClicked?: (updatedProduct: ProductModel, formFile: File | null) => void;
+
 }
 
 const AdminProductAddOrUpdateComponent: React.FC<AdminProductAddOrUpdateComponentProps> = ({
-    product = ProductModel.getEmptyInstance(), onSubmitClicked, imageUrlList
+    product = ProductModel.getEmptyInstance(), onSubmitClicked, imageUrlList, categories
 }) => {
 
+    useEffect(() => {
 
-    useEffect(()=>{console.log(imageUrlList)},[])
+    }, [])
 
     const [isOpenImageSelectorModal, setOpenImageSelectorModal] = useState<boolean>(false);
     const [uploadedFile, setUploadedFile] = useState<File | null>(null); // Kullanıcının yüklediği dosyayı saklar
-
     const [updatedProduct, setUpdatedProduct] = useState<ProductModel>(product);
     const fileInputRef = useRef<HTMLInputElement | null>(null);
+    const [imagePreviewPath, setImagePreviewPath] = useState<string>(product.getImagePathForShow())
 
     // Ürün Bilgilerini Güncelleme
     const handleInputChange = (key: keyof ProductModel, value: any) => {
@@ -40,7 +43,8 @@ const AdminProductAddOrUpdateComponent: React.FC<AdminProductAddOrUpdateComponen
             const file = e.target.files[0];
             setUploadedFile(file); // Form dosyasını sakla
             const imageUrl = URL.createObjectURL(file);
-            handleInputChange("imageUrl", imageUrl);
+            setImagePreviewPath(imageUrl);
+            handleInputChange("imagePath", null);
         }
     };
 
@@ -68,7 +72,7 @@ const AdminProductAddOrUpdateComponent: React.FC<AdminProductAddOrUpdateComponen
                                     <Box className="flex flex-col sm:flex-row gap-3">
                                         <Box className='flex flex-col items-center gap-1'>
                                             <img
-                                                src={updatedProduct.imagePath || `/images/image_not_found.png`}
+                                                src={imagePreviewPath}
                                                 alt="Ürün Resmi"
                                                 style={{
                                                     width: "80px", height: "80px",
@@ -106,13 +110,13 @@ const AdminProductAddOrUpdateComponent: React.FC<AdminProductAddOrUpdateComponen
                                                 fullWidth variant="outlined" size="small"
                                                 label="Ürün Başlığı"
                                                 value={updatedProduct.name}
-                                                onChange={(e) => handleInputChange("productTitle", e.target.value)}
+                                                onChange={(e) => handleInputChange("name", e.target.value)}
                                             />
                                             <TextField
                                                 fullWidth multiline rows={2} variant="outlined" size="small"
                                                 label="Açıklama"
-                                                value={updatedProduct.productDescription}
-                                                onChange={(e) => handleInputChange("productDescription", e.target.value)}
+                                                value={updatedProduct.description}
+                                                onChange={(e) => handleInputChange("description", e.target.value)}
                                             />
                                         </Box>
                                     </Box>
@@ -128,7 +132,7 @@ const AdminProductAddOrUpdateComponent: React.FC<AdminProductAddOrUpdateComponen
                                         <h3>Categories</h3>
                                         <FormGroup>
                                             <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0 }}>
-                                                {CategoryModel.getExamples().map((cat) => (
+                                                {categories.map((cat) => (
                                                     <FormControlLabel
                                                         key={cat.id}
                                                         control={
@@ -180,7 +184,8 @@ const AdminProductAddOrUpdateComponent: React.FC<AdminProductAddOrUpdateComponen
                 <ImageSelectorComponent
                     imageUrlList={imageUrlList}
                     onChooseButtonClicked={function (imageUrl: string): void {
-                        handleInputChange("imageUrl", imageUrl);
+                        handleInputChange("imagePath", imageUrl);
+                        setImagePreviewPath(imageUrl);
                         setUploadedFile(null); // Varolan görsellerden seçildiği için dosyayı null yap
                         setOpenImageSelectorModal(false);
                     }}

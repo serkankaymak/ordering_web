@@ -21,7 +21,7 @@ const AdminProductCard: React.FC<AdminProductCardProps> = ({
                 {/* Ürün Resmi */}
                 <CardMedia
                     component="img"
-                    image={product.imagePath!}
+                    image={product.getImagePathForShow()!}
                     alt={product.name}
                     className="w-full  object-cover   transition-transform duration-300 group-hover:scale-105"
                 />

@@ -11,6 +11,20 @@ export class OrderItemModel {
     this.quantity = quantity;
   }
 
+  static fromJson(json: Partial<OrderItemModel>): OrderItemModel {
+    const model = new OrderItemModel(
+      json.productId ?? 0,
+      json.quantity ?? 0
+    );
+
+    if (json.product) {
+      model.product = ProductModel.fromJson(json.product);
+    }
+
+    return model;
+  }
+
+
   public increase(): void {
     this.quantity += 1;
   }
