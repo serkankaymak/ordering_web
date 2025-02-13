@@ -13,7 +13,7 @@ import { ProductService } from '@/application/services/product/ProductService';
 import { Discount } from '@/domain/DiscountModels';
 import DiscountComponent from './components/DiscountComponent';
 import { useRouter } from 'next/navigation';
-import { PageRoutes } from '@/app/roots/PageRoutes';
+import { AppRoutes } from '@/app/routes/PageRoutes';
 import MyMasonry from '@/shared/components/MyMasonary';
 
 
@@ -52,7 +52,7 @@ const DiscountManagementPage: React.FC = () => {
                     />
 
                     <Button
-                        onClick={() => { console.log("add..."); router.push(PageRoutes.DiscountManagementAdd()); }}
+                        onClick={() => { console.log("add..."); router.push(AppRoutes.DiscountManagementAdd()); }}
                         size="medium"
                         variant="contained"
                         color="primary"

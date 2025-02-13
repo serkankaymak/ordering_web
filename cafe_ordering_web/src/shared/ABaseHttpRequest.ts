@@ -13,16 +13,7 @@ export abstract class ABaseHttpRequest<T> {
 
   public abstract execute(): Promise<T>;
 
-
   protected isSuccessStatusCode(statusCode: number): boolean {
     return statusCode >= 200 && statusCode < 300;
-  }
-
-  protected isCreatedStatusCode(statusCode: number): boolean {
-    return statusCode === 201;
-  }
-
-  protected isUpdatedStatusCode(statusCode: number): boolean {
-    return statusCode === 204;
   }
 }

@@ -3,7 +3,6 @@
 import {
     Toolbar,
     Box,
-    useTheme,
 } from "@mui/material";
 import { useRef } from "react";
 import InitColorSchemeScript from "@mui/material/InitColorSchemeScript";
@@ -11,7 +10,6 @@ import "react-toastify/dist/ReactToastify.css";
 import useMyMediaQuery, { Breakpoints } from "@/shared/hooks/UseMediaQuery";
 import ScrollToTopButton from "@/shared/components/ScrollToTopButton";
 import { ToastContainer } from "react-toastify";
-import { useMyTheme } from "@/app/providers/global.providers/theme/theme.provider";
 import AdminHeaderComponent from "./components/AdminHeader";
 
 export default function AdminLayout({
@@ -19,8 +17,6 @@ export default function AdminLayout({
 }: {
     children: React.ReactNode;
 }) {
-    const { themeMode, toggleTheme } = useMyTheme();
-    const theme = useTheme();
     const isSmallScreen = useMyMediaQuery(Breakpoints.SMALL, "max");
     const scrollableDivRef = useRef<HTMLDivElement>(null);
 
@@ -48,12 +44,17 @@ export default function AdminLayout({
             >
                 {children}
 
-                {/* Toast Bildirimleri */}
-                <ToastContainer />
+               
 
                 {/* Scroll To Top Butonu */}
                 <ScrollToTopButton scrollableRef={scrollableDivRef} />
             </Box>
+
+
+
+
+             {/* Toast Bildirimleri */}
+             <ToastContainer />
         </Box>
     );
 }

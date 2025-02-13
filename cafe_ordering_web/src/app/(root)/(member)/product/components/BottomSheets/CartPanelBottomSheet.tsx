@@ -5,8 +5,9 @@ import OrderItemComponent from "../order/OrderItemCardComponent";
 import React from "react";
 import { OrderItemModel } from "@/domain/OrderModels";
 import MyBottomSheet from "@/shared/components/MyBottomSheet";
+import { IComponent } from "@/app/types/ViewTypes";
 
-const CartPanelBottomSheet: React.FC<{
+const CartPanelBottomSheet: IComponent<{
     open: boolean;
     onClose: () => void;
     orderItems: OrderItemModel[];
@@ -51,7 +52,7 @@ const CartPanelBottomSheet: React.FC<{
                                 {orderItems.map((item) => (
                                     <OrderItemComponent
                                         key={item.productId}
-                                        orderItem={item}
+                                        orderItem={item ?? new OrderItemModel(0,1)}
                                         onIncreaseClicked={() => onIncrease(item.productId)}
                                         onDecreaseClicked={() => onDecrease(item.productId)}
                                         onRemoveClicked={() => onRemove(item.productId)}

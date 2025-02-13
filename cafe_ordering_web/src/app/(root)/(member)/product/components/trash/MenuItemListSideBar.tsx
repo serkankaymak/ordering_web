@@ -2,6 +2,7 @@ import { Box, Button, IconButton } from "@mui/material";
 import React, { useState } from "react";
 import { ExpandMore, ExpandLess } from "@mui/icons-material";
 import { CategoryModel } from "@/domain/ProductModels";
+import { IComponent } from "@/app/types/ViewTypes";
 
 
 // Props için interface tanımı
@@ -10,7 +11,7 @@ interface MenuItemListSidebarProps {
     categoryList: CategoryModel[];
 }
 
-const MenuItemListSidebarComponent: React.FC<MenuItemListSidebarProps> = ({
+const MenuItemListSidebarComponent: IComponent<MenuItemListSidebarProps> = ({
     className,
     categoryList,
 }) => {

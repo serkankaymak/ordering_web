@@ -1,3 +1,4 @@
+import { IComponent } from "@/app/types/ViewTypes";
 import { CategoryModel, ProductModel } from "@/domain/ProductModels";
 import ImageSelectorComponent from "@/shared/components/ImageSelectorComponent";
 import MyModal from "@/shared/components/MyModal";
@@ -18,13 +19,11 @@ interface AdminProductAddOrUpdateComponentProps {
 
 }
 
-const AdminProductAddOrUpdateComponent: React.FC<AdminProductAddOrUpdateComponentProps> = ({
+const AdminProductAddOrUpdateComponent: IComponent<AdminProductAddOrUpdateComponentProps> = ({
     product = ProductModel.getEmptyInstance(), onSubmitClicked, imageUrlList, categories
 }) => {
 
-    useEffect(() => {
-
-    }, [])
+    useEffect(() => { }, [])
 
     const [isOpenImageSelectorModal, setOpenImageSelectorModal] = useState<boolean>(false);
     const [uploadedFile, setUploadedFile] = useState<File | null>(null); // Kullanıcının yüklediği dosyayı saklar

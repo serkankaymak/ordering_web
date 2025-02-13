@@ -7,6 +7,7 @@ import { AddShoppingCart, Description, Favorite } from "@mui/icons-material";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { ProductModel } from "@/domain/ProductModels";
+import { IComponent } from "@/app/types/ViewTypes";
 
 // Responsive ayarları kaldırarak, her zaman 1 slide gösteriyoruz
 const settings = {
@@ -61,7 +62,7 @@ interface ProductComponentProps {
   onInvestigateClick?: (productId: number) => void;
 }
 
-const ProductComponent: React.FC<ProductComponentProps> = ({
+const ProductComponent: IComponent<ProductComponentProps> = ({
   className,
   product,
   onOrderClick,

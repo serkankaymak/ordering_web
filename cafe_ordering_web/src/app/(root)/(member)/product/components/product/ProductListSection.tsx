@@ -3,6 +3,7 @@ import React from 'react';
 import { Box, Card, CardContent } from '@mui/material';
 import ProductComponent from './ProductComponent';
 import { ProductModel } from '@/domain/ProductModels';
+import { IComponent } from '@/app/types/ViewTypes';
 
 // Props için interface tanımı
 interface ProductListProps {
@@ -14,7 +15,7 @@ interface ProductListProps {
 }
 
 // Fonksiyonel bileşen tanımı
-const ProductListSection: React.FC<ProductListProps> = ({ title, sectionId, products: products, onAnyInvestigateClick, onAnyOrderClick }) => {
+const ProductListSection: IComponent<ProductListProps> = ({ title, sectionId, products: products, onAnyInvestigateClick, onAnyOrderClick }) => {
     // State tanımı
     return (
         <section className='' id={sectionId}>

@@ -2,6 +2,7 @@
 const HOST_URL = process.env.NEXT_PUBLIC_HOST_URL;
 const BASE_APİ_URL = process.env.NEXT_PUBLIC_HOST_URL + "/api";
 const PRODUCT_URL = `${BASE_APİ_URL}/Product`
+const MENU_URL = `${BASE_APİ_URL}/Menu`
 
 
 const PRODUCT_IMAGES_URL = `${PRODUCT_URL}/productimages`;
@@ -12,13 +13,19 @@ const GET_PRODUCTS_URL = `${PRODUCT_URL}/products`;
 const GET_CATEGORİES_URL = `${PRODUCT_URL}/categories`;
 
 
+
+const GET_MENUS_URL = `${MENU_URL}/menus`;
+
+
 export default class ApiUrls {
     static GetUpdateProductUrl() { return UPDATE_PRODUCT_URL; }
     static GetCategoriesUrl() { return GET_CATEGORİES_URL; }
     static GetProductsUrl() { return GET_PRODUCTS_URL; }
+    static GetMenusUrl() { return GET_MENUS_URL; }
     static GetCreateProductUrl(): string { return CREATE_PRODUCT_URL; }
     static GetDeleteProductUrl(): string { return DELETE_PRODUCT_URL; }
     static Host(): string { return HOST_URL || ""; }
     static GetProductImagesUrl(): string { return PRODUCT_IMAGES_URL; }
     static GetProductUrl(): string { return PRODUCT_URL; }
+    static GetMenuUrl(): string { return MENU_URL; }
 }

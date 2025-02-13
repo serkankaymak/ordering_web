@@ -15,6 +15,7 @@ import {
     Checkbox,
     FormControlLabel,
     FormGroup,
+    Chip,
 } from "@mui/material";
 import { Add, Delete, Remove, Save } from "@mui/icons-material";
 import ArrayListStream from "@/shared/ArrayListStream";
@@ -23,26 +24,28 @@ import MyModal from "@/shared/components/MyModal";
 import ProductSelector from "@/app/(root)/components/ProductSelector";
 
 interface AdminMenuItemAddOrUpdateComponentProps {
+    categories: CategoryModel[],
+    avaibleProductImagePaths: string[];
     menu?: ProductModel;
     onSubmitClicked?: (updatedMenu: ProductModel) => void;
+    menuCount?: number
 }
 
 const AdminMenuItemAddOrUpdateComponent: React.FC<AdminMenuItemAddOrUpdateComponentProps> = ({
     menu = ProductModel.getEmptyInstance(),
     onSubmitClicked,
+    categories,
+    avaibleProductImagePaths
 }) => {
+
+    const [isOpenImageSelectorModal, setOpenImageSelectorModal] = useState<boolean>(false);
+    const [isOpenProductSelectorModal, setOpenProductSelectorModal] = useState<boolean>(false);
+    const [imagePreview, setImagePreview] = useState<string>(menu.getImagePathForShow())
+    const fileInputRef = useRef<HTMLInputElement | null>(null);
 
     useEffect(() => {
         { console.log("menu add update use effect", menu.parent) }
     }, [])
-
-    const imageUrlList = ["antique-cafe-bg-01.jpg", "antique-cafe-bg-02.jpg",
-        "antique-cafe-bg-03.jpg", "antique-cafe-bg-04.jpg", "menu-item-1.jpg",
-        "menu-item-2.jpg"
-    ]
-    const repeatedImageUrlList = Array(10).fill(imageUrlList.map((url) => "/images/" + url)).flat();
-    const [isOpenImageSelectorModal, setOpenImageSelectorModal] = useState<boolean>(false);
-    const [isOpenProductSelectorModal, setOpenProductSelectorModal] = useState<boolean>(false);
 
 
     // Üst seviye menü için input alanlarında gösterilecek değerleri state ile tutuyoruz
@@ -55,17 +58,22 @@ const AdminMenuItemAddOrUpdateComponent: React.FC<AdminMenuItemAddOrUpdateCompon
         });
     };
 
-    // Görsel Yükleme
     const handleImageUpload = (e: ChangeEvent<HTMLInputElement>) => {
         if (e.target.files && e.target.files.length > 0) {
             const file = e.target.files[0];
             const imageUrl = URL.createObjectURL(file);
-            //new ProductModel().imagePath
-            handleInputChange("imagePath", imageUrl);
+            setImagePreview(imageUrl);
+            handleInputChange("imagePath", null);
 
         }
     };
 
+
+    const handleImageSelect = (imagePath: string) => {
+        handleInputChange("imagePath", imagePath);
+        setImagePreview(imagePath);
+        setOpenImageSelectorModal(false);
+    }
 
     const handleCategoryToggle = (category: CategoryModel) => {
         setUpdatedMenu(prevState => {
@@ -79,12 +87,13 @@ const AdminMenuItemAddOrUpdateComponent: React.FC<AdminMenuItemAddOrUpdateCompon
     };
 
 
-    const handleAddProduct = (product: ProductModel) => {
+    const handleProductAddSelect = (product: ProductModel) => {
         setUpdatedMenu(prevState => {
             product.parentBoxId = prevState.id;
             const updatedProducts = [...prevState.products!, product]
             return prevState.copy({ products: updatedProducts });
         });
+        setOpenProductSelectorModal(false);
     };
 
     const handleRemoveProduct = (product: ProductModel) => {
@@ -99,7 +108,7 @@ const AdminMenuItemAddOrUpdateComponent: React.FC<AdminMenuItemAddOrUpdateCompon
     };
 
 
-    const fileInputRef = useRef<HTMLInputElement | null>(null);
+
 
     return (
 
@@ -119,15 +128,26 @@ const AdminMenuItemAddOrUpdateComponent: React.FC<AdminMenuItemAddOrUpdateCompon
 
                 <Table size="small" sx={{ "& td, & th": { borderBottom: "none" } }}>
                     <TableBody>
+
+                        <TableRow>
+                            <TableCell>
+                                {menu.}
+                            </TableCell>
+                        </TableRow>
+
                         <TableRow>
                             <TableCell>
                                 <FormGroup>
-                                    <Box className="flex flex-col sm:flex-row gap-3">
-                                        <Box className='flex flex-col  items-start sm:items-center gap-1'>
+                                    <Box className="  flex flex-col sm:flex-row gap-3">
+                                        <Box
+                                            sx={{ position: "relative", clear: "both" }}
+                                            className={`  ${menu.parentBoxId == null ? "flex flex-col items-start sm:items-center" : "w-full"} gap-1 `}
+                                        >
                                             <img
-                                                src={updatedMenu.getImagePathForShow()}
+                                                src={imagePreview}
                                                 alt="Ürün Resmi"
                                                 style={{
+                                                    float: 'left',
                                                     width: "80px", height: "80px",
                                                     objectFit: "cover", borderRadius: "6px"
                                                 }}
@@ -147,13 +167,46 @@ const AdminMenuItemAddOrUpdateComponent: React.FC<AdminMenuItemAddOrUpdateCompon
                                                 </Box></>}
 
 
+
+
+                                            {/* Ürün adı */}
+                                            {menu.parentBoxId != null && <Box className="flex justify-start gap-2">
+                                                <Typography
+                                                    variant="subtitle2"
+                                                    sx={{
+                                                        whiteSpace: "normal",
+                                                        overflowWrap: "break-word",
+                                                        fontSize: "0.9rem",
+                                                    }}
+                                                >
+                                                    {menu.name}
+                                                </Typography>
+                                                <Chip size="small" label={menu.price + " TL"} />
+                                            </Box>
+                                            }
+                                            {menu.parentBoxId != null && <Typography
+                                                variant="body2"
+                                                sx={{
+                                                    mt: 1,
+                                                    whiteSpace: "normal",
+                                                    overflowWrap: "break-word",
+                                                    wordBreak: "break-word",
+                                                    fontSize: "0.8rem",
+                                                    color: "text.secondary",
+                                                }}
+                                            >
+                                                {menu.description}
+                                            </Typography>
+                                            }
+
+
                                         </Box>
 
                                         {/* Başlık ve Açıklama */}
-                                        <Box className="w-full flex flex-col gap-3">
-                                            {menu.parentBoxId == null &&
-                                                <>
-                                                //{ProductModel.getEmptyInstance().name}
+
+                                        {menu.parentBoxId == null &&
+                                            <>
+                                                <Box className="w-full flex flex-col gap-3">
                                                     <TextField
                                                         fullWidth variant="outlined" size="small"
                                                         label="Ürün Başlığı"
@@ -166,44 +219,23 @@ const AdminMenuItemAddOrUpdateComponent: React.FC<AdminMenuItemAddOrUpdateCompon
                                                         value={updatedMenu.description}
                                                         onChange={(e) => handleInputChange("description", e.target.value)}
                                                     />
-                                                </>
-                                            }
+                                                </Box>
+                                            </>
+                                        }
 
-                                            {menu.parentBoxId != null && <Box>
-                                                <Typography variant="subtitle2" sx={{ textWrap: "wrap", fontSize: "0.9rem" }}>
-                                                    {updatedMenu.name}
-                                                </Typography>
-                                                <Typography variant="body2" sx={{
-                                                    textWrap: "wrap",
-                                                    fontSize: "0.8rem",
-                                                    color: "text.secondary",
-                                                }}>
-                                                    {updatedMenu.description}
-                                                </Typography>
-                                                <Typography variant="body2" sx={{
-                                                    textWrap: "nowrap",
-                                                    fontSize: "0.8rem",
-                                                    color: "text.secondary",
-                                                }}>
-                                                    {updatedMenu.price + " TL"}
-                                                </Typography>
-                                            </Box>
-                                            }
-
-                                        </Box>
 
                                         {menu.parentBoxId != null && <>
 
-                                            <Box className="  flex flex-row  justify-end items-center gap-0 sm:gap-1 ">
+                                            <Box className="   flex flex-row  justify-end items-center gap-0 sm:gap-1 ">
                                                 <Box className="flex justify-end items-center gap-0">
                                                     <IconButton
                                                         size="small">
-                                                        <Add />
+                                                        <Remove />
                                                     </IconButton>
 
                                                     <span> {menu.parent?.products?.filter(x => x.id === menu.parentBoxId).length || 0} </span>
                                                     <IconButton onClick={() => { handleRemoveProduct(menu) }} size="small">
-                                                        <Remove />
+                                                        <Add />
                                                     </IconButton>
                                                 </Box>
                                                 <IconButton size="small">
@@ -237,10 +269,11 @@ const AdminMenuItemAddOrUpdateComponent: React.FC<AdminMenuItemAddOrUpdateCompon
                                 <TableCell padding="normal" colSpan={10} sx={{ pl: 1 }}>
                                     {updatedMenu.products.map((item) => (
                                         <AdminMenuItemAddOrUpdateComponent
+                                            menuCount={updatedMenu.products?.filter(x => x.id == item.id).length}
                                             key={item.id}
                                             menu={item}
-
-                                        />
+                                            avaibleProductImagePaths={avaibleProductImagePaths}
+                                            categories={categories} />
                                     ))}
                                 </TableCell>
                             </TableRow>
@@ -253,16 +286,14 @@ const AdminMenuItemAddOrUpdateComponent: React.FC<AdminMenuItemAddOrUpdateCompon
                         {updatedMenu.parentBoxId == null && (
                             <TableRow>
                                 <TableCell >
-
                                     <Box className="flex justify-between">
-
                                         <FormGroup>
                                             <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0 }}>
                                                 <Box sx={{ mt: 0 }}>
                                                     <h3>Categories</h3>
                                                     <FormGroup>
                                                         <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0 }}>
-                                                            {CategoryModel.getExamples().map((cat) => (
+                                                            {categories.map((cat) => (
                                                                 <FormControlLabel
                                                                     key={cat.id}
                                                                     control={
@@ -286,7 +317,7 @@ const AdminMenuItemAddOrUpdateComponent: React.FC<AdminMenuItemAddOrUpdateCompon
                                             alignItems: 'end',
                                             gap: 1
                                         }}>
-                                            <span>Products Price Sum : 20.00</span>
+                                            <span>Products Price Sum :  {menu.productsPrice ?? 0} TL </span>
                                             <Box className="gap-1 flex items-center justify-center">
                                                 <TextField
                                                     variant="outlined"
@@ -325,22 +356,23 @@ const AdminMenuItemAddOrUpdateComponent: React.FC<AdminMenuItemAddOrUpdateCompon
 
 
 
-            <MyModal isOpen={isOpenImageSelectorModal} onCloseClicked={() => { setOpenImageSelectorModal(false) }} >
-
-                <ImageSelectorComponent imageUrlList={repeatedImageUrlList}
+            <MyModal
+                isOpen={isOpenImageSelectorModal}
+                onCloseClicked={() => { setOpenImageSelectorModal(false) }}
+            >
+                <ImageSelectorComponent
+                    imageUrlList={avaibleProductImagePaths}
                     onChooseButtonClicked={function (imageUrl: string): void {
-                        handleInputChange("imagePath", imageUrl);
-                        setOpenImageSelectorModal(false);
+                        handleImageSelect(imageUrl);
+
                     }} />
             </MyModal>
 
 
             <MyModal isOpen={isOpenProductSelectorModal} onCloseClicked={() => { setOpenProductSelectorModal(false) }} >
-
                 <ProductSelector products={ProductModel.getExamples()}
                     onChooseButtonClicked={function (selectedProduct: ProductModel): void {
-                        handleAddProduct(selectedProduct);
-                        setOpenProductSelectorModal(false);
+                        handleProductAddSelect(selectedProduct);
                     }} ></ProductSelector>
 
             </MyModal>

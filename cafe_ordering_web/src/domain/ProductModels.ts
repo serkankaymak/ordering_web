@@ -1,5 +1,7 @@
 import ApiUrls from "@/application/httpRequests/HostUrl";
 import ArrayListStream from "@/shared/ArrayListStream";
+import { Logcat } from "@/shared/LogCat";
+
 import { randomInt } from "crypto";
 
 
@@ -63,16 +65,22 @@ export class ProductCommentModel {
 
 
 export class ProductModel {
-  parentBoxId: number | null;
-  parent?: ProductModel | null;
+
+
   id: number;
   name: string;
   description: string;
+  quantity: number = 1;
   price: number;
   imagePath: string | null;
   categories: CategoryModel[];
-  products: ProductModel[] | null;
   productComments: ProductCommentModel[];
+
+  /* --  box properties  -- */
+  parentBoxId?: number | null;
+  parent?: ProductModel | null;
+  products?: ProductModel[] | null;
+  productsPrice?: number | null;
 
   constructor(
     id: number,
@@ -81,41 +89,35 @@ export class ProductModel {
     price: number,
     imageUrl: string | null,
   ) {
-    this.parentBoxId = null;
+
     this.id = id;
     this.name = productTitle;
     this.description = description;
     this.price = price;
     this.imagePath = imageUrl;
-    this.products = null;
+
     this.categories = [];
     this.productComments = [];
+
   }
 
 
   private _getCleanedImagePath(): string { return this.imagePath!.replace(/^\/+/, ""); }
   getImagePathWithHost(): string | null {
     if (this.imagePath == null) return null;
-    if (!this.imagePath.includes(ApiUrls.Host())) {
-      const path =  ApiUrls.Host() + "/" + this.imagePath;
-      return path;
-    }
+    if (!this.imagePath.includes(ApiUrls.Host())) { return ApiUrls.Host() + "/" + this.imagePath; }
     return this.imagePath;
   }
-
   getImagePathWithoutHost(): string | null {
     if (this.imagePath == null) return null;
     this.imagePath = this._getCleanedImagePath();
-    if (this.imagePath.includes(ApiUrls.Host())) {
-      return this.imagePath.replace(ApiUrls.Host() + "/", "");
-    }
+    if (this.imagePath.includes(ApiUrls.Host())) { return this.imagePath.replace(ApiUrls.Host() + "/", ""); }
     return this.imagePath;
   }
   getImagePathForShow(): string { return (this.imagePath != null) ? this.getImagePathWithHost()! : `/images/image_not_found.png` }
 
-  // ✅ Yeni copy metodu
   copy(updatedFields: Partial<ProductModel>): ProductModel {
-    let copied =  Object.assign(new ProductModel(
+    let copied = Object.assign(new ProductModel(
       this.id,
       this.name,
       this.description,
@@ -131,9 +133,6 @@ export class ProductModel {
     //console.log("copied",copied);
     return copied;
   }
-
-
-
   static fromJson(json: Partial<ProductModel>): ProductModel {
     const model = new ProductModel(
       json.id ?? 0,
@@ -145,21 +144,32 @@ export class ProductModel {
 
     model.parentBoxId = json.parentBoxId ?? null;
     model.categories = json.categories ?? [];
-    model.productComments =
-      json.productComments?.map((c) => ProductCommentModel.fromJson(c)) ?? [];
+    model.productComments = json.productComments?.map((c) => ProductCommentModel.fromJson(c)) ?? [];
     model.products = json.products?.map((p) => ProductModel.fromJson(p)) ?? null;
-
+    model.productsPrice = json.productsPrice ?? null;
     return model;
+  }
+
+
+  getGroupedChildProducts() {
+    if (this.products == null) throw new Error("Sadece menu için...");
+
+    const productStream = ArrayListStream.fromList(this.products.filter(x => x != null));
+    const groupedMap = productStream.groupBy(product => product?.id);
+    const groupedProducts: Array<{ product: any; count: number }> = [];
+
+    groupedMap.forEach((group, id) => {
+      const representativeProduct = group.getFromIndex(0);
+      const count = group.toList().length;
+      groupedProducts.push({ product: representativeProduct, count: count });
+    });
+    return groupedProducts;
   }
 
 
   static getEmptyInstance(): ProductModel {
     return new ProductModel(0, '', '', 10, null);
   }
-
-
-
-
   // Statik metod: Örnek bir MenuItem nesnesi döner
   static getExample(index?: number): ProductModel {
     var product = new ProductModel(
@@ -172,8 +182,6 @@ export class ProductModel {
     CategoryModel.getExamples().forEach(c => product.categories.push(c));
     return product;
   }
-
-
   static getBoxProductExample(index?: number): ProductModel {
     var product = new ProductModel(
       index ?? 1,
@@ -190,8 +198,6 @@ export class ProductModel {
     CategoryModel.getExamples().forEach(c => product.categories.push(c));
     return product;
   }
-
-
   static getExamples = () => {
     const examples = ArrayListStream.fromEmpty<ProductModel>();
     examples.add(ProductModel.getBoxProductExample(0));
@@ -232,10 +238,7 @@ export class CategoryModel {
     );
     return model;
   }
-  // Alt kategori mi kontrolü
-  isSubCategory(): boolean {
-    return this.parentId !== null;
-  }
+
   // Statik bir örnek oluşturma metodu
   static getExample(index?: number): CategoryModel {
     return new CategoryModel(index ?? 1, "Example Category");

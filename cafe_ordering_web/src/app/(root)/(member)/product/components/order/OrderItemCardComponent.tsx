@@ -10,6 +10,7 @@ import "slick-carousel/slick/slick-theme.css";
 import Slider from "react-slick";
 import { ProductModel } from "@/domain/ProductModels";
 import useMyMediaQuery, { Breakpoints } from "@/shared/hooks/UseMediaQuery";
+import { IComponent } from "@/app/types/ViewTypes";
 
 // Sol yön okunu gösteren özel bileşen
 function SamplePrevArrow(props: any) {
@@ -69,7 +70,7 @@ interface OrderItemComponentProps {
 
 
 // Fonksiyonel bileşen tanımı
-const OrderItemComponent: React.FC<OrderItemComponentProps> = ({
+const OrderItemComponent: IComponent<OrderItemComponentProps> = ({
     className, orderItem, onIncreaseClicked: onIncrease, onDecreaseClicked: onDecrease, onRemoveClicked: onRemove, onViewClicked }) => {
 
     const isSmallScreen = useMyMediaQuery(Breakpoints.SMALL, 'max');
@@ -108,8 +109,9 @@ const OrderItemComponent: React.FC<OrderItemComponentProps> = ({
                             }}
                                 className="w-full object-cover  ">
                                 <Slider {...settings}>
-                                    {orderItem!.product!.products &&
-                                        orderItem!.product!.products.map((prod: ProductModel, index) => (
+                                    {
+                                        orderItem!.product &&
+                                        orderItem!.product!.products && orderItem!.product!.products.map((prod: ProductModel, index) => (
                                             <div key={prod.id || index}>
                                                 <CardMedia
                                                     style={{

@@ -14,7 +14,7 @@ import { ProductService } from '@/application/services/product/ProductService';
 import MyModal from '@/shared/components/MyModal';
 import AdminProductAddOrUpdateCard from '../components/trash/AdminProductAddOrUpdateCard';
 import ProductListComponent from '../components/trash/ProductListComponents';
-import AdminProductTableComponent from '../components/AdminProductTableComponent';
+import AdminProductTableComponent from '../components/serverSideComponents/AdminProductTableComponent';
 
 
 

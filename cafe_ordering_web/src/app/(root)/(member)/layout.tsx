@@ -17,20 +17,14 @@ export default function MemberLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const theme = useTheme();
   const isSmallScreen = useMyMediaQuery(Breakpoints.SMALL, 'max');
   const scrollableDivRef = useRef<HTMLDivElement>(null);
   return (
     <Box>
       <Box
         ref={scrollableDivRef}
-        sx={{
-          maxHeight: "calc(100vh - 65px)",
-          height: isSmallScreen ? '92vh' : '100vh'
-        }}
-        className=" 
-            flex flex-col overflow-auto 
-            whitespace-nowrap  scrollbar-none sm:scrollbar-thin scrollbar-track-gray-200 scrollbar-thumb-gray-500"
+        sx={{ maxHeight: "calc(100vh - 65px)", height: isSmallScreen ? '92vh' : '100vh' }}
+        className="   flex flex-col overflow-auto   whitespace-nowrap  scrollbar-none sm:scrollbar-thin scrollbar-track-gray-200 scrollbar-thumb-gray-500"
       >
         <InitColorSchemeScript attribute="class" />
         <HeaderComponent className="z-10 sticky" />

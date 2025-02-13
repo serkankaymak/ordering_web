@@ -1,34 +1,45 @@
 import axios from "axios";
 import ApiUrls from "./HostUrl";
 import { ABaseHttpRequest } from "@/shared/ABaseHttpRequest";
+import { ApiResponse } from "./ApiResponse'T";
 
-const fetchProductImages = async (url: string): Promise<string[]> => {
-    try {
-        const response = await axios.get<string[]>(url, {
-            headers: {
-                "Content-Type": "application/json",
-            },
-        });
-        console.log("response", response);
-        return response.data; // Başarılı ise ürün görsellerini döndür
-    } catch (error) {
-        console.log("Ürün görselleri alınırken hata oluştu:", error);
-        return []; // Hata durumunda boş dizi döndür
+
+// API çağrısını yapıp, sonuç olarak ApiResponse<string[]> döndüren yardımcı fonksiyon
+const fetchProductImages = async (url: string): Promise<ApiResponse<string[]>> => {
+  try {
+    const response = await axios.get<string[]>(url, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    console.log("response", response);
+    // Başarılı ise veriyi ApiResponse.success ile sarmalayıp döndürüyoruz.
+    return ApiResponse.success(response.data);
+  } catch (error: any) {
+    console.log("Ürün görselleri alınırken hata oluştu:", error);
+    // Axios hatası ise durum kodunu kontrol ediyoruz
+    if (axios.isAxiosError(error) && error.response) {
+      return ApiResponse.failureFromStatus<string[]>(error.response.status);
     }
+    // Bilinmeyen hata durumunda genel bir hata mesajı
+    return ApiResponse.failure<string[]>("Bilinmeyen bir hata oluştu.");
+  }
 };
 
+export class GetAvaibleProductImagesRequest extends ABaseHttpRequest<ApiResponse<string[]>> {
+  // execute metodu artık ApiResponse<string[]> dönecek şekilde düzenlendi
+  public execute(): Promise<ApiResponse<string[]>> {
+    return fetchProductImages(ApiUrls.GetProductImagesUrl());
+  }
 
-export class GetAvaibleProductImagesRequest extends ABaseHttpRequest<string[]> {
-    public execute(): Promise<string[]> {
-        return fetchProductImages(ApiUrls.GetProductImagesUrl());
-    }
-    constructor(url: string) {
-        super(url);
-    }
+  constructor(url: string) {
+    super(url);
+  }
 
-    public static async sendAsync(): Promise<string[]> {
-        const url: string = ApiUrls.GetCategoriesUrl(); // UrlManager'dan ürünleri getiren endpoint'i alınır
-        const request = new GetAvaibleProductImagesRequest(url);
-        return await request.execute();
-    }
+  // sendAsync metodu, doğru URL (GetProductImagesUrl) kullanılarak ApiResponse<string[]> döndürür.
+  public static async send(): Promise<ApiResponse<string[]>> {
+    const url: string = ApiUrls.GetProductImagesUrl(); 
+    const request = new GetAvaibleProductImagesRequest(url);
+    return await request.execute();
+  }
 }

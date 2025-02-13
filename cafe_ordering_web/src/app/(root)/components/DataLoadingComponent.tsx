@@ -1,4 +1,3 @@
-'use client';
 
 import React from 'react';
 import clsx from 'clsx';
@@ -14,12 +13,7 @@ const DataLoadingComponent: React.FC<DataLoadingComponentProps> = ({
     message = 'Loading...',
 }) => {
     return (
-        <Container
-            className={clsx(
-                'gap-5 justify-center items-center h-full ',
-                className
-            )}
-        >
+        <Container className={clsx('gap-5 justify-center items-center h-full ',className)}>
             <Box display="flex" justifyContent="center">
                 <CircularProgress />
             </Box>

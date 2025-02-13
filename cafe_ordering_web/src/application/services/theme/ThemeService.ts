@@ -7,22 +7,25 @@ export enum ThemeMode {
 }
 
 export class ThemeService {
+  private _localStorage?: Storage;
   private _themeMode: ThemeMode;
   private listeners: ((themeMode: ThemeMode) => void)[] = [];
 
-  constructor() {
-    this._themeMode = typeof window !== "undefined" ? (this.getStoredThemeMode() || ThemeMode.LIGHT) : ThemeMode.LIGHT;
+  constructor(storage?: Storage) {
+    this._localStorage = storage;
+    if (this._localStorage == null) { try { this._localStorage = localStorage } catch (e: any) { } }
+    this._themeMode = this.getStoredThemeMode() || ThemeMode.LIGHT;
     Logcat.Debug(`ThemeService initialized with theme: ${this._themeMode}`);
   }
 
   private getStoredThemeMode(): ThemeMode | null {
-    Logcat.Debug("getStoredThemeMode -->" + (typeof window === "undefined"))
-    const storedMode = localStorage.getItem("themeMode");
+    if (this._localStorage == null) return null;
+    const storedMode = this._localStorage.getItem("themeMode");
     return storedMode === ThemeMode.DARK || storedMode === ThemeMode.LIGHT ? (storedMode as ThemeMode) : null;
   }
 
   private storeThemeMode(): void {
-    localStorage.setItem("themeMode", this._themeMode);
+    this._localStorage?.setItem("themeMode", this._themeMode);
   }
 
   get themeMode(): ThemeMode {

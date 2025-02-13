@@ -2,7 +2,7 @@ import { DiscountItem } from '@/domain/DiscountModels';
 import { Update, Delete } from '@mui/icons-material';
 import { Box, Button, Chip, IconButton, Paper, Table, TableBody, TableCell, TableContainer, TableRow, Typography } from '@mui/material';
 import React, { useState } from 'react';
-import AdminMenuItemTableComponent from '../../../menumanagement/components/AdminMenuItemTableComponent';
+import AdminMenuItemTableComponent from '../../../menumanagement/components/serverSideComponents/AdminMenuItemTableComponent';
 import { ProductModel } from '@/domain/ProductModels';
 
 // Props için interface tanımı

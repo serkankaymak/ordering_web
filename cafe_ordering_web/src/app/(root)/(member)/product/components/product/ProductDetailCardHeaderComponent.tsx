@@ -1,4 +1,5 @@
-import AdminMenuItemTableComponent from "@/app/(root)/admin/menumanagement/components/AdminMenuItemTableComponent";
+import AdminMenuItemTableComponent from "@/app/(root)/admin/menumanagement/components/serverSideComponents/AdminMenuItemTableComponent";
+import { IComponent } from "@/app/types/ViewTypes";
 import { ProductModel } from "@/domain/ProductModels";
 import useMyMediaQuery, { Breakpoints } from "@/shared/hooks/UseMediaQuery";
 import { Delete, Update } from "@mui/icons-material";
@@ -24,7 +25,7 @@ interface ProductDetailCardHeaderComponentProps {
   menu: ProductModel;
 }
 
-const ProductDetailCardHeaderComponent: React.FC<ProductDetailCardHeaderComponentProps> = ({
+const ProductDetailCardHeaderComponent: IComponent<ProductDetailCardHeaderComponentProps> = ({
   menu,
 }) => {
 

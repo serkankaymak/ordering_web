@@ -22,6 +22,7 @@ import { useProductContext } from "@/app/providers/product.provider";
 import { ProductModel } from "@/domain/ProductModels";
 import Slider from "react-slick";
 import ProductDetailCardHeaderComponent from "../product/ProductDetailCardHeaderComponent";
+import { IComponent } from "@/app/types/ViewTypes";
 
 interface ProductDetailBottomSheetProps {
   isOpen: boolean;
@@ -30,7 +31,7 @@ interface ProductDetailBottomSheetProps {
   onAddCommentClicked?: () => void;
 }
 
-const ProductDetailBottomSheet: React.FC<ProductDetailBottomSheetProps> = ({
+const ProductDetailBottomSheet: IComponent<ProductDetailBottomSheetProps> = ({
   isOpen,
   product,
   onCloseClicked,

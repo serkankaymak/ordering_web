@@ -1,9 +1,13 @@
 
 'use client'
 
+import { IPage } from "@/app/types/ViewTypes";
 import { Box } from "@mui/material";
+import React from "react";
 
-export default function HomePage() {
+
+
+const HomePage: IPage = () => {
   return (
     <Box
       style={{
@@ -12,8 +16,10 @@ export default function HomePage() {
       }}
     >
       <Box style={{ height: '1500px' }} className="bg-slate-500">
-
+        sdfasdf
       </Box>
     </Box>
   );
-}
+};
+
+export default React.memo(HomePage);

@@ -4,6 +4,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import MyRichEditor from '@/shared/components/MyRichTextEditor';
 import { Close, DragHandle } from '@mui/icons-material';
 import MyBottomSheet from '@/shared/components/MyBottomSheet';
+import { IComponent } from '@/app/types/ViewTypes';
 
 
 interface AddOrUpdateCommentBottomSheetProps {
@@ -12,7 +13,7 @@ interface AddOrUpdateCommentBottomSheetProps {
     onSaved: (comment: string) => void;
 }
 
-const AddOrUpdateCommentBottomSheet: React.FC<AddOrUpdateCommentBottomSheetProps> = ({
+const AddOrUpdateCommentBottomSheet: IComponent<AddOrUpdateCommentBottomSheetProps> = ({
     isOpen, performOnCloseClicked, onSaved }) => {
     const [comment, setComment] = useState('');
     const theme = useTheme();

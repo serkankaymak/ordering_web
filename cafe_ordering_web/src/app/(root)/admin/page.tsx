@@ -7,13 +7,11 @@ import {
   Typography,
 } from '@mui/material';
 import { ProductService } from '@/application/services/product/ProductService';
+import { IPage } from '@/app/types/ViewTypes';
 
 
 const productService = new ProductService();
-
-const AdminPage: React.FC = () => {
-  
-
+const AdminPage: IPage = () => {
   return (
     <Container className="flex flex-col">
       <Typography textAlign={'center'} variant="h4" gutterBottom>

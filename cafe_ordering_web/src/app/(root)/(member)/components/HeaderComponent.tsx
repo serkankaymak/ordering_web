@@ -17,12 +17,13 @@ import { LocalizationKeys } from '@/application/services/locale/LocalizationKeys
 import "./HeaderComponent.css";
 import ReactCountryFlag from 'react-country-flag';
 import { useRouter } from 'next/navigation';
+import { IComponent } from '@/app/types/ViewTypes';
 
 interface HeaderComponentProps {
     className?: string;
 }
 
-const HeaderComponent: React.FC<HeaderComponentProps> = ({ className }) => {
+const HeaderComponent: IComponent<HeaderComponentProps> = ({ className }) => {
 
     const { languageMode, translate, toggleLanguageAsync } = useMyLocale();
     const { themeMode, toggleTheme } = useMyTheme();

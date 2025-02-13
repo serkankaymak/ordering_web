@@ -3,10 +3,11 @@
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import ProductAddOrUpdateComponent from "../components/ProductAddOrUpdateComponent";
-import { CreateProductRequest } from "@/application/httpRequests/CreateProductRequest";
+import { CreateProductRequest } from "@/application/httpRequests/product/CreateProductRequest";
 import { ProductService } from "@/application/services/product/ProductService";
 import Toast from "@/shared/Toast";
 import { CategoryModel, ProductModel } from "@/domain/ProductModels";
+import { AppRoutes } from "@/app/routes/PageRoutes";
 
 
 const productService = new ProductService();
@@ -24,7 +25,7 @@ const AddProductPage: React.FC = () => {
       setCategories(productService.categories)
     });
 
-  }, []); // ✅ useEffect'in bağımlılık dizisi boş bırakıldı, sadece bir kez çalışacak
+  }, []);
 
 
   // onSubmitClicked fonksiyonunu component içinde tanımlayabilirsiniz:
@@ -34,11 +35,12 @@ const AddProductPage: React.FC = () => {
       price: product.price,
       imageFile: imageFormFile,
       categoryIds: product.categories.map(x => x.id),
-      imagePath:product.getImagePathWithoutHost(),
-    
+      imagePath: product.getImagePathWithoutHost(),
+
     })
       .then(isSuccess => {
         if (isSuccess) {
+          router.push(AppRoutes.ProductManagement);
           Toast.success("Product created");
         } else {
           Toast.error("Product creating unsuccessful");
@@ -50,14 +52,13 @@ const AddProductPage: React.FC = () => {
   };
 
 
-
   return (
     <ProductAddOrUpdateComponent
       imageUrlList={productImages}
       onSubmitClicked={(product, imageFormFile) => {
         createProductHandler(product, imageFormFile);
 
-      } } categories={[]}
+      }} categories={categories}
     />
   );
 };

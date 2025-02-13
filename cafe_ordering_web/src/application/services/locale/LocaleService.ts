@@ -9,6 +9,7 @@ export enum LanguageMode {
 export class LocalizationService {
   private async wait(ms: number): Promise<void> { return new Promise((resolve) => setTimeout(resolve, ms)); }
 
+  private _localStorage?: Storage;
   private _languageMode: LanguageMode;
   private _listeners: Array<(languageMode: LanguageMode) => void> = [];
   private _translations: Record<string, string> = {};
@@ -18,16 +19,12 @@ export class LocalizationService {
     return this._languageMode;
   }
 
-
-  constructor() {
-    if (typeof window !== "undefined") {
-      const savedLanguage = this.getSavedLanguage();
-      Logcat.Debug(`LocalizationService constructor executed: ${savedLanguage}`);
-      this._languageMode = savedLanguage || LanguageMode.EN;
-      this.loadTranslationsAsync().then(() => this.notifyListeners());
-    } else {
-      this._languageMode = LanguageMode.EN;
-    }
+  constructor(storage?: Storage) {
+    this._localStorage = storage;
+    if (this._localStorage == null) { try { this._localStorage = localStorage } catch (e: any) { } }
+    this._languageMode = this.getSavedLanguage() || LanguageMode.EN;
+    Logcat.Debug(`LocalizationService constructor executed: ${this._languageMode}`);
+    this.loadTranslationsAsync().then(() => this.notifyListeners());
   }
 
   public addOnChangeListener(listener: (languageMode: LanguageMode) => void): void {
@@ -38,7 +35,6 @@ export class LocalizationService {
   private notifyListeners(): void {
     this._listeners.forEach((listener) => listener(this._languageMode));
   }
-
 
   public async toggleLanguageAsync(): Promise<void> {
     const newLanguage = this._languageMode === LanguageMode.EN ? LanguageMode.TR : LanguageMode.EN;
@@ -55,13 +51,14 @@ export class LocalizationService {
   }
 
   private getSavedLanguage(): LanguageMode | null {
-    const savedLanguage = localStorage.getItem("languageMode");
+    if (this._localStorage == null) return null;
+    const savedLanguage = this._localStorage?.getItem("languageMode");
     return savedLanguage === LanguageMode.EN || savedLanguage === LanguageMode.TR
       ? (savedLanguage as LanguageMode)
       : null;
   }
 
-  private saveLanguage(language: LanguageMode): void { localStorage.setItem("languageMode", language); }
+  private saveLanguage(language: LanguageMode): void { this._localStorage?.setItem("languageMode", language); }
 
   private async loadTranslationsAsync(): Promise<void> {
     try {

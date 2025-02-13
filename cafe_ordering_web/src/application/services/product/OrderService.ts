@@ -16,8 +16,6 @@ export interface IOrderService {
     addOrderClearedListener(listener: () => void): void;
 }
 
-
-
 export class OrderService implements IOrderService {
     private async wait(ms: number): Promise<void> { return new Promise((resolve) => setTimeout(resolve, ms)); }
     private _localStorage: Storage | undefined;
@@ -28,11 +26,9 @@ export class OrderService implements IOrderService {
     private productClearedListeners: ((product: ProductModel) => void)[] = [];
     private orderClearedListeners: (() => void)[] = [];
 
-    constructor() {
-        if (typeof window !== 'undefined') {
-            this._localStorage = localStorage;
-        }
-        this.loadOrderedProductsFromLocalStorage();
+    constructor(localStorage?: Storage) {
+        this._localStorage = localStorage;
+        try { this.loadOrderedProductsFromLocalStorage(); } catch (e: any) { }
     }
 
 

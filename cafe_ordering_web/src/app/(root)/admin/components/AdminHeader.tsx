@@ -7,14 +7,14 @@ import { LightMode, DarkMode } from '@mui/icons-material';
 import { useMyTheme } from '@/app/providers/global.providers/theme/theme.provider';
 import { ThemeMode } from '@/application/services/theme/ThemeService';
 import { useRouter } from 'next/navigation';
-import { PageRoutes } from '@/app/roots/PageRoutes';
+import { AppRoutes } from '@/app/routes/PageRoutes';
 
 
 // Navigasyon linklerini enum'dan oluşturulacak dizi
 const navItems = [
-  { label: 'Menüler', path: PageRoutes.MenuManagement },
-  { label: 'Ürünler', path: PageRoutes.ProductManagement },
-  { label: 'İndirimler', path: PageRoutes.DiscountManagement }
+  { label: 'Menüler', path: AppRoutes.MenuManagement },
+  { label: 'Ürünler', path: AppRoutes.ProductManagement },
+  { label: 'İndirimler', path: AppRoutes.DiscountManagement }
 ];
 
 const AdminHeaderComponent: React.FC = () => {

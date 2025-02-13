@@ -1,7 +1,5 @@
 import { useState, useEffect } from 'react';
 
-
-
 export enum Breakpoints {
     SMALL = 576,
     MEDIUM = 768,

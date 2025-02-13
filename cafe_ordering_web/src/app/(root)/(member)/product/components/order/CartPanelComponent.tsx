@@ -7,6 +7,7 @@ import ArrayListStream from "@/shared/ArrayListStream";
 // Sepet Paneli Bileşeni
 import CartPanelBottomSheet from "../BottomSheets/CartPanelBottomSheet";
 import { useProductContext } from "@/app/providers/product.provider";
+import { IComponent } from "@/app/types/ViewTypes";
 
 // Props arayüzü tanımı
 interface CartButtonComponentProps {
@@ -14,7 +15,7 @@ interface CartButtonComponentProps {
 }
 
 // Ana Bileşen
-const CartButtonComponent: React.FC<CartButtonComponentProps> = ({ onViewClicked }) => {
+const CartButtonComponent: IComponent<CartButtonComponentProps> = ({ onViewClicked }) => {
   const [cartOpen, setCartOpen] = useState(false);
   const { orderedProducts, addProductToOrder, removeProductFromOrder, clearProductFromOrder, clearOrder } = useProductContext();
 

@@ -1,32 +1,35 @@
 'use client';
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Box, Button, Container, TextField, Typography } from "@mui/material";
 import { ProductModel } from "@/domain/ProductModels";
 import AdminMenuItemCardComponent from "./components/trash/AdminMenuItemCardComponent";
 import { ProductService } from "@/application/services/product/ProductService";
-import AdminMenuItemTableComponent from "./components/AdminMenuItemTableComponent";
+import AdminMenuItemTableComponent from "./components/serverSideComponents/AdminMenuItemTableComponent";
 import { Add } from "@mui/icons-material";
 import MyModal from "@/shared/components/MyModal";
 import { useRouter, useParams } from "next/navigation"; // Next.js 13 hook'ları
-import { PageRoutes } from "@/app/roots/PageRoutes";
+import { AppRoutes } from "@/app/routes/PageRoutes";
 var productService = new ProductService();
 
 const MenuManagementPage: React.FC = () => {
     const router = useRouter();
-    // Top-level menülerin listesi
-    const [menus, setMenus] = useState<ProductModel[]>(productService.products.filter(x => x.products != null));
+
+    const [menus, setMenus] = useState<ProductModel[]>([]);
     const [searchQuery, setSearchQuery] = useState('');
-    // Arama işlemi
+    const [deleteRequestProductId, setDeleteRequestProductId] = useState<number>(0);
+
+
+    useEffect(() => { productService.loadMenus().then(() => { setMenus(productService.menus) }) }, []);
+
+
+
     const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
         setSearchQuery(event.target.value);
     };
-    // Arama sorgusuna göre ürünleri filtrele
     const filteredProducts = menus.filter(product =>
         product.name.toLowerCase().includes(searchQuery.toLowerCase()) || product.description.toLocaleLowerCase().includes(searchQuery.toLocaleLowerCase())
     );
-    const [deleteRequestProductId, setDeleteRequestProductId] = useState<number>(0);
-
     const isDeleteModalShouldOpen = (): boolean => {
         return deleteRequestProductId != 0;
     }
@@ -49,7 +52,7 @@ const MenuManagementPage: React.FC = () => {
                     />
 
                     <Button
-                        onClick={() => { router.push(PageRoutes.MenuManagementAdd()) }}
+                        onClick={() => { router.push(AppRoutes.MenuManagementAdd()) }}
                         size="medium"
                         variant="contained"
                         color="primary"

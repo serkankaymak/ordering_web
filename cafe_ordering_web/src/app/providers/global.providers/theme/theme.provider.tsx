@@ -1,4 +1,6 @@
-// ThemeProvider.tsx
+
+'use client'
+
 import React, { createContext, useContext, useEffect, useState, ReactNode } from "react";
 import { ThemeProvider as MUIThemeProvider, createTheme } from "@mui/material/styles";
 import { ThemeMode, themeService } from "@/application/services/theme/ThemeService";

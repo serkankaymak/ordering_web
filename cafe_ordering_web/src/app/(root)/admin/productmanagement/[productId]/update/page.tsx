@@ -6,7 +6,8 @@ import { CategoryModel, ProductModel } from "@/domain/ProductModels";
 import ProductAddOrUpdateComponent from "../../components/ProductAddOrUpdateComponent";
 import { ProductService } from "@/application/services/product/ProductService";
 import Toast from "@/shared/Toast";
-import { UpdateProductValidator } from "@/domain/validators/CreateProductValidator";
+import { UpdateProductValidator } from "@/domain/validators/UpdateProductValidator";
+
 
 
 const productService = new ProductService();
@@ -28,7 +29,7 @@ const UpdateProductPage: React.FC = () => {
     if (productId) {
       productService.GetProductWithCategoriesById(Number(productId)).then(p => {
         console.log(p);
-        setProduct(p);
+        setProduct(p.data!);
         setIsLoading(false);
       });
     }
@@ -71,7 +72,7 @@ const UpdateProductPage: React.FC = () => {
     <>
       <ProductAddOrUpdateComponent product={product!} onSubmitClicked={(updatedProduct, formfile) => {
         const validationResult = new UpdateProductValidator(updatedProduct as ProductModel).validate();
-        if (validationResult.isValid == false) { Toast.error(validationResult.message); return; }
+        if (validationResult.isValid == false) { Toast.error(validationResult.message!); return; }
         updateProductHandler(updatedProduct, formfile);
       }} imageUrlList={productsImages} categories={categories} />
     </>

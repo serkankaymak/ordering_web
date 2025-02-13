@@ -1,4 +1,3 @@
-"use client";
 
 import React, { ReactNode } from "react";
 import { LocaleProvider } from "./global.providers/locale.provider";

@@ -1,10 +1,11 @@
 import { ProductModel } from '@/domain/ProductModels';
 import MyMasonry from '@/shared/components/MyMasonary';
 import React, { useState } from 'react';
-import AdminMenuItemTableComponent from '../admin/menumanagement/components/AdminMenuItemTableComponent';
-import AdminProductTableComponent from '../admin/productmanagement/components/AdminProductTableComponent';
+import AdminMenuItemTableComponent from '../admin/menumanagement/components/serverSideComponents/AdminMenuItemTableComponent';
+import AdminProductTableComponent from '../admin/productmanagement/components/serverSideComponents/AdminProductTableComponent';
 import { Button, Box, TextField } from '@mui/material';
 import { join } from 'path';
+import { IComponent } from '@/app/types/ViewTypes';
 
 // Props için interface tanımı
 interface ProductSelectorProps {
@@ -12,7 +13,8 @@ interface ProductSelectorProps {
     onChooseButtonClicked: (selectedProduct: ProductModel) => void;
 }
 
-const ProductSelectorComponent: React.FC<ProductSelectorProps> = ({ products, onChooseButtonClicked }) => {
+const ProductSelectorComponent: IComponent<ProductSelectorProps> = ({ products, onChooseButtonClicked }) => {
+
     const defaultBreakpoints = { default: 3, 1100: 2, 700: 2, 500: 1, 300: 1 };
     const [selectedProduct, setSelectedProduct] = useState<ProductModel | null>(null);
     const [searchTerm, setSearchTerm] = useState<string>("");
