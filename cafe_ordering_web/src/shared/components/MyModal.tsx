@@ -27,7 +27,7 @@ const MyModal: React.FC<MyModalProps> = ({ isOpen, children, onCloseClicked }) =
           margin: 0,
           padding: 2,
           width: 'auto',
-          minWidth: '60%',
+          minWidth: '80%',
         },
       }}
     >
@@ -49,7 +49,7 @@ const MyModal: React.FC<MyModalProps> = ({ isOpen, children, onCloseClicked }) =
       <Box
         className="scrollbar-none scrollbar-track-gray-200 scrollbar-thumb-gray-500"
         style={{ overflowY: 'scroll' }}
-        sx={{ minWidth: '100px', padding: 0, margin: 0 }}
+        sx={{ minWidth: '120px', padding: 0, margin: 0 }}
       >
         <DialogContent sx={{ marginTop: 0 }}>{children}</DialogContent>
       </Box>

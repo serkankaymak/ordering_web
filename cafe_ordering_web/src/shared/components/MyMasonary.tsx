@@ -44,7 +44,7 @@ const styles = {
         backgroundClip: "padding-box",
     },
     masonryItem: {
-        margin: "8px",
+        margin: "3px",
         marginBottom: "1px",
     },
     masonryImg: {

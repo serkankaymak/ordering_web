@@ -66,7 +66,6 @@ export class ProductCommentModel {
 
 export class ProductModel {
 
-
   id: number;
   name: string;
   description: string;
@@ -142,6 +141,7 @@ export class ProductModel {
       json.imagePath ?? null
     );
 
+    model.quantity = json.quantity ?? 1;
     model.parentBoxId = json.parentBoxId ?? null;
     model.categories = json.categories ?? [];
     model.productComments = json.productComments?.map((c) => ProductCommentModel.fromJson(c)) ?? [];
@@ -150,21 +150,6 @@ export class ProductModel {
     return model;
   }
 
-
-  getGroupedChildProducts() {
-    if (this.products == null) throw new Error("Sadece menu için...");
-
-    const productStream = ArrayListStream.fromList(this.products.filter(x => x != null));
-    const groupedMap = productStream.groupBy(product => product?.id);
-    const groupedProducts: Array<{ product: any; count: number }> = [];
-
-    groupedMap.forEach((group, id) => {
-      const representativeProduct = group.getFromIndex(0);
-      const count = group.toList().length;
-      groupedProducts.push({ product: representativeProduct, count: count });
-    });
-    return groupedProducts;
-  }
 
 
   static getEmptyInstance(): ProductModel {
@@ -177,7 +162,7 @@ export class ProductModel {
       "Example Product",
       "This is an example product description.",
       19.99,
-      `/images/menu-item-${index ?? 1}.jpg` // Şablon string ile index kullanımı
+      null // Şablon string ile index kullanımı
     );
     CategoryModel.getExamples().forEach(c => product.categories.push(c));
     return product;
@@ -188,7 +173,7 @@ export class ProductModel {
       "Example Box Product",
       "This is an  box example product description.",
       25.00,
-      `/images/antique-cafe-bg-04.jpg` // Şablon string ile index kullanımı
+      null // Şablon string ile index kullanımı
     );
     const child1 = this.getExample(1); child1.parentBoxId = product.id;
     const child2 = this.getExample(2); child2.parentBoxId = product.id;

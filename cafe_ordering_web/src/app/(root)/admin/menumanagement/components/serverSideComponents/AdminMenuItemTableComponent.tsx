@@ -14,8 +14,7 @@ import {
   Button,
   Chip,
 } from "@mui/material";
-import React, { useState } from "react";
-import Slider from "react-slick";
+import React from "react";
 
 
 interface AdminMenuItemTableComponentProps {
@@ -38,7 +37,6 @@ const AdminMenuItemTableComponent: IComponent<AdminMenuItemTableComponentProps> 
   return (
 
     <Box>
-
       <TableContainer
         className="border my-1"
         component={Paper}
@@ -50,7 +48,6 @@ const AdminMenuItemTableComponent: IComponent<AdminMenuItemTableComponentProps> 
       >
         <Table sx={{ "& td, & th": { borderBottom: "none" } }} size="small">
           <TableBody>
-
             <TableRow>
               <TableCell>
                 <Box sx={{ position: "relative", overflow: "hidden", clear: "both" }}>
@@ -79,7 +76,15 @@ const AdminMenuItemTableComponent: IComponent<AdminMenuItemTableComponentProps> 
                     >
                       {menu.name}
                     </Typography>
-                    <Chip size="small" label={menu.price + " TL"} />
+                    <Box className="flex gap-2">
+
+                      {
+                        menu.parent && <Chip size="small" label={"Adet : " + menu.quantity} />
+                      }
+
+                      <Chip size="small" label={"Price : " + menu.price + " TL"} />
+                    </Box>
+
                   </Box>
 
                   {/* Ürün açıklaması; metin, resmin sağında başlayıp gerektiğinde altına geçecektir */}
@@ -97,8 +102,6 @@ const AdminMenuItemTableComponent: IComponent<AdminMenuItemTableComponentProps> 
                     {menu.description}
                   </Typography>
                   {/* Fiyat */}
-
-
 
                 </Box>
               </TableCell>
@@ -126,7 +129,7 @@ const AdminMenuItemTableComponent: IComponent<AdminMenuItemTableComponentProps> 
                     {showCategories && <>
                       <Box className=' flex flex-wrap gap-1' >{menu.categories.map((c, i) =>
                         <Chip key={`${i}`} size="small" label={c.name}></Chip>
-                    )}</Box>
+                      )}</Box>
                     </>}
 
                     <Box className="text-xs" sx={{ display: "flex", flexDirection: "column" }}>
@@ -166,17 +169,9 @@ const AdminMenuItemTableComponent: IComponent<AdminMenuItemTableComponentProps> 
               </TableRow>
             )}
           </TableBody>
-
-
         </Table>
       </TableContainer>
-
-
-
-
     </Box>
-
-
 
   );
 };
