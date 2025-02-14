@@ -8,6 +8,8 @@ import { ProductService } from "@/application/services/product/ProductService";
 import { Logcat } from "@/shared/LogCat";
 import { Box } from "@mui/material";
 import MenuItemAddOrUpdateComponent from "../components/MenuItemAddOrUpdateComponent";
+import { CreateMenuCommand, CreateMenuItemCommand } from "@/application/httpRequests/menu/CreateMenuRequest";
+import Toast from "@/shared/Toast";
 
 
 const productService = new ProductService();
@@ -46,7 +48,31 @@ const AddMenuPage: React.FC = () => {
                         products={products}
                         productCategories={productCategories}
                         avaibleProductImages={avaibleProductImages}
-                        onSubmitClicked={function (menu: ProductModel) {
+                        onSubmitClicked={(menu, imageFile) => {
+
+                            var _command = {} as CreateMenuCommand;
+                            var _menuItems = menu.products?.map(p => {
+                                var _item = {} as CreateMenuItemCommand;
+                                _item.MenuItemId = p.id;
+                                _item.Quantity = p.quantity;
+                                return _item;
+                            });
+
+
+                            _command.menuItems = _menuItems!;
+                            _command.categoryIds
+                            _command.description = menu.description;
+                            _command.name = menu.name;
+                            _command.price=menu.price;
+                            _command.imagePath = menu.getImagePathWithoutHost();
+                            _command.imageFile = imageFile;
+                            _command.categoryIds = menu.categories.map(x=>x.id);
+
+                            productService.CreateMenuAsync(_command).then(response => {
+                                if (response.isSuccess) { Toast.success(); }
+                                else { Toast.error(); }
+                            });
+
                         }}>
                     </MenuItemAddOrUpdateComponent>
                 )}

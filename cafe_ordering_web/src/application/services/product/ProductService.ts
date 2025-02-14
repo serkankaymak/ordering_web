@@ -3,7 +3,7 @@
 import { CreateProductCommand, CreateProductRequest } from '@/application/httpRequests/product/CreateProductRequest';
 import { DeleteProductRequest } from '@/application/httpRequests/product/DeleteProductRequest';
 import { GetAvaibleProductImagesRequest } from '@/application/httpRequests/GetAvaibleProductImagesRequest';
-import { GetMenuWithCategoriesByIdRequest } from '@/application/httpRequests/menu/GetMenuById';
+import { GetMenuWithCategoriesByIdRequest } from '@/application/httpRequests/menu/GetMenuByIdRequest';
 import { GetMenusRequest } from '@/application/httpRequests/menu/GetMenusRequest';
 import { GetProductWithCategoriesByIdRequest } from '@/application/httpRequests/product/GetProductByIdRequest';
 import { GetCategoriesRequest } from '@/application/httpRequests/GetProductCategoriesRequest';
@@ -13,6 +13,8 @@ import { OrderItemModel } from '@/domain/OrderModels';
 import { CategoryModel, ProductModel } from '@/domain/ProductModels';
 import { Logcat } from '@/shared/LogCat';
 import { ServiceResponse } from '../ServiceResponse';
+import { CreateMenuCommand, CreateMenuRequest } from '@/application/httpRequests/menu/CreateMenuRequest';
+import { UpdateMenuCommand, UpdateMenuRequest } from '@/application/httpRequests/menu/UpdateMenuRequest';
 
 export interface IProductService {
     readonly products: ProductModel[];
@@ -134,6 +136,21 @@ export class ProductService implements IProductService {
         return ServiceResponse.failure<void>(response.error || "Ürün oluşturulamadı.");
     }
 
+
+    public async CreateMenuAsync(command: CreateMenuCommand): Promise<ServiceResponse<void>> {
+        const response = await CreateMenuRequest.send(command);
+        if (response.isSuccess) { return ServiceResponse.success<void>(undefined); }
+        return ServiceResponse.failure<void>(response.error || "Ürün oluşturulamadı.");
+    }
+
+
+    public async UpdateMenuAsync(command: UpdateMenuCommand): Promise<ServiceResponse<void>> {
+        const response = await UpdateMenuRequest.send(command);
+        if (response.isSuccess) { return ServiceResponse.success<void>(undefined); }
+        return ServiceResponse.failure<void>(response.error || "Menü güncellenemedi.");
+    }
+
+
     public async UpdateProductAsync(command: UpdateProductCommand): Promise<ServiceResponse<void>> {
         const response = await UpdateProductRequest.send(command);
         if (response.isSuccess) {
@@ -141,4 +158,7 @@ export class ProductService implements IProductService {
         }
         return ServiceResponse.failure<void>(response.error || "Ürün güncellenemedi.");
     }
+
+
+
 }

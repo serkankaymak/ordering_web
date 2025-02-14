@@ -16,9 +16,9 @@ import { CategoryModel, ProductModel } from '@/domain/ProductModels';
 import { IPageContent } from '@/app/types/ViewTypes';
 
 
+interface MenuPageContentProps { }
 
-
-const MenuPageContent: IPageContent = () => {
+const MenuPageContent: IPageContent<MenuPageContentProps> = () => {
     const isMediumScreen = useMyMediaQuery(Breakpoints.MEDIUM, 'max');
 
     const theme = useTheme();
@@ -102,8 +102,9 @@ const MenuPageContent: IPageContent = () => {
                         <a href={`#${0}`}>menuler</a>
                     </Button>
 
-                    {extractCategoriesFromProducts().map((val, ind) => (
-                        <Button size={isMediumScreen ? 'small' : 'medium'} color='secondary' key={ind}
+                    {extractCategoriesFromProducts().map((val, index) => (
+
+                        <Button key={`${val.id}_${index}`} size={isMediumScreen ? 'small' : 'medium'} color='secondary'
                             variant='contained' sx={{ margin: 0.3 }}>
                             <a href={`#${val.id.toString()}`}>{val.name}</a>
                         </Button>
@@ -123,7 +124,7 @@ const MenuPageContent: IPageContent = () => {
             {/* Main Content */}
             <Box className="flex flex-col items-center p-0">
                 <Box className=" w-[100%] md:w-[80%]">
-                    <AddOrUpdateCommentBottomSheet isOpen={isAddOrUpdateCommentBottomSheetOpen}
+                    <AddOrUpdateCommentBottomSheet key={"?"} isOpen={isAddOrUpdateCommentBottomSheetOpen}
                         performOnCloseClicked={function (): void {
                             //setOpenProductDetailBottomSheet(false);
                             setAddOrUpdateCommentBottomSheetOpen(false);

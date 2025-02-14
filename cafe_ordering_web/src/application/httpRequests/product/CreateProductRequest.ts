@@ -7,6 +7,7 @@ import { ApiResponse } from "../ApiResponse'T";
 // Ürün oluşturma komutunun (request) arayüzü
 export interface CreateProductCommand {
   name: string;
+  description: string;
   price: number;
   categoryIds?: number[]; // İsteğe bağlı kategori ID listesi
   imageFile?: File | null;       // İsteğe bağlı dosya (formdan gelecek)
@@ -38,6 +39,7 @@ export class CreateProductRequest extends ABaseHttpRequest<ApiResponse<void>> {
       // FormData nesnesi oluşturulur.
       const formData = new FormData();
       formData.append("Name", this.command.name);
+      formData.append("description", this.command.description??'');
       formData.append("Price", this.command.price.toString());
 
       // Kategori ID'leri varsa formData'ya eklenir.

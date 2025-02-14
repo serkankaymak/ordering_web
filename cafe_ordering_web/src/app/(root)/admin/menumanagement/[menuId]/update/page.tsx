@@ -8,12 +8,16 @@ import { Box, TextField, Button } from "@mui/material";
 import { ProductService } from "@/application/services/product/ProductService";
 import { IPage } from "@/app/types/ViewTypes";
 import MenuItemAddOrUpdateComponent from "../../components/MenuItemAddOrUpdateComponent";
+import { UpdateMenuCommand, UpdateMenuItemCommand } from "@/application/httpRequests/menu/UpdateMenuRequest";
+import Toast from "@/shared/Toast";
+
+
+const productService = new ProductService();
 
 const UpdateMenuPage: IPage = () => {
     const router = useRouter();
     const params = useParams();
     const productId = params?.menuId;
-
 
     const [products, setProducts] = useState<ProductModel[]>([]);
     const [avaibleProductImages, setAvaibleProductImages] = useState<string[]>([]);
@@ -23,7 +27,7 @@ const UpdateMenuPage: IPage = () => {
 
     useEffect(() => {
         if (productId) {
-            const productService = new ProductService();
+
             productService.GetMenuWithCategoriesById(Number(productId)).then((menuResponse) => {
                 console.log("menuResponse", menuResponse);
                 if (menuResponse.data) { setMenu(menuResponse.data); }
@@ -54,7 +58,31 @@ const UpdateMenuPage: IPage = () => {
                         products={products}
                         productCategories={productCategories}
                         avaibleProductImages={avaibleProductImages}
-                        onSubmitClicked={function (menu: ProductModel) {
+                        onSubmitClicked={function (menu: ProductModel, imageFile) {
+                            console.log(menu);
+                            var _command = {} as UpdateMenuCommand;
+                            var _menuItems = menu.products?.map(p => {
+                                var _item = {} as UpdateMenuItemCommand;
+                                _item.MenuItemId = p.id;
+                                _item.Quantity = p.quantity;
+                                return _item;
+                            });
+
+                            _command.MenuId = menu.id;
+                            _command.menuItems = _menuItems!;
+                            _command.categoryIds
+                            _command.description = menu.description;
+                            _command.name = menu.name;
+                            _command.price = menu.price;
+                            _command.imagePath = menu.getImagePathWithoutHost();
+                            _command.imageFile = imageFile;
+                            _command.categoryIds = menu.categories.map(x => x.id);
+                            console.log(_command);
+                            productService.UpdateMenuAsync(_command).then(response => {
+                                if (response.isSuccess) { Toast.success(); }
+                                else { Toast.error(); }
+                            });
+
                         }}>
                     </MenuItemAddOrUpdateComponent>
                 )}

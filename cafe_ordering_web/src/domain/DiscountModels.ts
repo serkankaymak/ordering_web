@@ -56,8 +56,6 @@ export class DiscountItem {
 }
 
 
-
-
 export class Discount {
     id: number;
     name: string;

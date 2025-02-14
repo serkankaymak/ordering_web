@@ -1,5 +1,5 @@
 
-import React, {  } from 'react';
+import React, { } from 'react';
 
 
 import { ProductProvider } from '@/app/providers/product.provider';

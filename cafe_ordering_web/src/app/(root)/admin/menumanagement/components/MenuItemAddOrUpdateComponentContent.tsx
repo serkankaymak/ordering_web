@@ -23,7 +23,7 @@ import MyModal from "@/shared/components/MyModal";
 import ProductSelector from "@/app/(root)/components/ProductSelector";
 
 interface MenuItemAddOrUpdateComponentContentProps {
-    rootId: number,
+    rootId?: number,
     productsForProductSelector?: ProductModel[],
     categories: CategoryModel[],
     avaibleProductImagePaths: string[];
@@ -34,6 +34,7 @@ interface MenuItemAddOrUpdateComponentContentProps {
     onRemoveProduct?: (productId: number) => void,
     onClearProduct?: (productId: number) => void,
     onCategoryToggle?: (category: CategoryModel) => void,
+    onImageFileUploaded?: (file: File | null) => void,
 }
 
 const MenuItemAddOrUpdateComponentContent:
@@ -48,6 +49,7 @@ const MenuItemAddOrUpdateComponentContent:
         onInputChange,
         onSubmitClicked,
         onCategoryToggle,
+        onImageFileUploaded,
         categories,
         avaibleProductImagePaths
     }) => {
@@ -67,14 +69,17 @@ const MenuItemAddOrUpdateComponentContent:
             setImagePreview(imagePath);
             setOpenImageSelectorModal(false);
             onInputChange!("imagePath", imagePath);
+            onImageFileUploaded && onImageFileUploaded(null);
         }
 
         const handleImageUpload = (e: ChangeEvent<HTMLInputElement>) => {
             if (e.target.files && e.target.files.length > 0) {
                 const file = e.target.files[0];
+                onImageFileUploaded && onImageFileUploaded(file);
                 const imageUrl = URL.createObjectURL(file);
                 setImagePreview(imageUrl);
                 onInputChange!("imagePath", null);
+
             }
         };
 

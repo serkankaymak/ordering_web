@@ -33,7 +33,7 @@ const ProductDetailCardHeaderComponent: IComponent<ProductDetailCardHeaderCompon
 
 
   useEffect(() => {
-    console.log(JSON.stringify(menu));
+
   }, [])
 
   return (
@@ -103,18 +103,21 @@ const ProductDetailCardHeaderComponent: IComponent<ProductDetailCardHeaderCompon
         </TableBody>
 
         {menu.parentBoxId == null && (
-          <TableRow>
+          <TableBody>
+            <TableRow>
 
-            <TableCell colSpan={3} align="right">
-              <Box className='flex justify-end'>
-                <Box className="text-xs" sx={{ display: "flex", flexDirection: "column" }}>
-                  <span>   Products Price Sum : 20.00</span>
-                  <span>   Menu Price : 20.00</span>
+              <TableCell colSpan={3} align="right">
+                <Box className='flex justify-end'>
+                  <Box className="text-xs" sx={{ display: "flex", flexDirection: "column" }}>
+                    <span>   Products Price Sum : 20.00</span>
+                    <span>   Menu Price : 20.00</span>
+                  </Box>
                 </Box>
-              </Box>
 
-            </TableCell>
-          </TableRow>
+              </TableCell>
+            </TableRow>
+          </TableBody>
+
         )}
       </Table>
     </TableContainer>

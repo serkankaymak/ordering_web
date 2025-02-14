@@ -23,6 +23,14 @@ import { ProductModel } from "@/domain/ProductModels";
 import Slider from "react-slick";
 import ProductDetailCardHeaderComponent from "../product/ProductDetailCardHeaderComponent";
 import { IComponent } from "@/app/types/ViewTypes";
+import { randomInt, randomUUID } from "node:crypto";
+
+
+function getRandomInt(max: number = 10, min: number = 0) {
+  // min ve max değerlerini dahil etmek için Math.floor ve Math.random kullanılır.
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
 
 interface ProductDetailBottomSheetProps {
   isOpen: boolean;
@@ -109,48 +117,49 @@ const ProductDetailBottomSheet: IComponent<ProductDetailBottomSheetProps> = ({
         Yorumlar
       </Typography>
 
-      <Box>
+      {product.productComments?.length == 0 && (
+        <Typography variant="body2" color="text.secondary">
+          Yorum bulunamadı.
+        </Typography>
+      )}
 
-        {product?.productComments?.length ? (
-          <List
-            className=" whitespace-nowrap 
+      {product.productComments?.length > 0 && (
+        <List
+          key={"commens_section"}
+          className=" whitespace-nowrap 
             scrollbar-thin scrollbar-track-gray-200
             scrollbar-thumb-gray-500"
-            sx={{
-              maxHeight: 200,
-              overflowY: "auto",
-              paddingRight: 1,
-            }}
-          >
-            {product.productComments.map((comment, index) => (
-              <React.Fragment key={comment.id}>
-                <ListItem alignItems="flex-start" sx={{ paddingLeft: 0 }}>
-                  <ListItemText
-                    primary={
-                      <Typography variant="subtitle1" fontWeight="bold">
-                        Kullanıcı {comment.userId}
-                      </Typography>
-                    }
-                    secondary={
-                      <Typography variant="body2" color="text.secondary">
-                        {comment.comment}
-                      </Typography>
-                    }
-                  />
-                </ListItem>
-                {index <
-                  product.productComments.length - 1 && (
-                    <Divider component="li" sx={{ marginY: 1 }} />
-                  )}
-              </React.Fragment>
-            ))}
-          </List>
-        ) : (
-          <Typography variant="body2" color="text.secondary">
-            Yorum bulunamadı.
-          </Typography>
-        )}
-      </Box>
+          sx={{
+            maxHeight: 200,
+            overflowY: "auto",
+            paddingRight: 1,
+          }}
+        >
+          {product.productComments.map((comment, index) => (
+            <React.Fragment key={`${comment.id}_${index}`}>
+              <ListItem alignItems="flex-start" sx={{ paddingLeft: 0 }}>
+                <ListItemText
+                  primary={
+                    <Typography variant="subtitle1" fontWeight="bold">
+                      Kullanıcı {comment.userId}
+                    </Typography>
+                  }
+                  secondary={
+                    <Typography variant="body2" color="text.secondary">
+                      {comment.comment}
+                    </Typography>
+                  }
+                />
+              </ListItem>
+              {index <
+                product.productComments.length - 1 && (
+                  <Divider component="li" sx={{ marginY: 1 }} />
+                )}
+            </React.Fragment>
+          ))}
+        </List>
+      )}
+
     </Box>
 
   return (

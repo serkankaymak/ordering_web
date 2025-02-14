@@ -11,7 +11,7 @@ interface MenuItemAddOrUpdateComponentProps {
     menu?: ProductModel
     productCategories: CategoryModel[]
     avaibleProductImages: string[]
-    onSubmitClicked: (menu: ProductModel) => void
+    onSubmitClicked: (menu: ProductModel, imageFile: File | null) => void
 }
 
 const MenuItemAddOrUpdateComponent: IComponent<MenuItemAddOrUpdateComponentProps> = ({
@@ -22,7 +22,7 @@ const MenuItemAddOrUpdateComponent: IComponent<MenuItemAddOrUpdateComponentProps
     onSubmitClicked
 }) => {
 
-
+    const [uploadedImageFile, setUploadedImageFile] = useState<File | null>(null); // Kullanıcının yüklediği dosyayı saklar
     const [updatedMenu, setUpdatedMenu] = useState<ProductModel>(menu);
     const handleInputChange = (key: keyof ProductModel, value: any) => { setUpdatedMenu((prevMenu) => prevMenu.copy({ [key]: value })); };
 
@@ -87,9 +87,7 @@ const MenuItemAddOrUpdateComponent: IComponent<MenuItemAddOrUpdateComponentProps
 
     return (
         <Box className="flex flex-col items-center justify-center">
-
-           { false &&  <Box className="text-white">  {menu.id} </Box>}
-
+            {false && <Box className="text-white">  {menu.id} </Box>}
             <Box className="w-[100%] md:w-[70%]">
                 {menu && (
                     <MenuItemAddOrUpdateComponentContent
@@ -100,8 +98,13 @@ const MenuItemAddOrUpdateComponent: IComponent<MenuItemAddOrUpdateComponentProps
                         onCategoryToggle={handleCategoryToggle}
                         onClearProduct={handleClearProduct}
                         onInputChange={handleInputChange}
+                        onImageFileUploaded={(file) => {
+                            setUploadedImageFile(file);
+                        }}
                         onRemoveProduct={handleRemoveProduct}
-                        onSubmitClicked={onSubmitClicked}
+                        onSubmitClicked={(menu) => {
+                            onSubmitClicked(menu, uploadedImageFile)
+                        }}
                         productsForProductSelector={products} />
                 )}
             </Box>

@@ -44,9 +44,9 @@ export class ProductCommentModel {
 
 
 
-  static getExample(index: number = 1): ProductCommentModel {
+  static getExample(index: number = 0): ProductCommentModel {
     return new ProductCommentModel(
-      index,
+      index != 0 ? index : 1,
       `Sample comment ${index}`,
       index,
       index
@@ -153,7 +153,11 @@ export class ProductModel {
 
 
   static getEmptyInstance(): ProductModel {
-    return new ProductModel(0, '', '', 10, null);
+    var p = new ProductModel(0, '', '', 10, null);
+    p.products = [];
+    p.categories = [];
+    p.productComments = [];
+    return p;
   }
   // Statik metod: Örnek bir MenuItem nesnesi döner
   static getExample(index?: number): ProductModel {

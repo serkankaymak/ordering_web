@@ -12,12 +12,13 @@ const UPDATE_PRODUCT_URL = `${PRODUCT_URL}/updateproduct`;
 const GET_PRODUCTS_URL = `${PRODUCT_URL}/products`;
 const GET_CATEGORİES_URL = `${PRODUCT_URL}/categories`;
 
-
-
 const GET_MENUS_URL = `${MENU_URL}/menus`;
-
+const CREATE_MENU_URL = `${MENU_URL}/createmenu`;
+const UPDATE_MENU_URL = `${MENU_URL}/updatemenu`;
 
 export default class ApiUrls {
+    static GetCreateMenuUrl(): string { return CREATE_MENU_URL; }
+    static GetUpdateMenuUrl(): string { return UPDATE_MENU_URL; }
     static GetUpdateProductUrl() { return UPDATE_PRODUCT_URL; }
     static GetCategoriesUrl() { return GET_CATEGORİES_URL; }
     static GetProductsUrl() { return GET_PRODUCTS_URL; }
