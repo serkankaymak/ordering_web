@@ -297,12 +297,12 @@ const MenuItemAddOrUpdateComponentContent:
                                                     alignItems: 'end',
                                                     gap: 1
                                                 }}>
-                                                    <span>Products Price Sum :  {menu.productsPrice ?? 0} TL </span>
+                                                    <span>Ürünlerin Toplam Fiyatı :  {menu.productsPrice ?? 0} TL </span>
                                                     <Box className="gap-1 flex items-center justify-center">
                                                         <TextField
                                                             variant="outlined"
                                                             size="small"
-                                                            label="Price / TL"
+                                                            label="Menü Fiyatı"
                                                             type="number"
                                                             value={menu.price}
                                                             onChange={(e) => onInputChange!("price", parseFloat(e.target.value) || 0)}

@@ -13,7 +13,8 @@ export default function RootLayout({
 
   return (
     <html lang="en" suppressHydrationWarning={true}>
-      <body style={{ overflow: 'hidden' }} className={` antialiased bg-slate-900 `}
+      <body style={{ overflow: 'hidden' }}
+        className={` antialiased  `}
       >
         <AppGlobalProviders>
           {children}

@@ -1,26 +1,28 @@
 import { ProductModel } from "./ProductModels";
 
 export enum DiscountType {
-    ProductBasedDiscount = "ProductBasedDiscount",
-    DynamicDiscount = "DynamicDiscount",
+    ProductBasedDiscount = 1,
+    DynamicDiscount = 2,
+    CategoryBasedDiscount = 3
     // Diğer indirim türleri eklenebilir...
 }
 
-export class DiscountItem {
+export class DiscountItemModel {
     id: number;
     discountId: number;
+    discount?: DiscountModel;
     productId: number;
     product?: ProductModel | null;
     requiredQuantity: number = 1;
     // Ürün bazlı özel indirim oranı. Eğer tanımlı değilse Discount içindeki oran kullanılabilir.
-    discountPercentage?: number;
-
+    discountPercentage?: number | null;
+    lastProductDiscountPercentage?: number | null;
     constructor(
         id: number,
         discountId: number,
         productId: number,
         requiredQuantity: number,
-        discountPercentage: number,
+        discountPercentage?: number | null,
         product?: ProductModel | null,
 
     ) {
@@ -31,39 +33,63 @@ export class DiscountItem {
         this.discountPercentage = discountPercentage;
         this.product = product;
     }
+    static fromJson(json: Partial<DiscountItemModel>): DiscountItemModel {
+        var discount = new DiscountItemModel(
+            json.id ?? 0,
+            json.discountId ?? 0,
+            json.productId ?? 0,
+            json.requiredQuantity ?? 1,
+            json.discountPercentage ?? null,
+            json.product ? ProductModel.fromJson(json.product) : null
+        );
+        discount.lastProductDiscountPercentage = json.discountPercentage ?? null;
+        return discount;
+    }
 
-
-    public static getExample(id?: number): DiscountItem {
+    public static getExample(id?: number): DiscountItemModel {
         const itemId = id ?? 1;
-        var _discountItem = new DiscountItem(itemId, 2, 1, 3, 10, null);
+        var _discountItem = new DiscountItemModel(itemId, 2, 1, 3, 10, null);
         _discountItem.product = ProductModel.getExample(_discountItem.productId);
         return _discountItem;
     }
 
-    public static getExampleWithProductBox(id?: number): DiscountItem {
+    public static getExampleWithProductBox(id?: number): DiscountItemModel {
         const itemId = id ?? 1;
-        var _discountItem = new DiscountItem(itemId, 2, 2, 3, 10, null);
+        var _discountItem = new DiscountItemModel(itemId, 2, 2, 3, 10, null);
         _discountItem.product = ProductModel.getBoxProductExample(_discountItem.productId);
         return _discountItem;
     }
 
-    public static getExamples(): DiscountItem[] {
+    public static getExamples(): DiscountItemModel[] {
         return [
-            DiscountItem.getExample(),
-            DiscountItem.getExampleWithProductBox(),
+            DiscountItemModel.getExample(),
+            DiscountItemModel.getExampleWithProductBox(),
         ];
     }
 }
 
 
-export class Discount {
+export class DiscountModel {
+    static fromJson(json: Partial<DiscountModel>): DiscountModel {
+        const model = new DiscountModel(
+            json.id ?? 0,
+            json.name ?? "",
+            json.discountType!, // discountType mutlaka gelmelidir, aksi halde uygun bir varsayılan değeri kullanabilirsiniz
+            json.discountPercentage,
+            json.maxApplicableTimes ?? 1,
+            json.discountItems
+                ? json.discountItems.map(item => DiscountItemModel.fromJson(item))
+                : []
+        );
+        return model;
+    }
     id: number;
     name: string;
     // Eğer tüm ürünler için tek oran kullanılacaksa bu alan tanımlanır.
     discountPercentage?: number;
     discountType: DiscountType;
     maxApplicableTimes: number = 1; // Genellikle özel indirimler sadece 1 kez uygulanır.
-    discountItems: DiscountItem[] = [];
+    discountItems: DiscountItemModel[] = [];
 
     constructor(
         id: number,
@@ -71,7 +97,7 @@ export class Discount {
         discountType: DiscountType,
         discountPercentage?: number,
         maxApplicableTimes: number = 1,
-        discountItems: DiscountItem[] = []
+        discountItems: DiscountItemModel[] = []
     ) {
         this.id = id;
         this.name = name;
@@ -82,20 +108,20 @@ export class Discount {
     }
 
 
-    public static getProductBasedExample(): Discount {
+    public static getProductBasedExample(): DiscountModel {
 
-        const discountItems: DiscountItem[] = [
-            new DiscountItem(1, 1, 1, 1, 10, ProductModel.getExample(1)), // Örneğin: 3 adet ürün alana özel %10 indirim
-            new DiscountItem(2, 2, 2, 1, 15, ProductModel.getBoxProductExample(2))  // Örneğin: 2 adet ürün alana özel %15 indirim
+        const discountItems: DiscountItemModel[] = [
+            new DiscountItemModel(1, 1, 1, 1, 10, ProductModel.getExample(1)), // Örneğin: 3 adet ürün alana özel %10 indirim
+            new DiscountItemModel(2, 2, 2, 1, 15, ProductModel.getBoxProductExample(2))  // Örneğin: 2 adet ürün alana özel %15 indirim
         ];
 
-        var _discount = new Discount(0, "ProductBasedDiscount", DiscountType.ProductBasedDiscount, 20, 1, discountItems);
+        var _discount = new DiscountModel(0, "ProductBasedDiscount", DiscountType.ProductBasedDiscount, 20, 1, discountItems);
         return _discount;
     }
 
-    public static getSpecialBasedExample(): Discount {
+    public static getSpecialBasedExample(): DiscountModel {
         // Örnek: Dinamik indirim türü (DynamicDiscount) kullanılarak siparişin toplam tutarı üzerinden %25 indirim uygulanır.
-        const _discount = new Discount(
+        const _discount = new DiscountModel(
             2, // id
             "Special Based Discount", // isim
             DiscountType.DynamicDiscount, // indirim türü
@@ -106,8 +132,7 @@ export class Discount {
         return _discount;
     }
 
-    public static getExamples(): Discount[] 
-    {
-        return [this.getProductBasedExample(),this.getSpecialBasedExample()]
+    public static getExamples(): DiscountModel[] {
+        return [this.getProductBasedExample(), this.getSpecialBasedExample()]
     }
 }

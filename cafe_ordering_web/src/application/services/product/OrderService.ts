@@ -26,8 +26,9 @@ export class OrderService implements IOrderService {
     private productClearedListeners: ((product: ProductModel) => void)[] = [];
     private orderClearedListeners: (() => void)[] = [];
 
-    constructor(localStorage?: Storage) {
-        this._localStorage = localStorage;
+    constructor() {
+        try { this._localStorage = localStorage; }
+        catch (e: any) { }
         try { this.loadOrderedProductsFromLocalStorage(); } catch (e: any) { }
     }
 

@@ -19,9 +19,9 @@ export class LocalizationService {
     return this._languageMode;
   }
 
-  constructor(storage?: Storage) {
-    this._localStorage = storage;
-    if (this._localStorage == null) { try { this._localStorage = localStorage } catch (e: any) { } }
+  constructor() {
+    try { this._localStorage = localStorage; } catch (e: any) { }
+
     this._languageMode = this.getSavedLanguage() || LanguageMode.EN;
     Logcat.Debug(`LocalizationService constructor executed: ${this._languageMode}`);
     this.loadTranslationsAsync().then(() => this.notifyListeners());

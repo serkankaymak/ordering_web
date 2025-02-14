@@ -133,8 +133,8 @@ const AdminMenuItemTableComponent: IComponent<AdminMenuItemTableComponentProps> 
                     </>}
 
                     <Box className="text-xs" sx={{ display: "flex", flexDirection: "column" }}>
-                      <span>   Products Price Sum :  {menu.productsPrice ?? 0}</span>
-                      <span>   Menu Price : {menu.price} </span>
+                      <span>   Ürünlerin Toplam Fiyatı  :  {menu.productsPrice ?? 0}</span>
+                      <span>   Menü Fiyatı : {menu.price} </span>
                     </Box>
                   </Box>
 

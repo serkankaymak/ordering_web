@@ -21,7 +21,7 @@ export interface IProductService {
     readonly categories: CategoryModel[];
     readonly avaibleProductImages: string[];
 
-
+    loadAllProductsAndMenus(): Promise<ServiceResponse<ProductModel[]>>;
     loadMenus(): Promise<ServiceResponse<ProductModel[]>>;
     loadProducts(): Promise<ServiceResponse<ProductModel[]>>;
     loadCategories(): Promise<ServiceResponse<CategoryModel[]>>;
@@ -45,11 +45,19 @@ export class ProductService implements IProductService {
     public get avaibleProductImages(): string[] { return this._avaibleProductImages; }
     public get categories(): CategoryModel[] { return this._categories; }
 
-    constructor(localStorage?: Storage) {
-        { this._localStorage = localStorage; }
+    constructor() {
+        try { this._localStorage = localStorage; }
+        catch (e: any) { }
     }
 
 
+    public async loadAllProductsAndMenus(): Promise<ServiceResponse<ProductModel[]>> {
+        var response1 = await this.loadProducts();
+        var response2 = await this.loadMenus();
+        if (response1.isSuccess && response2.isSuccess)
+            return ServiceResponse.success([...this._products, ...this._menus])
+        return ServiceResponse.failure("Some thing goes wrong!");
+    }
 
     public async loadMenus(): Promise<ServiceResponse<ProductModel[]>> {
         var response = await GetMenusRequest.send();

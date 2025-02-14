@@ -10,32 +10,42 @@ import MyModal from '@/shared/components/MyModal';
 import { AppRoutes } from '@/app/routes/PageRoutes';
 import Toast from '@/shared/Toast';
 import { IPageContent } from '@/app/types/ViewTypes';
+import { ProductService } from '@/application/services/product/ProductService';
+
+
+const productService = new ProductService();
 
 interface ProductManagementPageContentProps {
-    productsJson: ProductModel[] | any
+    productsJsonOrProductList: ProductModel[] | any
 }
 
-const ProductManagementPageContent: IPageContent<ProductManagementPageContentProps> = ({ productsJson }) => {
+const ProductManagementPageContent: IPageContent<ProductManagementPageContentProps> = ({ productsJsonOrProductList: productsJson }) => {
     console.log(productsJson);
-    const products = (JSON.parse(productsJson) as any[]).map(json => ProductModel.fromJson(json));
+
+    const [products, setProducts] = useState<ProductModel[]>(() => {
+        if (typeof productsJson === 'string') { return (JSON.parse(productsJson) as any[]).map(json => ProductModel.fromJson(json)); }
+        else if (Array.isArray(productsJson)) { return productsJson.map(json => ProductModel.fromJson(json)); }
+        return [];
+    });
+
+
     const router = useRouter();
     const [searchQuery, setSearchQuery] = useState('');
     const [deleteRequestProductId, setDeleteRequestProductId] = useState<number>(0);
-
-
-    // Silme modalının açık olup olmadığını belirtiyoruz.
-    const isDeleteModalShouldOpen = (): boolean => deleteRequestProductId !== 0;;
-
-    // Arama sorgusu değiştiğinde çalışacak fonksiyon
-    const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setSearchQuery(event.target.value);
-    };
 
     // Filtrelenmiş ürünler
     const filteredProducts = products.filter((product) =>
         product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
         product.description.toLowerCase().includes(searchQuery.toLowerCase()),
     );
+
+    // Silme modalının açık olup olmadığını belirtiyoruz.
+    const isDeleteModalShouldOpen = (): boolean => deleteRequestProductId !== 0;;
+    // Arama sorgusu değiştiğinde çalışacak fonksiyon
+    const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => { setSearchQuery(event.target.value); };
+
+
+
 
     return (
         <Container className="flex flex-col gap-5">
@@ -45,7 +55,7 @@ const ProductManagementPageContent: IPageContent<ProductManagementPageContentPro
                     <TextField
                         color="secondary"
                         size="small"
-                        label="Search Products"
+                        label="ürünlerde ara"
                         variant="outlined"
                         fullWidth
                         value={searchQuery}

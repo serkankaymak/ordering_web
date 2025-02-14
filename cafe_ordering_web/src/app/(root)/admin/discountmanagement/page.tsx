@@ -1,6 +1,6 @@
 'use client';
 
-import React, { ReactNode, useState } from 'react';
+import React, { ReactNode, useEffect, useState } from 'react';
 import {
     Container,
     TextField,
@@ -10,33 +10,51 @@ import {
 } from '@mui/material';
 import { Add } from '@mui/icons-material';
 import { ProductService } from '@/application/services/product/ProductService';
-import { Discount } from '@/domain/DiscountModels';
-import DiscountComponent from './components/DiscountComponent';
+import { DiscountModel } from '@/domain/DiscountModels';
+import DiscountComponent from './components/listComponents/DiscountComponent';
 import { useRouter } from 'next/navigation';
 import { AppRoutes } from '@/app/routes/PageRoutes';
 import MyMasonry from '@/shared/components/MyMasonary';
+import { DiscountService } from '@/application/services/discount/DiscountService';
+import Toast from '@/shared/Toast';
 
 
-const productService = new ProductService();
+const discountService = new DiscountService();
 
 const DiscountManagementPage: React.FC = () => {
     const router = useRouter();
     const [searchQuery, setSearchQuery] = useState('');
-    const [discounts] = useState<Discount[]>(Discount.getExamples());
+    const [discounts, setDiscounts] = useState<DiscountModel[]>([]);
+
+
+
+    useEffect(() => {
+        discountService.loadDiscounts().then(response => {
+            console.log(response);
+            if (response.isSuccess) { setDiscounts(discountService.discounts!) }
+
+            else { Toast.error(); }
+            console.log(discounts);
+        })
+    }, [discountService])
+
+
+
+
+
     // Arama işlemi
     const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
         setSearchQuery(event.target.value);
     };
     const defaultBreakpoints = { default: 3, 1100: 2, 700: 2, 500: 1, 300: 1 };
-
     const getContent = (): ReactNode[] => {
-        return discounts.map((d, i) => (
-            <DiscountComponent key={i} discount={d} />
-        ));
+        return discounts.map((d, i) => (<DiscountComponent key={i} discount={d} />));
     };
 
+    if (discounts.length == 0) return <> <Box className="text-white">discount yok</Box>  </>
     return (
-        <Container className="flex flex-col gap-5">
+
+        <Container className="flex flex-col gap-5 text-white">
 
             <Box className="flex-1">
                 <Box className="flex flex-row items-center gap-3">
@@ -44,7 +62,7 @@ const DiscountManagementPage: React.FC = () => {
                     <TextField
                         color='secondary'
                         size="small"
-                        label="Search Products"
+                        label="İndirimlerde ara"
                         variant="outlined"
                         fullWidth
                         value={searchQuery}
@@ -65,10 +83,11 @@ const DiscountManagementPage: React.FC = () => {
 
 
             <Box className="w-full">
-                <MyMasonry breakpointCols={defaultBreakpoints} items={getContent()}></MyMasonry>
+                <MyMasonry breakpointCols={defaultBreakpoints}
+                    items={getContent()}></MyMasonry>
             </Box>
 
-           
+
 
 
         </Container>

@@ -11,9 +11,8 @@ export class ThemeService {
   private _themeMode: ThemeMode;
   private listeners: ((themeMode: ThemeMode) => void)[] = [];
 
-  constructor(storage?: Storage) {
-    this._localStorage = storage;
-    if (this._localStorage == null) { try { this._localStorage = localStorage } catch (e: any) { } }
+  constructor() {
+    { try { this._localStorage = localStorage } catch (e: any) { } }
     this._themeMode = this.getStoredThemeMode() || ThemeMode.LIGHT;
     Logcat.Debug(`ThemeService initialized with theme: ${this._themeMode}`);
   }

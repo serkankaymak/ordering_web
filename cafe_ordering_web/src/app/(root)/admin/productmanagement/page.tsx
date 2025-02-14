@@ -19,15 +19,16 @@ const ProductManagementPage: IPage = () => {
         setProducts(response.data!)
       }
     });
-    const products = productService.products;
-  }, [])
+  }, [products.length])
 
   return (
     <>
-      <ProductManagementPageContent
-        productsJson={JSON.stringify(products)}>
+      {products.length !== 0 && <ProductManagementPageContent
+        productsJsonOrProductList={products}>
       </ProductManagementPageContent>
+      }
     </>
+
   );
 };
 

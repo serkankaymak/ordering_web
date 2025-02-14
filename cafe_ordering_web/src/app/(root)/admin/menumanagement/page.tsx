@@ -44,7 +44,7 @@ const MenuManagementPage: React.FC = () => {
                     <TextField
                         color='secondary'
                         size="small"
-                        label="Search Products"
+                        label="menülerde ara"
                         variant="outlined"
                         fullWidth
                         value={searchQuery}

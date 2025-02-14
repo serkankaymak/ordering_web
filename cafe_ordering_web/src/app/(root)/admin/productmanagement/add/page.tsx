@@ -31,6 +31,7 @@ const AddProductPage: React.FC = () => {
   // onSubmitClicked fonksiyonunu component içinde tanımlayabilirsiniz:
   const createProductHandler = (product: ProductModel, imageFormFile: File | null) => {
     productService.CreateProductAsync({
+      description:product.description,
       name: product.name,
       price: product.price,
       imageFile: imageFormFile,

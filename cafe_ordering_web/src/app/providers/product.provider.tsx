@@ -38,17 +38,8 @@ export const ProductProvider: React.FC<ProductProviderProps> = ({ children }) =>
 
 
   const loadProducts = () => {
-    productService.loadProducts().then(response1 => {
-      if (response1.isSuccess) {
-        productService.loadMenus().then(response2 => {
-          if (response2.isSuccess) {
-            const d = [...response1.data!, ...response2.data!]
-            setProducts(d);
-          }
-          else throw new Error("");
-        })
-      }
-      else throw new Error("");
+    productService.loadAllProductsAndMenus().then((response) => {
+      setProducts(response.data!);
     })
   }
 
@@ -73,7 +64,6 @@ export const ProductProvider: React.FC<ProductProviderProps> = ({ children }) =>
     performOnOrderedProductsChanged();
     Logcat.Debug(`product added|removed|cleaned from basket.   ${JSON.stringify(product.id)}`);
   };
-
 
 
   // order a product ekle

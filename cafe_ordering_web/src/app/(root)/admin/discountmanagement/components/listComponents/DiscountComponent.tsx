@@ -1,14 +1,17 @@
 import React from "react";
 import DiscountItemProductComponent from "./components/DiscountItemProductComponent";
-import { Discount, DiscountType } from "@/domain/DiscountModels";
+import { DiscountModel, DiscountType } from "@/domain/DiscountModels";
 import DiscountProductBasedComponent from "./DiscountProductBasedComponent";
 import DiscountSpecialBasedComponent from "./DiscountSpecialBasedComponent";
+import { Box } from "@mui/material";
+import DiscountCategoryBasedComponent from "./DiscountCategoryBasedComponent";
+
 
 
 
 // Props tipi:
 interface DiscountComponentProps {
-  discount: Discount;
+  discount: DiscountModel;
 }
 
 export default function DiscountComponent({ discount }: DiscountComponentProps) {
@@ -17,7 +20,13 @@ export default function DiscountComponent({ discount }: DiscountComponentProps) 
     return <DiscountProductBasedComponent discount={discount} />;
   }
   if (discount.discountType === DiscountType.DynamicDiscount) {
-    return <DiscountSpecialBasedComponent discount={discount} />;
+    return <DiscountSpecialBasedComponent
+      showUpdateActions={true}
+      discount={discount}
+    />;
   }
-  return null;
+  if (discount.discountType === DiscountType.CategoryBasedDiscount) {
+    return <DiscountCategoryBasedComponent showUpdateActions={true} discount={discount} />
+  }
+  throw new Error("discount tipi bulunamadı!!");
 }

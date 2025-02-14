@@ -1,4 +1,7 @@
+"use client";
 import React, { useState } from 'react';
+import DiscountAddOrUpdateComponent from '../components/addOrUpdate/DiscountAddOrUpdateCoponent';
+import { DiscountModel } from '@/domain/DiscountModels';
 
 
 
@@ -8,7 +11,9 @@ const AddDiscountPage: React.FC = ({ }) => {
 
     return (
         <div>
-
+            <DiscountAddOrUpdateComponent
+                onSubmitClicked={(menu: DiscountModel, imageFile: File | null): void => {
+                }}></DiscountAddOrUpdateComponent>
         </div>
     );
 };

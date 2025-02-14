@@ -3,6 +3,7 @@ const HOST_URL = process.env.NEXT_PUBLIC_HOST_URL;
 const BASE_APİ_URL = process.env.NEXT_PUBLIC_HOST_URL + "/api";
 const PRODUCT_URL = `${BASE_APİ_URL}/Product`
 const MENU_URL = `${BASE_APİ_URL}/Menu`
+const DİSCOUNT_URL = `${BASE_APİ_URL}/Discount`
 
 
 const PRODUCT_IMAGES_URL = `${PRODUCT_URL}/productimages`;
@@ -16,7 +17,15 @@ const GET_MENUS_URL = `${MENU_URL}/menus`;
 const CREATE_MENU_URL = `${MENU_URL}/createmenu`;
 const UPDATE_MENU_URL = `${MENU_URL}/updatemenu`;
 
+
+const GET_DİSCOUNTS_URL = `${DİSCOUNT_URL}/discounts`;
+const CREATE_DİSCOUNT_URL = `${DİSCOUNT_URL}/creatdiscount`;
+const UPDATE_DİSCPUNT_URL = `${DİSCOUNT_URL}/updatediscount`;
+
 export default class ApiUrls {
+
+    static GetDiscountUrl() {return DİSCOUNT_URL; }
+    static GetDiscountsUrl(): string { return GET_DİSCOUNTS_URL; }
     static GetCreateMenuUrl(): string { return CREATE_MENU_URL; }
     static GetUpdateMenuUrl(): string { return UPDATE_MENU_URL; }
     static GetUpdateProductUrl() { return UPDATE_PRODUCT_URL; }
@@ -29,4 +38,6 @@ export default class ApiUrls {
     static GetProductImagesUrl(): string { return PRODUCT_IMAGES_URL; }
     static GetProductUrl(): string { return PRODUCT_URL; }
     static GetMenuUrl(): string { return MENU_URL; }
+ 
+
 }

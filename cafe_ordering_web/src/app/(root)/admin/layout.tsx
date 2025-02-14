@@ -9,7 +9,6 @@ import InitColorSchemeScript from "@mui/material/InitColorSchemeScript";
 import "react-toastify/dist/ReactToastify.css";
 import useMyMediaQuery, { Breakpoints } from "@/shared/hooks/UseMediaQuery";
 import ScrollToTopButton from "@/shared/components/ScrollToTopButton";
-import { ToastContainer } from "react-toastify";
 import AdminHeaderComponent from "./components/AdminHeader";
 
 export default function AdminLayout({
@@ -43,18 +42,11 @@ export default function AdminLayout({
                 className="whitespace-nowrap scrollbar-none sm:scrollbar-thin scrollbar-track-gray-200 scrollbar-thumb-gray-500"
             >
                 {children}
-
-               
-
                 {/* Scroll To Top Butonu */}
                 <ScrollToTopButton scrollableRef={scrollableDivRef} />
             </Box>
 
-
-
-
-             {/* Toast Bildirimleri */}
-             <ToastContainer />
+        
         </Box>
     );
 }
