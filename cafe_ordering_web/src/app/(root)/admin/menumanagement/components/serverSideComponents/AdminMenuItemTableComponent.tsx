@@ -79,10 +79,10 @@ const AdminMenuItemTableComponent: IComponent<AdminMenuItemTableComponentProps> 
                     <Box className="flex gap-2">
 
                       {
-                        menu.parent && <Chip size="small" label={"Adet : " + menu.quantity} />
+                        menu.parent && <Chip size="small" label={"Adet:" + menu.quantity} />
                       }
 
-                      <Chip size="small" label={"Price : " + menu.price + " TL"} />
+                      <Chip size="small" label={"Fiyat:" + menu.price + " TL"} />
                     </Box>
 
                   </Box>

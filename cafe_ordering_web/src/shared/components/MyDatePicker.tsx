@@ -1,3 +1,5 @@
+'use client'
+
 import * as React from 'react';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';

@@ -1,20 +1,16 @@
 "use client";
 import React, { useState } from 'react';
-import DiscountAddOrUpdateComponent from '../components/addOrUpdate/DiscountAddOrUpdateCoponent';
-import { DiscountModel } from '@/domain/DiscountModels';
 
+import { IPage, IPageContent } from '@/app/types/ViewTypes';
+
+import AddDiscountPageContent from './pageContent';
 
 
 // Fonksiyonel bileşen tanımı
-const AddDiscountPage: React.FC = ({ }) => {
-
+const AddDiscountPage: IPage = ({ }) => {
 
     return (
-        <div>
-            <DiscountAddOrUpdateComponent
-                onSubmitClicked={(menu: DiscountModel, imageFile: File | null): void => {
-                }}></DiscountAddOrUpdateComponent>
-        </div>
+        <AddDiscountPageContent></AddDiscountPageContent>
     );
 };
 

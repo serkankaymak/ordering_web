@@ -40,7 +40,7 @@ export class OrderService implements IOrderService {
     public addProductToOrder(product: ProductModel): void {
         const existingOrderItem = this._orderedProducts.find(orderItem => orderItem.productId === product.id);
         if (existingOrderItem) { (existingOrderItem as OrderItemModel).increase(); }
-        else { this._orderedProducts.push(new OrderItemModel(product.id, 1)); }
+        else { this._orderedProducts.push(new OrderItemModel({ productId: product.id, quantity: 1 })); }
         this.saveOrderedProductsToLocalStorage();
         this.notifyProductAddedToOrderListeners(product);
     }
@@ -101,7 +101,7 @@ export class OrderService implements IOrderService {
             if (jsonData) {
                 const parsedData = JSON.parse(jsonData);
                 this._orderedProducts = parsedData.map((item: any) => {
-                    const orderItem = new OrderItemModel(item.productId, item.quantity);
+                    const orderItem = new OrderItemModel({productId:item.productId,quantity:item.quantity});
                     return orderItem;
                 });
             }

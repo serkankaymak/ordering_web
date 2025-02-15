@@ -112,10 +112,12 @@ const MenuItemAddOrUpdateComponentContent:
                                                         src={imagePreview}
                                                         alt="Ürün Resmi"
                                                         style={{
+                                                            marginRight: 3,
                                                             float: 'left',
                                                             width: "80px", height: "80px",
                                                             objectFit: "cover", borderRadius: "6px"
                                                         }}
+
                                                     />
 
                                                     {menu.parentBoxId == null && <> <input ref={fileInputRef} type="file" accept="image/*" style={{ display: 'none' }} onChange={handleImageUpload} />
@@ -149,19 +151,15 @@ const MenuItemAddOrUpdateComponentContent:
                                                         <Box className="flex gap-3">
                                                             {
                                                                 menu.parentBoxId != null &&
-                                                                <Chip size="small" label={"Adet : " + menu.quantity} />
+                                                                <Chip size="small" label={"Adet:" + menu.quantity} />
                                                             }
-                                                            <Chip size="small" label={"Price : " + menu.price + " TL"} />
+                                                            <Chip size="small" label={"Fiyat:" + menu.price + " TL"} />
                                                         </Box>
-
-
-
                                                     </Box>
                                                     }
                                                     {menu.parentBoxId != null && <Typography
                                                         variant="body2"
                                                         sx={{
-
                                                             mt: 1,
                                                             whiteSpace: "normal",
                                                             overflowWrap: "break-word",

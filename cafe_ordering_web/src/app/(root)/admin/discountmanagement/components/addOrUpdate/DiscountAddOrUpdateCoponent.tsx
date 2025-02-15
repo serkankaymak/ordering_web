@@ -1,37 +1,68 @@
-"use client"; // Bileşeni client bileşeni olarak işaretliyoruz
+"use client";
 
 import React, { useEffect, useState } from "react";
-import { CategoryModel, ProductModel } from "@/domain/ProductModels";
-import { Box } from "@mui/material";
+import { Box, Select, MenuItem, FormControl, InputLabel, SelectChangeEvent, Paper } from "@mui/material";
 import { IComponent } from "@/app/types/ViewTypes";
-import { DiscountModel } from "@/domain/DiscountModels";
-import DiscountAddOrUpdateComponentContent from "./DiscountAddOrUpdateCoponentContent";
-
+import { DiscountModel, DiscountType } from "@/domain/DiscountModels";
+import DiscountComponent from "../listComponents/DiscountComponent";
 
 interface DiscountAddOrUpdateComponentProps {
-    discount?: DiscountModel
-    onSubmitClicked: (menu: DiscountModel, imageFile: File | null) => void
+    discount?: DiscountModel;
+    onSubmitClicked: (discount: DiscountModel, imageFile: File | null) => void;
 }
 
 const DiscountAddOrUpdateComponent: IComponent<DiscountAddOrUpdateComponentProps> = ({
-    discount = DiscountModel.getProductBasedExample(),
-    onSubmitClicked
+    discount = DiscountModel.getEmptyInstance(),
+    onSubmitClicked,
 }) => {
+    const [isAddMode, setIsAddMode] = useState<boolean>(false);
+    const [updatedDiscount, setUpdatedDiscount] = useState<DiscountModel>(discount);
+    const [discountTypeForAdd, setDiscountTypeForAdd] = useState<DiscountType>(DiscountType.ProductBasedDiscount);
 
+    useEffect(() => {
+        setIsAddMode(discount.id === 0);
+    }, [discount]);
 
-
+    const handleDiscountTypeSelectValueChanged = (event: SelectChangeEvent) => {
+        const type = Number(event.target.value) as DiscountType;
+        setDiscountTypeForAdd(type);
+        // updatedDiscount.copy() methodu mevcut discount değerlerini kopyalayıp güncellenen alanları ekliyor.
+        setUpdatedDiscount(new DiscountModel({ discountType: type }));
+    };
 
     return (
-        <Box className="flex flex-col items-center justify-center">
-            {false && <Box className="text-white">  {discount.id} </Box>}
-            <Box className="w-[100%] md:w-[70%]">
-                sdfasdf
-                <DiscountAddOrUpdateComponentContent discount={discount}
-                    onSubmitClicked={function (menu: DiscountModel, imageFile: File | null): void {
-                        throw new Error("Function not implemented.");
-                    }} ></DiscountAddOrUpdateComponentContent>
-            </Box>
-        </Box>
+        <Paper className=" p-5 flex flex-col items-center justify-center">
+            {isAddMode && (
+                <FormControl variant="outlined" sx={{ minWidth: 200, mb: 2 }}>
+                    <InputLabel id="discount-type-select-label">Discount Type</InputLabel>
+                    <Select
+                        labelId="discount-type-select-label"
+                        value={discountTypeForAdd.toString()}
+                        onChange={handleDiscountTypeSelectValueChanged}
+                        label="Discount Type"
+                    >
+                        <MenuItem value={DiscountType.ProductBasedDiscount}>
+                            Ürün bazlı indirim
+                        </MenuItem>
+                        <MenuItem value={DiscountType.DynamicDiscount}>
+                            Özel indirim
+                        </MenuItem>
+                        <MenuItem value={DiscountType.CategoryBasedDiscount}>
+                            Ürün kategorisi bazlı indirim
+                        </MenuItem>
+                    </Select>
+                </FormControl>
+            )}
+
+            <DiscountComponent
+                onAnyPropertyChanged={(key, value) => {
+                    if (key == "maxApplicableTimes" && value == 0) return;
+                    setUpdatedDiscount(updatedDiscount.copy({ [key]: value }));
+                }}
+                showUpdateActions={true}
+                discount={updatedDiscount}
+            />
+        </Paper>
     );
 };
 

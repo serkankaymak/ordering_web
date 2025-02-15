@@ -1,25 +1,44 @@
 'use client'
 import { DiscountModel, DiscountItemModel, DiscountType } from '@/domain/DiscountModels';
 import { Box, Button, Chip, FormControl, IconButton, Paper, Table, TableBody, TableCell, TableContainer, TableRow, TextField } from '@mui/material';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import DiscountItemProductComponent from './components/DiscountItemProductComponent';
 import DiscountItemComponent from './components/DiscountItemComponent';
 import { Update, Delete, Add, Remove, Save, Category, Check } from '@mui/icons-material';
-import {MyDatePicker, MyDateTimePicker} from '@/shared/components/MyDatePicker';
+import { MyDatePicker, MyDateTimePicker } from '@/shared/components/MyDatePicker';
 import { CategoryModel } from '@/domain/ProductModels';
+import { ProductService } from '@/application/services/product/ProductService';
 
 interface DiscountCategoryBasedComponentProps {
     discount: DiscountModel;
     showUpdateActions?: boolean;
+    onUpdateClicked?: (discountId: number) => void;
+    onDeleteClicked?: (discountId: number) => void;
+    onSaveClicked?: () => void;
+    onAnyPropertyChanged?: (key: keyof DiscountModel, value: any) => void;
+
 }
 
+const productService = new ProductService();
 
 const DiscountCategoryBasedComponent: React.FC<DiscountCategoryBasedComponentProps> = ({
     discount,
-    showUpdateActions = true
-
+    showUpdateActions = true,
+    onUpdateClicked, onDeleteClicked,
+    onSaveClicked, onAnyPropertyChanged
 }) => {
-    const [selectedId, setSelectedId] = React.useState<number | null>(null);
+
+    const [categories, setCategories] = useState<CategoryModel[]>([]);
+
+    useEffect(() => {
+        productService.loadCategories().then(response => {
+            if (response.isSuccess) {
+                setCategories(response.data!)
+            }
+        })
+    }, [])
+
+
     return (
         <TableContainer sx={{ padding: 1 }} className="border my-1" component={Paper}>
             <Table padding='none' sx={{ "& td, & th": { borderBottom: "none" } }} size="small">
@@ -43,8 +62,6 @@ const DiscountCategoryBasedComponent: React.FC<DiscountCategoryBasedComponentPro
                                     <div>  indirimOranı :  {discount.discountPercentage}</div>
                                     <div>  kaçKezUygulanabilir :  {discount.maxApplicableTimes}</div>
                                 </Box>
-
-
                             </Box>
 
                         </TableCell>
@@ -53,15 +70,15 @@ const DiscountCategoryBasedComponent: React.FC<DiscountCategoryBasedComponentPro
                     {showUpdateActions && <TableRow>
                         <TableCell sx={{ padding: 1 }}>
                             <Box className="flex w-full" sx={{ gap: 1, flexWrap: 'wrap' }}>
-                                {CategoryModel.getExamples().map((option) => (
+                                {categories.map((option) => (
                                     <Chip
                                         size="small"
                                         key={option.id}
                                         label={option.name}
                                         clickable
-                                        color={selectedId === option.id ? 'primary' : 'default'}
-                                        onClick={() => setSelectedId(option.id)}
-                                        icon={selectedId === option.id ? <Check /> : undefined}
+                                        color={discount.categoryId === option.id ? 'primary' : 'default'}
+                                        onClick={() => onAnyPropertyChanged && onAnyPropertyChanged("categoryId", option.id)}
+                                        icon={discount.categoryId === option.id ? <Check /> : undefined}
                                     />
                                 ))}
                             </Box>
@@ -76,18 +93,40 @@ const DiscountCategoryBasedComponent: React.FC<DiscountCategoryBasedComponentPro
 
                                     <FormControl>
                                         <TextField
+                                            onChange={(e) => {
+                                                onAnyPropertyChanged
+                                                    && onAnyPropertyChanged("discountPercentage", e.target.value!)
+                                            }}
                                             type='number'
                                             fullWidth variant="outlined" size="small"
                                             label={"Percentage"}
                                             sx={{ width: 100 }}
-                                            value={discount.discountPercentage??''} >
+                                            value={discount.discountPercentage ?? ''} >
                                         </TextField>
                                     </FormControl>
 
                                     <Box className="flex justify-end w-full">
-                                        <IconButton sx={{ padding: 0 }} size='small'  ><Remove /></IconButton>
-                                        <IconButton sx={{ padding: 0 }} size='small'  >{discount.maxApplicableTimes}</IconButton>
-                                        <IconButton sx={{ padding: 0 }} size='small'  ><Add /></IconButton>
+
+
+                                        <IconButton
+                                            onClick={(e) => {
+                                                onAnyPropertyChanged &&
+                                                    onAnyPropertyChanged("maxApplicableTimes", (discount.maxApplicableTimes - 1))
+                                            }}
+                                            sx={{ padding: 0 }} size='small'><Remove />
+                                        </IconButton>
+
+                                        <IconButton
+                                            disabled={true} size='small'  >{discount.maxApplicableTimes}
+                                        </IconButton>
+
+                                        <IconButton
+                                            onClick={(e) => {
+                                                onAnyPropertyChanged &&
+                                                    onAnyPropertyChanged("maxApplicableTimes", (discount.maxApplicableTimes + 1))
+                                            }}
+                                            sx={{ padding: 0 }} size='small'><Add />
+                                        </IconButton>
 
                                     </Box>
                                 </Box>
@@ -123,10 +162,12 @@ const DiscountCategoryBasedComponent: React.FC<DiscountCategoryBasedComponentPro
                         !showUpdateActions && <TableRow>
                             <TableCell>
                                 <Box className="text-xs" sx={{ display: "flex", flexDirection: "row", justifyContent: "end" }}>
-                                    <IconButton onClick={() => { }}>
+                                    <IconButton
+                                        onClick={() => { onUpdateClicked && onUpdateClicked(discount.id) }}>
                                         <Update />
                                     </IconButton>
-                                    <IconButton onClick={() => { }}>
+                                    <IconButton
+                                        onClick={() => { onDeleteClicked && onDeleteClicked(discount.id) }}>
                                         <Delete />
                                     </IconButton>
                                 </Box>
@@ -137,7 +178,9 @@ const DiscountCategoryBasedComponent: React.FC<DiscountCategoryBasedComponentPro
 
                     {showUpdateActions && < TableRow >
                         <TableCell align='right' sx={{ padding: 1 }}>
-                            <Button startIcon={<Save />}>Save</Button>
+                            <Button variant='outlined' color='secondary'
+                                onClick={onSaveClicked}
+                                startIcon={<Save />}>Save</Button>
                         </TableCell>
                     </TableRow>}
 

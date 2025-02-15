@@ -13,7 +13,7 @@ export class GetDiscountByIdRequest extends ABaseHttpRequest<ApiResponse<Discoun
 
   public async execute(): Promise<ApiResponse<DiscountModel>> {
     try {
-      const response = await this.client.get<ProductModel>(this.url, {
+      const response = await this.client.get<DiscountModel>(this.url, {
         headers: { Accept: "application/json" },
         validateStatus: (status: number) => status < 500,
       });
@@ -36,6 +36,7 @@ export class GetDiscountByIdRequest extends ABaseHttpRequest<ApiResponse<Discoun
 
   public static async send(id: number): Promise<ApiResponse<DiscountModel>> {
     const url: string = `${ApiUrls.GetDiscountUrl()}/${id}`;
+    console.log(url);
     const request = new GetDiscountByIdRequest(url);
     return await request.execute();
   }

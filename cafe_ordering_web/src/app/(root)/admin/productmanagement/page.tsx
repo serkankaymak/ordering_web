@@ -23,9 +23,10 @@ const ProductManagementPage: IPage = () => {
 
   return (
     <>
-      {products.length !== 0 && <ProductManagementPageContent
-        productsJsonOrProductList={products}>
-      </ProductManagementPageContent>
+      {products.length !== 0 &&
+        <ProductManagementPageContent
+          productsJsonOrProductList={products}>
+        </ProductManagementPageContent>
       }
     </>
 

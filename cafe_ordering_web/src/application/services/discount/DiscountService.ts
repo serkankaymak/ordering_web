@@ -43,6 +43,7 @@ export class DiscountService implements IDiscountService {
 
   public async RequestDiscountById(discountId: number): Promise<ServiceResponse<DiscountModel>> {
     const response = await GetDiscountByIdRequest.send(discountId);
+    console.log(response);
     if (response.isSuccess) {
       return ServiceResponse.success(response.data!);
     }

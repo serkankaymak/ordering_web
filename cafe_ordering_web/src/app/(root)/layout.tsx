@@ -4,6 +4,7 @@ import './global.css'
 
 //import "./globals.css";
 import 'react-toastify/dist/ReactToastify.css';
+import { Paper } from "@mui/material";
 
 export default function RootLayout({
   children,
@@ -17,7 +18,10 @@ export default function RootLayout({
         className={` antialiased  `}
       >
         <AppGlobalProviders>
-          {children}
+          <Paper elevation={0}>
+            {children}
+          </Paper>
+
           <ToastContainer aria-label={"toast-container"} />
         </AppGlobalProviders>
       </body>

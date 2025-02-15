@@ -52,7 +52,7 @@ const CartPanelBottomSheet: IComponent<{
                                 {orderItems.map((item) => (
                                     <OrderItemComponent
                                         key={item.productId}
-                                        orderItem={item ?? new OrderItemModel(0,1)}
+                                        orderItem={item ?? new OrderItemModel({productId:0})}
                                         onIncreaseClicked={() => onIncrease(item.productId)}
                                         onDecreaseClicked={() => onDecrease(item.productId)}
                                         onRemoveClicked={() => onRemove(item.productId)}

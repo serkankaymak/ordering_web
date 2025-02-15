@@ -22,8 +22,9 @@ const AdminHeaderComponent: React.FC = () => {
   const router = useRouter();
 
   return (
-    <AppBar position="fixed">
-      <Toolbar sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+    <AppBar color='secondary' elevation={4} position="fixed">
+      <Toolbar 
+       sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <Box sx={{ flexGrow: 1, cursor: 'pointer' }} onClick={() => router.push('/')}>
           <Typography className="header text-xl sm:text-3xl" component="div">
             Cafe Klassy

@@ -2,7 +2,6 @@ import { DiscountItemModel } from '@/domain/DiscountModels';
 import { Update, Delete } from '@mui/icons-material';
 import { Box, Button, Chip, IconButton, Paper, Table, TableBody, TableCell, TableContainer, TableRow, Typography } from '@mui/material';
 import React, { useState } from 'react';
-import AdminMenuItemTableComponent from '../../../menumanagement/components/serverSideComponents/AdminMenuItemTableComponent';
 import { ProductModel } from '@/domain/ProductModels';
 
 // Props için interface tanımı
@@ -20,15 +19,16 @@ const DiscountItemProductComponent: React.FC<DiscountItemProductComponentProps> 
 }) => {
     // State tanımı
 
-
+    if(product==null) return<></>
     return (
+     
         <TableContainer
             className="border my-1"
             component={Paper}
             sx={{
                 mb: 0,
-                px: product!.parentBoxId == null ? 1 : 0,
-                py: product!.parentBoxId == null ? 2 : 0,
+                px: product.parent != null &&  product!.parentBoxId ?  1 : 0,
+                py:  product.parent != null &&  product!.parentBoxId  ? 2 : 0,
             }}
         >
             <Table sx={{ "& td, & th": { borderBottom: "none" } }} size="small">

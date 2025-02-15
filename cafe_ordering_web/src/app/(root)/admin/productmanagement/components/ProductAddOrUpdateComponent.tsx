@@ -126,9 +126,9 @@ const AdminProductAddOrUpdateComponent: IComponent<AdminProductAddOrUpdateCompon
                         {/* Kategori Seçimi */}
                         <TableRow>
                             <TableCell>
-                                <Box className="flex items-center mt-5">
+                                <Box className="flex items-center justify-between mt-3 mb-3">
                                     <Box sx={{ mt: 0 }}>
-                                        <h3>Categories</h3>
+                                        <h3>Categoriler</h3>
                                         <FormGroup>
                                             <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0 }}>
                                                 {categories.map((cat) => (

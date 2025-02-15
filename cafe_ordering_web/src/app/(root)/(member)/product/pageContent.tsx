@@ -1,7 +1,7 @@
 'use client';
 
 import React, { JSX, useState } from 'react';
-import { Box, Button, useTheme, } from '@mui/material';
+import { Box, Button, Paper, useTheme, } from '@mui/material';
 
 import ArrayListStream from '@/shared/ArrayListStream';
 import ProductListSection from './components/product/ProductListSection';
@@ -92,7 +92,7 @@ const MenuPageContent: IPageContent<MenuPageContentProps> = () => {
     return (
         <Box className="" >
             {/* Sticky Header */}
-            <Box sx={{ backgroundColor: theme.palette.background.default }}
+            <Paper variant='elevation' elevation={0}  sx={{}}
                 className="sticky top-0 z-10 min-h-[60px] flex  items-center justify-center">
                 <Box className="overflow-x-auto
                  whitespace-nowrap   scrollbar-thin scrollbar-track-gray-200  scrollbar-thumb-gray-500">
@@ -111,7 +111,7 @@ const MenuPageContent: IPageContent<MenuPageContentProps> = () => {
                     ))}
 
                 </Box>
-            </Box>
+            </Paper>
 
             {/* Main Content */}
             <Box className="sticky top-[80px] mt-3 me-5  z-40 flex justify-end ">

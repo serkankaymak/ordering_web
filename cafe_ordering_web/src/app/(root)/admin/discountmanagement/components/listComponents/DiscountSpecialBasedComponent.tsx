@@ -4,17 +4,23 @@ import React from 'react';
 import DiscountItemComponent from './components/DiscountItemComponent';
 import { Update, Delete, Add, Remove, Save } from '@mui/icons-material';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-import {MyDatePicker, MyDateTimePicker} from '@/shared/components/MyDatePicker';
+import { MyDatePicker, MyDateTimePicker } from '@/shared/components/MyDatePicker';
 
 
 interface DiscountSpecialtBasedComponentProps {
     discount: DiscountModel;
     showUpdateActions?: boolean;
+    onUpdateClicked?: (discountId: number) => void;
+    onDeleteClicked?: (discountId: number) => void;
+    onSaveClicked?: () => void;
+    onAnyPropertyChanged?: (key: keyof DiscountModel, value: any) => void;
 }
 
 const DiscountSpecialBasedComponent: React.FC<DiscountSpecialtBasedComponentProps> = ({
     discount,
-    showUpdateActions = true
+    showUpdateActions = true,
+    onUpdateClicked, onDeleteClicked,
+    onSaveClicked, onAnyPropertyChanged
 }) => {
 
     return (
@@ -55,20 +61,43 @@ const DiscountSpecialBasedComponent: React.FC<DiscountSpecialtBasedComponentProp
 
                                     <FormControl>
                                         <TextField
+                                            onChange={(e) => {
+                                                onAnyPropertyChanged
+                                                    && onAnyPropertyChanged("discountPercentage", e.target.value!)
+                                            }}
                                             type='number'
                                             fullWidth variant="outlined" size="small"
                                             label={"Percentage"}
                                             sx={{ width: 100 }}
-                                            value={discount.discountPercentage??''} >
+                                            value={discount.discountPercentage ?? ''} >
                                         </TextField>
                                     </FormControl>
 
+
+
                                     <Box className="flex items-center  justify-end w-full">
-                                        <IconButton sx={{ padding: 0 }} size='small'  ><Remove /></IconButton>
-                                        <IconButton sx={{ padding: 0 }} size='small'  >{discount.maxApplicableTimes}</IconButton>
-                                        <IconButton sx={{ padding: 0 }} size='small'  ><Add /></IconButton>
+                                        <IconButton
+                                            onClick={(e) => {
+                                                onAnyPropertyChanged &&
+                                                    onAnyPropertyChanged("maxApplicableTimes", (discount.maxApplicableTimes - 1))
+                                            }}
+                                            sx={{ padding: 0 }} size='small'><Remove />
+                                        </IconButton>
+                                        <IconButton
+                                            disabled={true} size='small'  >{discount.maxApplicableTimes}
+                                        </IconButton>
+                                        <IconButton
+                                            onClick={(e) => {
+                                                onAnyPropertyChanged &&
+                                                    onAnyPropertyChanged("maxApplicableTimes", (discount.maxApplicableTimes + 1))
+                                            }}
+                                            sx={{ padding: 0 }} size='small'><Add />
+                                        </IconButton>
 
                                     </Box>
+
+
+
                                 </Box>
                             }
                         </TableCell>
@@ -78,7 +107,12 @@ const DiscountSpecialBasedComponent: React.FC<DiscountSpecialtBasedComponentProp
                     {showUpdateActions &&
                         <TableRow>
                             <TableCell sx={{ padding: 1 }}>
+
                                 <MyDateTimePicker
+                                    onValueChanged={(date) => {
+                                        onAnyPropertyChanged &&
+                                            onAnyPropertyChanged("endDate", date!)
+                                    }}
                                     slotProps={{ textField: { variant: "outlined", fullWidth: true } }}
                                     label={'İndirimBitişTarihi'} />
                             </TableCell>
@@ -87,11 +121,7 @@ const DiscountSpecialBasedComponent: React.FC<DiscountSpecialtBasedComponentProp
 
 
 
-                    {showUpdateActions && < TableRow >
-                        <TableCell align='right' sx={{ padding: 1 }}>
-                            <Button startIcon={<Save />}>Save</Button>
-                        </TableCell>
-                    </TableRow>}
+
 
 
                     {/** special ın discount item ı olmaz  */}
@@ -108,10 +138,10 @@ const DiscountSpecialBasedComponent: React.FC<DiscountSpecialtBasedComponentProp
                         !showUpdateActions && <TableRow>
                             <TableCell>
                                 <Box className="text-xs" sx={{ display: "flex", flexDirection: "row", justifyContent: "end" }}>
-                                    <IconButton onClick={() => { }}>
+                                    <IconButton onClick={() => { onUpdateClicked && onUpdateClicked(discount.id) }}>
                                         <Update />
                                     </IconButton>
-                                    <IconButton onClick={() => { }}>
+                                    <IconButton onClick={() => { onDeleteClicked && onDeleteClicked(discount.id) }}>
                                         <Delete />
                                     </IconButton>
                                 </Box>
@@ -119,6 +149,11 @@ const DiscountSpecialBasedComponent: React.FC<DiscountSpecialtBasedComponentProp
                         </TableRow>
                     }
 
+                    {showUpdateActions && < TableRow >
+                        <TableCell align='right' sx={{ padding: 1 }}>
+                            <Button variant='outlined' color='secondary' startIcon={<Save />}>Save</Button>
+                        </TableCell>
+                    </TableRow>}
 
                 </TableBody>
             </Table>

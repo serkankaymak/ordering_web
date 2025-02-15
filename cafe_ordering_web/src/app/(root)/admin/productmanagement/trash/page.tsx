@@ -28,7 +28,7 @@ const ProductManagementPage: React.FC = () => {
     initialProducts.length > 0 ? initialProducts[0] : null
   );
   const [newProduct] = useState<ProductModel>(
-    new ProductModel(0, "", "", 0, null)
+    new ProductModel({})
   );
   const [searchQuery, setSearchQuery] = useState('');
   const [isProductUpdateModalOpen, setProductUpdateModalOpen] = useState<boolean>(false);
