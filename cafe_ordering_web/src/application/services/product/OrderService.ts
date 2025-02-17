@@ -55,6 +55,7 @@ export class OrderService implements IOrderService {
 
     // Ürünü sipariş listesine ekleme
     public clearProductFromOrder(product: ProductModel): void {
+        if(product.id==null) {this.clearOrder(); return;}
         const existingOrderItem = this._orderedProducts.find(orderItem => orderItem.productId === product.id);
         if (existingOrderItem) { this._orderedProducts = this._orderedProducts.filter(x => x.productId != product.id); }
         else { throw new Error(""); }
@@ -87,7 +88,8 @@ export class OrderService implements IOrderService {
     private saveOrderedProductsToLocalStorage(): void {
         try {
             if (this._localStorage == undefined) return;
-            const jsonData = JSON.stringify(this._orderedProducts);
+            const newOrdeeredProducts = this._orderedProducts.map(x => x.copy({ product: null }))
+            const jsonData = JSON.stringify(newOrdeeredProducts);
             this._localStorage!.setItem(this.storageKey, jsonData);
         } catch (error) {
             console.error('Veriler localStorage\'a kaydedilirken bir hata oluştu:', error);
@@ -101,7 +103,7 @@ export class OrderService implements IOrderService {
             if (jsonData) {
                 const parsedData = JSON.parse(jsonData);
                 this._orderedProducts = parsedData.map((item: any) => {
-                    const orderItem = new OrderItemModel({productId:item.productId,quantity:item.quantity});
+                    const orderItem = new OrderItemModel({ productId: item.productId, quantity: item.quantity });
                     return orderItem;
                 });
             }

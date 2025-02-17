@@ -33,7 +33,7 @@ const AdminMenuItemTableComponent: IComponent<AdminMenuItemTableComponentProps> 
   showCategories
 }) => {
 
-
+  if (!menu) return <></>
   return (
 
     <Box>

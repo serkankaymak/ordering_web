@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { ProductModel } from '@/domain/ProductModels';
 import { Container, TextField, Typography, Box, Button, } from '@mui/material';
 import { Add } from '@mui/icons-material';
@@ -20,7 +20,6 @@ interface ProductManagementPageContentProps {
 }
 
 const ProductManagementPageContent: IPageContent<ProductManagementPageContentProps> = ({ productsJsonOrProductList: productsJson }) => {
-    console.log(productsJson);
 
     const [products, setProducts] = useState<ProductModel[]>(() => {
         if (typeof productsJson === 'string') { return (JSON.parse(productsJson) as any[]).map(json => ProductModel.fromJson(json)); }
@@ -28,10 +27,11 @@ const ProductManagementPageContent: IPageContent<ProductManagementPageContentPro
         return [];
     });
 
-
     const router = useRouter();
     const [searchQuery, setSearchQuery] = useState('');
     const [deleteRequestProductId, setDeleteRequestProductId] = useState<number>(0);
+
+    useEffect(() => { }, [])
 
     // Filtrelenmiş ürünler
     const filteredProducts = products.filter((product) =>

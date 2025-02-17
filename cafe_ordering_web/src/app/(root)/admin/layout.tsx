@@ -22,7 +22,8 @@ export default function AdminLayout({
     return (
         <Box>
             {/* Renk şemasını ayarlayan script */}
-            <InitColorSchemeScript attribute="class" />
+            {/**      <InitColorSchemeScript attribute="class" />  */}
+       
 
             {/* Üstte AppBar: Navigasyon linkleri ve tema değiştirme butonu */}
            <AdminHeaderComponent></AdminHeaderComponent>

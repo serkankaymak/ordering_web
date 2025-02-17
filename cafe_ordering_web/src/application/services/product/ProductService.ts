@@ -70,7 +70,7 @@ export class ProductService implements IProductService {
         const response = await GetProductsRequest.send();
         if (response.isSuccess && response.data) {
             this._products = response.data;
-            Logcat.Debug(`IProductService --> load products: ${JSON.stringify(this._products)}`);
+            //Logcat.Debug(`IProductService --> load products: ${JSON.stringify(this._products)}`);
             return ServiceResponse.success<ProductModel[]>(this._products);
         } else {
             Logcat.Debug(`IProductService --> Failed to load products: ${response.error}`);
@@ -83,7 +83,7 @@ export class ProductService implements IProductService {
         const response = await GetCategoriesRequest.send();
         if (response.isSuccess && response.data) {
             this._categories = response.data;
-            Logcat.Debug(`IProductService --> load categories: ${JSON.stringify(this._categories)}`);
+            //Logcat.Debug(`IProductService --> load categories: ${JSON.stringify(this._categories)}`);
             return ServiceResponse.success<CategoryModel[]>(this._categories);
         } else {
             Logcat.Debug(`IProductService --> Failed to load categories: ${response.error}`);
@@ -96,10 +96,10 @@ export class ProductService implements IProductService {
         const response = await GetAvaibleProductImagesRequest.send();
         if (response.isSuccess && response.data) {
             this._avaibleProductImages = response.data;
-            Logcat.Debug(`IProductService --> load product images: ${JSON.stringify(this._avaibleProductImages)}`);
+            //Logcat.Debug(`IProductService --> load product images: ${JSON.stringify(this._avaibleProductImages)}`);
             return ServiceResponse.success<string[]>(this._avaibleProductImages);
         } else {
-            Logcat.Debug(`IProductService --> Failed to load product images: ${response.error}`);
+            Logcat.Error(`IProductService --> Failed to load product images: ${response.error}`);
             return ServiceResponse.failure<string[]>(response.error || "Ürün görselleri yüklenemedi.");
         }
     }

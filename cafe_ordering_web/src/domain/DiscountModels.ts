@@ -1,4 +1,6 @@
+import ArrayListStream from "@/shared/ArrayListStream";
 import { ProductModel } from "./ProductModels";
+import { th } from "date-fns/locale";
 
 export enum DiscountType {
   ProductBasedDiscount = 1,
@@ -14,7 +16,7 @@ export class DiscountItemModel {
   productId: number = 0;
   product?: ProductModel | null = null;
   requiredQuantity: number = 1;
-  productsPrice: number = 1;
+  productsPrice: number = 0;
   // Ürün bazlı özel indirim oranı. Eğer tanımlı değilse Discount içindeki oran kullanılabilir.
   discountPercentage?: number | null;
   lastProductDiscountPercentage?: number | null;
@@ -27,6 +29,16 @@ export class DiscountItemModel {
   copy(updatedFields: Partial<DiscountItemModel>): DiscountItemModel {
     return new DiscountItemModel({ ...this, ...updatedFields });
   }
+
+
+  getProductsPrice() {
+    if (this.productsPrice != 0) return this.productsPrice;
+    if (this.product != null) {
+      return this.product.price * this.requiredQuantity;
+    }
+  }
+
+
 
   static fromJson(json: Partial<DiscountItemModel>): DiscountItemModel {
     return new DiscountItemModel({
@@ -73,12 +85,28 @@ export class DiscountItemModel {
 export class DiscountModel {
   id: number = 0;
   name: string = "";
-  discountPercentage?: number;
+  discountPercentage?: number = 0;
   discountType: DiscountType = DiscountType.ProductBasedDiscount;
   maxApplicableTimes: number = 1;
   discountItems: DiscountItemModel[] = [];
-  endDate?: Date | null = null;
+  endDateUtc?: string | null = null;
   categoryId: number = 0;
+
+
+  getLocaleDate() {  if(this.endDateUtc==null) return null;  return new Date(this.endDateUtc!); }
+
+  getProductsPrice() {
+    if (this.discountType != DiscountType.ProductBasedDiscount) throw Error(" sadece ürün bazlı için ");
+    if (this.discountItems.length == 0) return 0;
+    return ArrayListStream.fromList(this.discountItems).sum(x => x?.getProductsPrice()!)
+  }
+
+  getDiscountedProductsPrice() {
+    const price = this.getProductsPrice();
+    const discount = price * (this.discountPercentage! / 100)!
+    return price - discount;
+  }
+
 
   constructor(init?: Partial<DiscountModel>) {
     if (init) {
@@ -96,7 +124,8 @@ export class DiscountModel {
   }
 
   static fromJson(json: Partial<DiscountModel>): DiscountModel {
-    return new DiscountModel({
+    console.log(json)
+    var discount = new DiscountModel({
       id: json.id ?? 0,
       name: json.name ?? "",
       discountType: json.discountType!, // DiscountType mutlaka gelmelidir, aksi halde uygun bir varsayılan kullanılabilir.
@@ -105,9 +134,11 @@ export class DiscountModel {
       discountItems: json.discountItems
         ? json.discountItems.map(item => DiscountItemModel.fromJson(item))
         : [],
-      endDate: json.endDate ?? null,
+      endDateUtc: json.endDateUtc ? (json.endDateUtc) : null,
       categoryId: json.categoryId ?? 0,
     });
+    console.log(discount);
+    return discount;
   }
 
   copy(updatedFields: Partial<DiscountModel>): DiscountModel {

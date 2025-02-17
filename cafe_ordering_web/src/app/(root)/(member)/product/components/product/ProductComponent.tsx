@@ -70,6 +70,7 @@ const ProductComponent: IComponent<ProductComponentProps> = ({
 }) => {
 
 
+  const useTransition = false;
 
   return (
     <Box className={`${className}`}>
@@ -101,22 +102,37 @@ const ProductComponent: IComponent<ProductComponentProps> = ({
         )}
 
         {/* Hover Overlay */}
+
         <Box
-          className="
-            sm:p-2 p-1
-            sm:ps-3 ps-2
-            absolute bottom-0 left-0 w-full bg-black bg-opacity-70 text-white 
-            translate-y-full group-hover:translate-y-0 
-            transition-transform duration-500 ease-in-out"
+          className={
+            useTransition
+              ? `
+          sm:px-2 px-1
+          absolute bottom-0 left-0 w-full bg-black bg-opacity-50 text-white 
+          translate-y-full group-hover:translate-y-0 
+          transition-transform duration-500 ease-in-out
+        `
+              : `
+          sm:px-2 px-1
+          absolute bottom-0 left-0 w-full bg-black bg-opacity-50 text-white 
+        `
+          }
         >
-          <Typography variant="h6" className="sm:text-sm text-xs font-bold">
-            {product.name}
-          </Typography>
-          <Box className="flex flex-row gap-2">
-            <Typography variant="subtitle1" className="sm:text-sm text-xs font-bold sm:mt-1 mt-0">
+          <Box className="hidden sm:inline-block">
+            <Typography variant="body2" className="text-sm font-bold  whitespace-normal">
+              {product.name}
+            </Typography>
+            <Typography
+              variant="subtitle2"
+              className="text-sm whitespace-normal font-bold sm:mt-1 mt-0"
+            >
               ${product.price.toFixed(2)}
             </Typography>
           </Box>
+
+
+
+
           <Box className="flex sm:justify-between justify-between mt-1">
             <IconButton
               className="m-0 p-1"
@@ -124,24 +140,29 @@ const ProductComponent: IComponent<ProductComponentProps> = ({
                 (onOrderClick) && onOrderClick(product.id);
               }}
             >
-              <AddShoppingCart sx={{ color: "whitesmoke" }} className="text-xl md:text-3xl" />
+              <AddShoppingCart sx={{ color: "whitesmoke" }} className="text-xl md:text-2xl" />
             </IconButton>
             <Box>
               <IconButton
                 className="m-0 p-1"
                 onClick={() => {
                   (onInvestigateClick) && onInvestigateClick(product.id);
-
                 }}
               >
-                <Description sx={{ color: "whitesmoke" }} className="text-xl md:text-3xl" />
+                <Description sx={{ color: "whitesmoke" }} className="text-xl md:text-2xl" />
               </IconButton>
               <IconButton className="mr-1 p-0">
-                <Favorite sx={{ color: "grey" }} className="text-xl md:text-3xl" />
+                <Favorite sx={{ color: "grey" }} className="text-xl md:text-2xl" />
               </IconButton>
             </Box>
           </Box>
+
+
         </Box>
+
+
+
+
       </Box>
     </Box>
   );

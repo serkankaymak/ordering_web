@@ -28,7 +28,7 @@ const AddOrUpdateCommentBottomSheet: IComponent<AddOrUpdateCommentBottomSheetPro
 
 
     return (
-        <MyBottomSheet className='z-60'
+        <MyBottomSheet className='z-50'
             isOpen={isOpen}
             onCloseButtonClicked={function (): void {
                 performOnCloseClicked();

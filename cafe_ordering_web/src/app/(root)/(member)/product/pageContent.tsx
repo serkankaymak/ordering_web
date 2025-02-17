@@ -50,6 +50,7 @@ const MenuPageContent: IPageContent<MenuPageContentProps> = () => {
 
         const boxProducts = <ProductListSection
             title={'menuler'}
+            key={"0"}
             sectionId={"0"}
             products={products.filter(x => x.products?.length! > 0)}
             onAnyOrderClick={(productId: number) => {
@@ -58,7 +59,8 @@ const MenuPageContent: IPageContent<MenuPageContentProps> = () => {
                 Toast.success("success");
             }}
             onAnyInvestigateClick={(productId: number) => {
-                setProductDetail(products.filter(x => x.id == productId)[0]);
+                console.log(products)
+                setProductDetail(products.find(x => x.id == productId)!);
                 setOpenProductDetailBottomSheet(true);
             }}
         />
@@ -79,7 +81,7 @@ const MenuPageContent: IPageContent<MenuPageContentProps> = () => {
                         Toast.success("success");
                     }}
                     onAnyInvestigateClick={(productId: number) => {
-                        setProductDetail(ProductModel.getExample(productId));
+                        setProductDetail(products.find(x => x.id == productId)!);
                         setOpenProductDetailBottomSheet(true);
                     }}
                 />
@@ -92,7 +94,7 @@ const MenuPageContent: IPageContent<MenuPageContentProps> = () => {
     return (
         <Box className="" >
             {/* Sticky Header */}
-            <Paper variant='elevation' elevation={0}  sx={{}}
+            <Paper variant='elevation' elevation={0} sx={{}}
                 className="sticky top-0 z-10 min-h-[60px] flex  items-center justify-center">
                 <Box className="overflow-x-auto
                  whitespace-nowrap   scrollbar-thin scrollbar-track-gray-200  scrollbar-thumb-gray-500">
@@ -124,16 +126,7 @@ const MenuPageContent: IPageContent<MenuPageContentProps> = () => {
             {/* Main Content */}
             <Box className="flex flex-col items-center p-0">
                 <Box className=" w-[100%] md:w-[80%]">
-                    <AddOrUpdateCommentBottomSheet key={"?"} isOpen={isAddOrUpdateCommentBottomSheetOpen}
-                        performOnCloseClicked={function (): void {
-                            //setOpenProductDetailBottomSheet(false);
-                            setAddOrUpdateCommentBottomSheetOpen(false);
-                        }} onSaved={function (): void {
-                            //setOpenProductDetailBottomSheet(false);
-                            setAddOrUpdateCommentBottomSheetOpen(false);
-                        }}>
 
-                    </AddOrUpdateCommentBottomSheet>
 
                     <ProductDetailBottomSheet
                         onAddCommentClicked={() => {
@@ -146,6 +139,18 @@ const MenuPageContent: IPageContent<MenuPageContentProps> = () => {
                         product={productDetail ?? ProductModel.getEmptyInstance()}
                         isOpen={isOpenProductDetailBottomSheet}
                     />
+
+                    <AddOrUpdateCommentBottomSheet isOpen={isAddOrUpdateCommentBottomSheetOpen}
+                        performOnCloseClicked={function (): void {
+                            //setOpenProductDetailBottomSheet(false);
+                            setAddOrUpdateCommentBottomSheetOpen(false);
+                        }} onSaved={function (): void {
+                            //setOpenProductDetailBottomSheet(false);
+                            setAddOrUpdateCommentBottomSheetOpen(false);
+                        }}>
+
+                    </AddOrUpdateCommentBottomSheet>
+
                     {getContent()}
                 </Box>
             </Box>

@@ -1,6 +1,6 @@
 "use client"; // Next.js client component
 
-import React from "react";
+import React, { useEffect } from "react";
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
 import {
@@ -54,6 +54,8 @@ const ProductDetailBottomSheet: IComponent<ProductDetailBottomSheetProps> = ({
   const productFoundInBasket = orderedProducts.find(x => x?.productId === product?.id);
   const isProductInTheBasket = productFoundInBasket && productFoundInBasket.quantity != 0;
 
+
+  useEffect(() => { console.log(product) }, [])
 
   const _productCardSection =
     <Card className="overflow-visible mb-2 p-2 border " sx={{ borderRadius: 2, boxShadow: 1, padding: 1, }} >
@@ -163,7 +165,7 @@ const ProductDetailBottomSheet: IComponent<ProductDetailBottomSheetProps> = ({
     </Box>
 
   return (
-    <MyBottomSheet className='z-50' isOpen={isOpen} onCloseButtonClicked={function (): void {
+    <MyBottomSheet className='z-40' isOpen={isOpen} onCloseButtonClicked={function (): void {
       if (onCloseClicked != null) onCloseClicked();
     }} drawerBleeding={drawerBleeding} >
 
@@ -173,7 +175,6 @@ const ProductDetailBottomSheet: IComponent<ProductDetailBottomSheetProps> = ({
         {/* Yorumlar Bölümü */}
         {_commentsSection}
       </Box>
-
 
     </MyBottomSheet>
   );

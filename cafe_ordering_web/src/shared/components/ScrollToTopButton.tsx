@@ -27,7 +27,6 @@ const ScrollToTopButton: React.FC<ScrollToTopButtonProps> = ({ scrollableRef }) 
         const docHeight =
           scrollableRef.current.scrollHeight - scrollableRef.current.clientHeight;
         const scrollPercent = (scrollTop / docHeight) * 100;
-        console.log(scrollPercent);
         // Sayfa %30'ten fazla kaydırıldıysa düğmeyi göster, aksi halde gizle
         setIsVisible(scrollPercent > 30);
       }

@@ -39,7 +39,6 @@ interface MenuItemAddOrUpdateComponentContentProps {
 
 const MenuItemAddOrUpdateComponentContent:
     React.FC<MenuItemAddOrUpdateComponentContentProps> = ({
-
         menu,
         rootId = menu.id,
         productsForProductSelector,
@@ -60,7 +59,9 @@ const MenuItemAddOrUpdateComponentContent:
         const fileInputRef = useRef<HTMLInputElement | null>(null);
 
         useEffect(() => {
+            console.log(menu.getImagePathForShow())
             { console.log("menu add update use effect", menu.parent) }
+            setImagePreview(menu.getImagePathForShow())
         }, [menu.id])
 
         // Üst seviye menü için input alanlarında gösterilecek değerleri state ile tutuyoruz

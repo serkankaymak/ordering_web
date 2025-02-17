@@ -11,6 +11,10 @@ export class OrderItemModel {
     }
   }
 
+  copy(updatedFields: Partial<OrderItemModel>): OrderItemModel {
+    return new OrderItemModel({ ...this, ...updatedFields });
+  }
+
   static fromJson(json: Partial<OrderItemModel>): OrderItemModel {
     return new OrderItemModel({
       productId: json.productId ?? 0,

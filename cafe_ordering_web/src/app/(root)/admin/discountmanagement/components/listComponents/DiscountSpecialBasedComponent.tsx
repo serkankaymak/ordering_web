@@ -29,16 +29,20 @@ const DiscountSpecialBasedComponent: React.FC<DiscountSpecialtBasedComponentProp
                 <TableBody>
 
 
-                    <TableRow>
+                    <TableRow className=''>
                         <TableCell>
                             <Box className='flex flex-col'>
-                                <h5>{discount.name}</h5>
-                                <span>  {discount.discountType == DiscountType.ProductBasedDiscount && "ProductBasedDiscount"}  </span>
-                                <span>  {discount.discountType == DiscountType.DynamicDiscount && "DynamicDiscount"}  </span>
+                                {!showUpdateActions && <h5 className='uppercase'  >  {discount.name}</h5>}
+                                {showUpdateActions && <FormControl>
+                                    <TextField
+                                        value={discount.name}
+                                        onChange={(e: any) => { onAnyPropertyChanged && onAnyPropertyChanged("name", e.target.value!) }}
+                                        label={"discountName"}></TextField>
+                                </FormControl>}
                             </Box>
-
                         </TableCell>
                     </TableRow>
+
 
                     <TableRow>
                         <TableCell>
@@ -47,6 +51,7 @@ const DiscountSpecialBasedComponent: React.FC<DiscountSpecialtBasedComponentProp
                                 <Box className="flex flex-col">
                                     <div>  indirimOranı :   {discount.discountPercentage}</div>
                                     <div>  kaçKezUygulanabilir :   {discount.maxApplicableTimes}</div>
+                                    <div>  endDate :   {discount.endDateUtc ? discount.getLocaleDate()?.toLocaleString() : ""}</div>
                                 </Box>
                             </Box>
 
@@ -107,17 +112,19 @@ const DiscountSpecialBasedComponent: React.FC<DiscountSpecialtBasedComponentProp
                     {showUpdateActions &&
                         <TableRow>
                             <TableCell sx={{ padding: 1 }}>
-
                                 <MyDateTimePicker
+                                    valueAsUtc={discount.getLocaleDate() ?? new Date()}
                                     onValueChanged={(date) => {
+                                        console.log(date?.toUTCString())
                                         onAnyPropertyChanged &&
-                                            onAnyPropertyChanged("endDate", date!)
+                                            onAnyPropertyChanged("endDateUtc", date!.toUTCString())
                                     }}
                                     slotProps={{ textField: { variant: "outlined", fullWidth: true } }}
                                     label={'İndirimBitişTarihi'} />
                             </TableCell>
                         </TableRow>
                     }
+
 
 
 
@@ -151,10 +158,13 @@ const DiscountSpecialBasedComponent: React.FC<DiscountSpecialtBasedComponentProp
 
                     {showUpdateActions && < TableRow >
                         <TableCell align='right' sx={{ padding: 1 }}>
-                            <Button variant='outlined' color='secondary' startIcon={<Save />}>Save</Button>
+                            <Button variant='outlined' color='secondary'
+                                onClick={(e: any) => {
+                                    onSaveClicked && onSaveClicked();
+                                }}
+                                startIcon={<Save />}>Save</Button>
                         </TableCell>
                     </TableRow>}
-
                 </TableBody>
             </Table>
 

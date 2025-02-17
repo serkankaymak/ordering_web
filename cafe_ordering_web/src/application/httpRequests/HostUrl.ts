@@ -19,10 +19,16 @@ const UPDATE_MENU_URL = `${MENU_URL}/updatemenu`;
 
 
 const GET_DİSCOUNTS_URL = `${DİSCOUNT_URL}/discounts`;
-const CREATE_DİSCOUNT_URL = `${DİSCOUNT_URL}/creatdiscount`;
+const CREATE_DİSCOUNT_URL = `${DİSCOUNT_URL}/creatediscount`;
 const UPDATE_DİSCPUNT_URL = `${DİSCOUNT_URL}/updatediscount`;
 
 export default class ApiUrls {
+    static GetUpdateDiscountUrl(): string {
+        return UPDATE_DİSCPUNT_URL;
+    }
+    static GetCreateDiscountUrl(): string {
+       return CREATE_DİSCOUNT_URL;
+    }
 
     static GetDiscountUrl() {return DİSCOUNT_URL; }
     static GetDiscountsUrl(): string { return GET_DİSCOUNTS_URL; }

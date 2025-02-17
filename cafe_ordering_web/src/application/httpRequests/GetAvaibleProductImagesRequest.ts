@@ -12,7 +12,6 @@ const fetchProductImages = async (url: string): Promise<ApiResponse<string[]>> =
         "Content-Type": "application/json",
       },
     });
-    console.log("response", response);
     // Başarılı ise veriyi ApiResponse.success ile sarmalayıp döndürüyoruz.
     return ApiResponse.success(response.data);
   } catch (error: any) {

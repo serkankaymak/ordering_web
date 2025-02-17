@@ -47,12 +47,16 @@ const DiscountProductBasedComponent: React.FC<DiscountProductBasedComponentProps
 
                     <TableBody>
 
-                        <TableRow>
+                        <TableRow className=''>
                             <TableCell>
                                 <Box className='flex flex-col'>
-                                    <h5>{discount.name}</h5>
-                                    <span>  {discount.discountType == DiscountType.ProductBasedDiscount && "ProductBasedDiscount"}  </span>
-                                    <span>  {discount.discountType == DiscountType.DynamicDiscount && "DynamicDiscount"}  </span>
+                                    {!showUpdateActions && <h5 className='uppercase'  >  {discount.name}</h5>}
+                                    {showUpdateActions && <FormControl>
+                                        <TextField
+                                            value={discount.name}
+                                            onChange={(e: any) => { onAnyPropertyChanged && onAnyPropertyChanged("name", e.target.value!) }}
+                                            label={"discountName"}></TextField>
+                                    </FormControl>}
                                 </Box>
                             </TableCell>
                         </TableRow>
@@ -61,6 +65,7 @@ const DiscountProductBasedComponent: React.FC<DiscountProductBasedComponentProps
                             <TableCell>
                                 <div>  discountPercentage :   {discount.discountPercentage}</div>
                                 <div>  maxApplicableTimes :   {discount.maxApplicableTimes}</div>
+                                <div>  endDate :   {discount.endDateUtc ? discount.getLocaleDate()?.toLocaleString() : ""}</div>
                             </TableCell>
                         </TableRow>
 
@@ -117,14 +122,15 @@ const DiscountProductBasedComponent: React.FC<DiscountProductBasedComponentProps
 
                         }
 
-
                         {showUpdateActions &&
                             <TableRow>
                                 <TableCell sx={{ padding: 1 }}>
                                     <MyDateTimePicker
+                                        valueAsUtc={discount.getLocaleDate() ?? new Date()}
                                         onValueChanged={(date) => {
+                                            console.log(date?.toUTCString())
                                             onAnyPropertyChanged &&
-                                                onAnyPropertyChanged("endDate", date!)
+                                                onAnyPropertyChanged("endDateUtc", date!.toUTCString())
                                         }}
                                         slotProps={{ textField: { variant: "outlined", fullWidth: true } }}
                                         label={'İndirimBitişTarihi'} />
@@ -132,13 +138,15 @@ const DiscountProductBasedComponent: React.FC<DiscountProductBasedComponentProps
                             </TableRow>
                         }
 
+
                         <TableRow>
                             <TableCell>
-                                <Box className="flex justify-end mt-2 mb-3">
+
+                                {showUpdateActions && <Box className="flex justify-end mt-2 mb-3">
                                     <Button
                                         onClick={(e: any) => { setisOpenProductSelectorModal(true); }}
                                         variant='outlined' color='secondary' startIcon={<Add></Add>}>Add Product</Button>
-                                </Box>
+                                </Box>}
 
                                 {discount.discountItems.map((d, i) =>
                                     <DiscountItemComponent
@@ -164,10 +172,10 @@ const DiscountProductBasedComponent: React.FC<DiscountProductBasedComponentProps
                             <TableCell>
                                 <Box className='flex flex-col items-end'>
                                     <span>
-                                        ToplamÜrünFiyatı : {ArrayListStream.fromList(discount.discountItems).sum(x => x?.productsPrice!)} TL
+                                        ToplamÜrünFiyatı : {discount.getProductsPrice()} TL
                                     </span>
                                     <span>
-                                        İndirimliFiyatı : {10.00} TL
+                                        İndirimliFiyatı : {discount.getDiscountedProductsPrice()} TL
                                     </span>
                                 </Box>
                             </TableCell>
@@ -203,18 +211,32 @@ const DiscountProductBasedComponent: React.FC<DiscountProductBasedComponentProps
             </TableContainer>
 
 
-            <MyModal isOpen={isOpenProductSelectorModal}
-                onCloseClicked={() => { setisOpenProductSelectorModal(false) }} >
-                <ProductSelector
-                    products={products}
-                    onChooseButtonClicked={function (selectedProduct: ProductModel): void {
-                        setisOpenProductSelectorModal(false)
-                        var newDİscountItem = new DiscountItemModel({ productId: selectedProduct.id, product: selectedProduct, requiredQuantity: 1 })
-                        discount.discountItems = [...discount.discountItems, newDİscountItem]
-                        onAnyPropertyChanged && onAnyPropertyChanged("discountItems", discount.discountItems)
-                    }} ></ProductSelector>
+            {showUpdateActions &&
+                <MyModal isOpen={isOpenProductSelectorModal}
+                    onCloseClicked={() => { setisOpenProductSelectorModal(false) }} >
+                    <ProductSelector
+                        products={products}
+                        onChooseButtonClicked={function (selectedProduct0: ProductModel): void {
+                            setisOpenProductSelectorModal(false)
+                            const selectedProduct = selectedProduct0.copy({ products: [] })
+                            const existing = discount.discountItems.find(x => x.productId == selectedProduct.id);
+                            if (existing) {
+                                var newDİscountItem = existing.copy({ requiredQuantity: existing.requiredQuantity + 1 })
+                                discount.discountItems = [...discount.discountItems.filter(x => x.productId != selectedProduct.id), newDİscountItem]
+                                onAnyPropertyChanged && onAnyPropertyChanged("discountItems", discount.discountItems)
+                            }
+                            else {
+                                var newDİscountItem = new DiscountItemModel({ productId: selectedProduct.id, product: selectedProduct, requiredQuantity: 1 })
+                                discount.discountItems = [...discount.discountItems, newDİscountItem]
+                                onAnyPropertyChanged && onAnyPropertyChanged("discountItems", discount.discountItems)
+                            }
 
-            </MyModal>
+                        }} ></ProductSelector>
+
+                </MyModal>
+            }
+
+
 
         </>
 

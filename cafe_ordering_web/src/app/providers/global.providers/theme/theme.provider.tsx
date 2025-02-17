@@ -1,12 +1,10 @@
-
-'use client'
+"use client";
 
 import React, { createContext, useContext, useEffect, useState, ReactNode } from "react";
 import { ThemeProvider as MUIThemeProvider, createTheme } from "@mui/material/styles";
 import { ThemeMode, themeService } from "@/application/services/theme/ThemeService";
 import { darkTheme } from "@/application/services/theme/DarkTheme";
 import { lightTheme } from "@/application/services/theme/LightTheme";
-import { Logcat } from "@/shared/LogCat";
 import CssBaseline from '@mui/material/CssBaseline';
 
 interface ThemeContextProps {
@@ -17,24 +15,37 @@ interface ThemeContextProps {
 const ThemeContext = createContext<ThemeContextProps | undefined>(undefined);
 
 export const ThemeProvider = ({ children }: { children: ReactNode; }) => {
+  // İlk değeri themeService üzerinden alıyoruz. Sunucuda sabit bir değer sağlanabilir.
   const [themeMode, setThemeMode] = useState<ThemeMode>(themeService.themeMode);
+  const [mounted, setMounted] = useState(false);
 
-  const toggleTheme = () => { themeService.toggleTheme(); };
+  const toggleTheme = () => {
+    themeService.toggleTheme();
+  };
+
+  // Mevcut themeMode'a göre MUI teması oluşturuluyor.
   const theme = createTheme(themeMode === ThemeMode.DARK ? darkTheme : lightTheme);
 
   useEffect(() => {
+    setMounted(true); // Client mount olduktan sonra mounted true olacak.
     const listener = (newThemeMode: ThemeMode) => {
-      Logcat.Debug(`Theme changed to: ${newThemeMode}`);
       setThemeMode(newThemeMode);
     };
     themeService.addOnChangeListener(listener);
-    return () => { };
+    return () => {
+      // Eğer themeService üzerinde removeOnChangeListener varsa, temizleyin.
+      // themeService.removeOnChangeListener(listener);
+    };
   }, []);
+
+  // Eğer component henüz mount olmadıysa hiçbir şey render etmeyin.
+  if (!mounted) {
+    return null;
+  }
 
   return (
     <ThemeContext.Provider value={{ themeMode, toggleTheme }}>
       <MUIThemeProvider theme={theme}>
-        {/**CssBaseline bileşeni, tarayıcıların varsayılan stillerini sıfırlar ve temanızın stil ayarlarını uygular. */}
         <CssBaseline />
         {children}
       </MUIThemeProvider>

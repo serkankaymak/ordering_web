@@ -1,11 +1,10 @@
 'use client'
-import { GetMenusRequest } from '@/application/httpRequests/menu/GetMenusRequest';
-import { OrderItemModel } from '@/domain/OrderModels';
-import { ProductModel } from '@/domain/ProductModels';
 import { ServiceResponse } from '../ServiceResponse';
 import { DiscountModel } from '@/domain/DiscountModels';
 import { GetDiscountsRequest } from '@/application/httpRequests/discount/GetDiscountsRequest';
 import { GetDiscountByIdRequest } from '@/application/httpRequests/discount/GetDiscountByIdRequest';
+import { CreateDiscountCommand, CreateDiscountRequest } from '@/application/httpRequests/discount/CreateDiscountRequest';
+import { UpdateDiscountCommand, UpdateDiscountRequest } from '@/application/httpRequests/discount/UpdateDiscountRequest';
 
 export interface IDiscountService {
   loadDiscounts(): Promise<ServiceResponse<DiscountModel[]>>;
@@ -49,5 +48,18 @@ export class DiscountService implements IDiscountService {
     }
     return ServiceResponse.failure(response.error!);
   }
+
+
+  public async createDiscount(command: CreateDiscountCommand) {
+    const response = CreateDiscountRequest.send(command);
+    if ((await response).isSuccess) return ServiceResponse.success(null);
+    return ServiceResponse.failure((await response).error!);
+  }
+  public async updateDiscount(command: UpdateDiscountCommand) {
+    const response = UpdateDiscountRequest.send(command);
+    if ((await response).isSuccess) return ServiceResponse.success(null);
+    return ServiceResponse.failure((await response).error!);
+  }
+
 
 }

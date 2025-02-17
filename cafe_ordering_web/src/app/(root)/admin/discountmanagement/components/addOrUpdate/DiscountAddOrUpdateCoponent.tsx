@@ -55,9 +55,18 @@ const DiscountAddOrUpdateComponent: IComponent<DiscountAddOrUpdateComponentProps
             )}
 
             <DiscountComponent
+
+                onSaveClicked={() => { onSubmitClicked && onSubmitClicked(updatedDiscount, null) }}
+
                 onAnyPropertyChanged={(key, value) => {
                     if (key == "maxApplicableTimes" && value == 0) return;
-                    setUpdatedDiscount(updatedDiscount.copy({ [key]: value }));
+                    const newDiscount = updatedDiscount.copy({ [key]: value });
+                    newDiscount.discountItems = newDiscount.discountItems.sort((x1, x2) => x1.requiredQuantity >= x2.requiredQuantity ? 1 : 0);
+                    console.log(key);
+                    if (key == "endDateUtc") {
+                        console.log(value);
+                    }
+                    setUpdatedDiscount(newDiscount);
                 }}
                 showUpdateActions={true}
                 discount={updatedDiscount}

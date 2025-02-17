@@ -14,12 +14,13 @@ interface DiscountComponentProps {
   onDeleteClicked?: (discountId: number) => void;
   showUpdateActions?: boolean;
   onAnyPropertyChanged?: (key: keyof DiscountModel, value: any) => void
+  onSaveClicked?: () => void;
 }
 
 export default function DiscountComponent({
   discount, onDeleteClicked, onUpdateClicked,
   showUpdateActions = false,
-  onAnyPropertyChanged
+  onAnyPropertyChanged, onSaveClicked
 }: DiscountComponentProps) {
   // Eğer discount.type ProductBasedDiscount ise DiscountItemProductComponent render edilir.
   if (discount.discountType === DiscountType.ProductBasedDiscount) {
@@ -29,6 +30,7 @@ export default function DiscountComponent({
       showUpdateActions={showUpdateActions}
       discount={discount}
       onAnyPropertyChanged={onAnyPropertyChanged}
+      onSaveClicked={onSaveClicked && onSaveClicked}
     />
   }
   if (discount.discountType === DiscountType.DynamicDiscount) {
@@ -38,6 +40,7 @@ export default function DiscountComponent({
       showUpdateActions={showUpdateActions}
       discount={discount}
       onAnyPropertyChanged={onAnyPropertyChanged}
+      onSaveClicked={onSaveClicked && onSaveClicked}
     />;
   }
   if (discount.discountType === DiscountType.CategoryBasedDiscount) {
@@ -47,6 +50,7 @@ export default function DiscountComponent({
       showUpdateActions={showUpdateActions}
       discount={discount}
       onAnyPropertyChanged={onAnyPropertyChanged}
+      onSaveClicked={onSaveClicked && onSaveClicked}
     />
   }
   throw new Error("discount tipi bulunamadı!!");

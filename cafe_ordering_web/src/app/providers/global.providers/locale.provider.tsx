@@ -15,6 +15,7 @@ interface LocaleContextProps {
 const LocaleContext = createContext<LocaleContextProps | undefined>(undefined);
 
 export const LocaleProvider = ({ children }: { children: ReactNode }) => {
+  const [mounted, setMounted] = useState(false);
   const [languageMode, setLanguageMode] = useState(localizationService.languageMode);
 
   const listener = (newLanguageMode: LanguageMode) => {
@@ -23,6 +24,7 @@ export const LocaleProvider = ({ children }: { children: ReactNode }) => {
   };
 
   useEffect(() => {
+    setMounted(true); // Client mount olduktan sonra mounted true olacak.
     localizationService.addOnChangeListener(listener);
     return () => { };
   }, []);

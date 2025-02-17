@@ -16,19 +16,21 @@ const UpdateProductPage: React.FC = () => {
   const router = useRouter();
   const params = useParams(); // Dinamik parametreleri almak için
   const productId = params?.productId;
-  const [product, setProduct] = useState<ProductModel | null>(null);
+  const [product, setProduct] = useState<ProductModel>(ProductModel.getEmptyInstance());
   const [productsImages, setProductsImages] = useState<string[]>([]);
   const [categories, setCategories] = useState<CategoryModel[]>([]);
 
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
   useEffect(() => {
+
+    if (product.id == Number(productId!)) return;
+
     productService.loadProductImages().then(() => { setProductsImages(productService.avaibleProductImages) })
     productService.loadCategories().then(() => { setCategories(productService.categories) })
 
     if (productId) {
       productService.GetProductWithCategoriesById(Number(productId)).then(p => {
-        console.log(p);
         setProduct(p.data!);
         setIsLoading(false);
       });
