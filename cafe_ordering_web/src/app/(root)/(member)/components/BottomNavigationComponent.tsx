@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, BottomNavigation, BottomNavigationAction, Badge, Menu } from '@mui/material';
+import { Box, BottomNavigation, BottomNavigationAction, Badge, Menu, Paper, Button } from '@mui/material';
 import { Home, Search, Person, ShoppingCart, ContactMail, Info, MenuBook, TextSnippet } from '@mui/icons-material';
 import { useRouter } from 'next/navigation';
 import { IComponent } from '@/app/types/ViewTypes';
@@ -15,6 +15,7 @@ const BottomNavigationComponent: IComponent<BottomNavigationComponentProps> = ({
 
   return (
     <Box className={`${className || ''}`}>
+
       <BottomNavigation className=''>
         <BottomNavigationAction label="Test" value="/test" icon={<TextSnippet />} />
         <BottomNavigationAction label="Home" value="/" icon={<Home />} />

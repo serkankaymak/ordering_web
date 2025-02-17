@@ -23,10 +23,10 @@ export default function AdminLayout({
         <Box>
             {/* Renk şemasını ayarlayan script */}
             {/**      <InitColorSchemeScript attribute="class" />  */}
-       
+
 
             {/* Üstte AppBar: Navigasyon linkleri ve tema değiştirme butonu */}
-           <AdminHeaderComponent></AdminHeaderComponent>
+            <AdminHeaderComponent></AdminHeaderComponent>
 
             {/* AppBar yüksekliğini telafi etmek için boş bir Toolbar */}
             <Toolbar />
@@ -36,7 +36,7 @@ export default function AdminLayout({
                 ref={scrollableDivRef}
                 sx={{
                     p: 2,
-                    height: isSmallScreen ? '95vh' : '100vh' ,
+                    height: isSmallScreen ? '95vh' : '100vh',
                     maxHeight: "calc(100vh - 65px)",
                     overflowY: "auto",
                 }}
@@ -47,7 +47,7 @@ export default function AdminLayout({
                 <ScrollToTopButton scrollableRef={scrollableDivRef} />
             </Box>
 
-        
+
         </Box>
     );
 }

@@ -1,14 +1,13 @@
 "use client";
 
 import React, { useState, MouseEvent, useEffect } from 'react';
-import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
-import { Box, Link, List, ListItem, Paper, useTheme } from '@mui/material';
-import { DarkMode, LightMode } from '@mui/icons-material';
+import { Box, List, ListItem, ListItemIcon, useTheme } from '@mui/material';
+import { AccountCircle, DarkMode, LightMode, Login, Logout, Settings } from '@mui/icons-material';
 import { useMyLocale } from "@/app/providers/global.providers/locale.provider";
 import { useMyTheme } from "@/app/providers/global.providers/theme/theme.provider";
 import { ThemeMode } from '@/application/services/theme/ThemeService';
@@ -27,43 +26,50 @@ const HeaderComponent: IComponent<HeaderComponentProps> = ({ className }) => {
     const theme = useTheme();
     const { languageMode, translate, toggleLanguageAsync } = useMyLocale();
     const { themeMode, toggleTheme } = useMyTheme();
-    const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+    const [languageMenuAnchor, setLanguageMenuAnchor] = useState<null | HTMLElement>(null);
+    const [profileMenuAnchor, setProfileMenuAnchor] = useState<null | HTMLElement>(null);
     const [active, setActive] = useState('About');
     const router = useRouter();
 
     useEffect(() => { }, []);
-
-    const handleMenuOpen = (event: MouseEvent<HTMLElement>) => {
-        setAnchorEl(event.currentTarget);
-    };
-
-    const handleMenuClose = () => {
-        setAnchorEl(null);
-    };
 
     const handleNavigation = (path: string) => {
         router.push(path);
         setActive(path);
     };
 
+    const handleLanguageMenuOpen = (event: MouseEvent<HTMLElement>) => {
+        setLanguageMenuAnchor(event.currentTarget);
+    };
 
+    const handleLanguageMenuClose = () => {
+        setLanguageMenuAnchor(null);
+    };
+
+    const handleProfileMenuOpen = (event: MouseEvent<HTMLElement>) => {
+        setProfileMenuAnchor(event.currentTarget);
+    };
+
+    const handleProfileMenuClose = () => {
+        setProfileMenuAnchor(null);
+    };
 
     return (
-
-        <Toolbar variant='dense' >
-
+        <Toolbar variant="dense">
             <Box
                 style={{ flexGrow: 1 }}
                 onClick={() => handleNavigation('/')}
                 sx={{ cursor: 'pointer' }}
             >
                 <Typography
-
                     sx={{
                         fontSize: 30,
-                        fontFamily: 'Dancing Script, cursive', cursor: 'pointer'
+                        fontFamily: 'Dancing Script, cursive',
+                        cursor: 'pointer'
                     }}
-                    className="header text-xl sm:text-5xl" component="div">
+                    className="header text-xl sm:text-5xl"
+                    component="div"
+                >
                     Cafe Klassy
                 </Typography>
             </Box>
@@ -88,33 +94,77 @@ const HeaderComponent: IComponent<HeaderComponentProps> = ({ className }) => {
                 </List>
             </Box>
 
-            {/* Sağ taraf: Dil ve Tema Seçenekleri */}
+            {/* Sağ taraf: Dil, Tema ve Profil Seçenekleri */}
             <Box>
-                <IconButton color="inherit" onClick={handleMenuOpen}>
+                {/* Dil Menüsü */}
+                <IconButton color="inherit" onClick={handleLanguageMenuOpen}>
                     {languageMode === LanguageMode.EN ? (
                         <ReactCountryFlag countryCode="US" svg />
                     ) : (
                         <ReactCountryFlag countryCode="TR" svg />
                     )}
                 </IconButton>
-
-                <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleMenuClose}>
+                <Menu
+                    anchorEl={languageMenuAnchor}
+                    open={Boolean(languageMenuAnchor)}
+                    onClose={handleLanguageMenuClose}
+                >
                     <MenuItem
                         onClick={() => {
                             toggleLanguageAsync();
-                            //handleMenuClose();
+                            //handleLanguageMenuClose();
                         }}
                     >
-                        {languageMode === LanguageMode.TR ?
-                            (<ReactCountryFlag countryCode="US" svg />) :
-                            (<ReactCountryFlag countryCode="TR" svg />)}
+                        {languageMode === LanguageMode.TR ? (
+                            <ReactCountryFlag countryCode="US" svg />
+                        ) : (
+                            <ReactCountryFlag countryCode="TR" svg />
+                        )}
                         &nbsp; {languageMode === LanguageMode.TR ? translate(LocalizationKeys.en) : translate(LocalizationKeys.tr)}
                     </MenuItem>
                 </Menu>
 
+                {/* Tema Değiştir */}
                 <IconButton onClick={toggleTheme}>
                     {themeMode === ThemeMode.DARK ? <LightMode /> : <DarkMode />}
                 </IconButton>
+
+                {/* Profil Menüsü */}
+                <IconButton color="inherit" onClick={handleProfileMenuOpen}>
+                    <AccountCircle />
+                </IconButton>
+                <Menu
+                    anchorEl={profileMenuAnchor}
+                    open={Boolean(profileMenuAnchor)}
+                    onClose={handleProfileMenuClose}
+                    anchorOrigin={{
+                        vertical: 'top',
+                        horizontal: 'right',
+                    }}
+                    transformOrigin={{
+                        vertical: 'top',
+                        horizontal: 'right',
+                    }}
+                >
+                    <MenuItem onClick={() => { console.log('Sign In tıklandı'); handleProfileMenuClose(); }}>
+                        <ListItemIcon>
+                            <Login fontSize="small" />
+                        </ListItemIcon>
+                        Sign In
+                    </MenuItem>
+                    <MenuItem onClick={() => { console.log('Sign Out tıklandı'); handleProfileMenuClose(); }}>
+                        <ListItemIcon>
+                            <Logout fontSize="small" />
+                        </ListItemIcon>
+                        Sign Out
+                    </MenuItem>
+                    <MenuItem onClick={() => { console.log('Preferences tıklandı'); handleProfileMenuClose(); }}>
+                        <ListItemIcon>
+                            <Settings fontSize="small" />
+                        </ListItemIcon>
+                        Preferences
+                    </MenuItem>
+                </Menu>
             </Box>
         </Toolbar>
     );

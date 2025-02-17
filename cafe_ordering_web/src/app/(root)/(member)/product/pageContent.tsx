@@ -94,7 +94,7 @@ const MenuPageContent: IPageContent<MenuPageContentProps> = () => {
     return (
         <Box className="" >
             {/* Sticky Header */}
-            <Paper variant='elevation' elevation={0} sx={{}}
+            <Paper variant='elevation' elevation={10} sx={{}}
                 className="sticky top-0 z-10 min-h-[60px] flex  items-center justify-center">
                 <Box className="overflow-x-auto
                  whitespace-nowrap   scrollbar-thin scrollbar-track-gray-200  scrollbar-thumb-gray-500">

@@ -22,11 +22,21 @@ const AdminHeaderComponent: React.FC = () => {
   const router = useRouter();
 
   return (
-    <AppBar color='secondary' elevation={4} position="fixed">
-      <Toolbar 
-       sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <Box sx={{ flexGrow: 1, cursor: 'pointer' }} onClick={() => router.push('/')}>
-          <Typography className="header text-xl sm:text-3xl" component="div">
+    <AppBar color='default' elevation={4}>
+      <Toolbar
+        sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <Box
+          style={{ flexGrow: 1 }}
+          onClick={() => router.push('/')}
+          sx={{ cursor: 'pointer' }}
+        >
+          <Typography
+
+            sx={{
+              fontSize: 30,
+              fontFamily: 'Dancing Script, cursive', cursor: 'pointer'
+            }}
+            className="header text-xl sm:text-5xl" component="div">
             Cafe Klassy
           </Typography>
         </Box>

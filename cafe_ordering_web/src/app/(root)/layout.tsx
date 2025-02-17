@@ -13,12 +13,16 @@ export default function RootLayout({
 }>) {
 
   return (
-    <html lang="en" suppressHydrationWarning={true}>
+    <html
+      lang="en" suppressHydrationWarning={true}>
+      <head>
+        <title>Başlık Buraya</title>
+      </head>
       <body style={{ overflow: 'hidden' }}
         className={` antialiased  `}
       >
         <AppGlobalProviders>
-          <Paper elevation={0}>
+          <Paper elevation={4}>
             {children}
           </Paper>
 
