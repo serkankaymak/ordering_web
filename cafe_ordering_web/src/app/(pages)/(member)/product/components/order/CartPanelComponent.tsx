@@ -50,7 +50,7 @@ const CartButtonComponent: IComponent<CartButtonComponentProps> = ({ onViewClick
         onIncrease={(productId: number) => addProductToOrder(productId)}
         onDecrease={(productId: number) => removeProductFromOrder(productId)}
         onRemove={(productId: number) => clearProductFromOrder(productId)}
-        onPayed={clearOrder}
+        onOrderSendClicked={clearOrder}
         onViewClicked={onViewClicked}
       />
     </>

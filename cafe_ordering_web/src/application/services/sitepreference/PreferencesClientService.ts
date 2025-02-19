@@ -18,8 +18,6 @@ export class PreferencesClientService {
   // Site tercihlerini günceller (PUT isteği)
   public static async updatePreferences(newPrefs: Partial<SitePreferenceModel>): Promise<SitePreferenceModel> {
     const response = await axios.put<SitePreferenceModel>(this.apiUrl, newPrefs);
-    console.log("new data", newPrefs.useTransitionableProductCard);
-    console.log("response", response);
     var preferenceObj = SitePreferenceModel.fromJson(response.data!);
     return preferenceObj;
   }

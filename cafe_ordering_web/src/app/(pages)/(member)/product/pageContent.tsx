@@ -55,7 +55,6 @@ const MenuPageContent: IPageContent<MenuPageContentProps> = () => {
     const { sitePreferences, updatePreferences } = useSitePreferencesContext();
     const { user } = useUserContext();
 
-
     const helper = new MenuPageContentHelper(products);
 
     const handleOrderClick = (productId: number) => {
@@ -140,6 +139,37 @@ const MenuPageContent: IPageContent<MenuPageContentProps> = () => {
             {/* Ana İçerik */}
             <Box className="flex flex-col items-center p-0">
                 <Box className="w-[100%] md:w-[80%]">
+
+
+                    {user && <>
+                        <Box className="flex flex-col gap-0">
+                            <FormControlLabel
+                                sx={{ "& .MuiTypography-root": { fontSize: 15 }, }}
+                                className='text-wrap text-sm'
+                                onChange={(e: any) => {
+                                    const previous = sitePreferences;
+                                    const updated = sitePreferences?.copy({ useTransitionableProductCard: !previous?.useTransitionableProductCard })
+                                    updatePreferences(updated!);
+                                }}
+                                control={<Checkbox checked={sitePreferences?.useTransitionableProductCard ?? false} />}
+                                label="Use transitionable product card description"
+                            />
+
+                            <FormControlLabel
+                                sx={{ "& .MuiTypography-root": { fontSize: 15 }, }}
+                                className='text-wrap text-sm'
+                                onChange={(e: any) => {
+                                    const previous = sitePreferences;
+                                    const updated = sitePreferences?.copy({ showNameAndPriceOnProductCard: !previous?.showNameAndPriceOnProductCard })
+                                    updatePreferences(updated!);
+                                }}
+                                control={<Checkbox checked={sitePreferences?.showNameAndPriceOnProductCard} />}
+                                label="Show product name and price on product card"
+                            />
+
+                        </Box>
+                    </>}
+
 
                     {renderProductSections()}
                     <ProductDetailBottomSheet

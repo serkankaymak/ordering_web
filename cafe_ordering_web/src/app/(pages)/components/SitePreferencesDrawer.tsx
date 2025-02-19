@@ -30,13 +30,17 @@ const SitePreferencesDrawerComponent: React.FC<SitePreferencesComponentProps> = 
         <input
           style={{ display: "none" }}
           type="checkbox" id="toggler" />
-        <aside className="flex flex-col  ">
+        <aside className=" flex flex-col 
+         fixed top-0 left-0 h-screen w-[250px] z-50 my-shadow font-[cursive]"
+        >
           <Paper sx={{ height: '100vh' }}
-            className="flex flex-col aside-wrapper   ">
-            <h1 className="logo-text mt-8 ">
+            className="flex flex-col px-[20px] box-border  ">
+            <h1 className=" font-[cursive] text-[35px] relative  mt-8 ">
               <span>Preferences</span>
               <label htmlFor="toggler">
-                <i className="fas fa-bars sidebar-toggle"></i>
+                <i
+
+                  className="fas fa-bars absolute top-[80px] left-[215px] px-[11px] py-[4px] text-center rounded-[8px] cursor-pointer"></i>
               </label>
               <hr></hr>
             </h1>
@@ -57,16 +61,26 @@ const SitePreferencesDrawerComponent: React.FC<SitePreferencesComponentProps> = 
                     const updated = sitePreferences?.copy({ useTransitionableProductCard: !previous?.useTransitionableProductCard })
                     updatePreferences(updated!);
                   }}
-                  control={<Checkbox checked={sitePreferences?.useTransitionableProductCard} />}
-                  label="Use Transitionable ProductCard"
+                  control={<Checkbox checked={sitePreferences?.useTransitionableProductCard ?? false} />}
+                  label="Use transitionable product card description"
                 />
-              
+                <FormControlLabel
+                  sx={{ "& .MuiTypography-root": { fontSize: 15 }, }}
+                  className='text-wrap text-sm'
+                  onChange={(e: any) => {
+                    const previous = sitePreferences;
+                    const updated = sitePreferences?.copy({ showNameAndPriceOnProductCard: !previous?.showNameAndPriceOnProductCard })
+                    updatePreferences(updated!);
+                  }}
+                  control={<Checkbox checked={sitePreferences?.showNameAndPriceOnProductCard} />}
+                  label="Show product name and price on product card"
+                />
+
               </Box>
 
-              <ul>
-                <li><hr></hr></li>
-                <li><i className="fas fa-headset"></i> Get Help</li>
-                <li><i className="fas fa-comment"></i> Chat With Us</li>
+              <ul className='pl-0 pb-10'>
+                <li className="list-none text-[18px] py-[10px] cursor-pointer"><hr></hr></li>
+                <li className="list-none text-[18px] py-[10px] cursor-pointer"><i className="fas fa-headset w-[50px]"></i> Get Help</li>
               </ul>
 
             </div>

@@ -63,9 +63,9 @@ const DiscountProductBasedComponent: React.FC<DiscountProductBasedComponentProps
 
                         <TableRow>
                             <TableCell>
-                                <div>  discountPercentage :   {discount.discountPercentage}</div>
-                                <div>  maxApplicableTimes :   {discount.maxApplicableTimes}</div>
-                                <div>  endDate :   {discount.endDateUtc ? discount.getLocaleDate()?.toLocaleString() : ""}</div>
+                                <div>  indirimOranı :   {discount.discountPercentage}</div>
+                                <div>  kaçKezUygulanabilir :   {discount.maxApplicableTimes}</div>
+                                <div>    Sona Erme Tarihi :   {discount.endDateUtc ? discount.getLocaleDate()?.toLocaleString() : ""}</div>
                             </TableCell>
                         </TableRow>
 

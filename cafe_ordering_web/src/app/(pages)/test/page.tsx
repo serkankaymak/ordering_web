@@ -17,8 +17,8 @@ const TestPage: React.FC = () => {
 
     return (
 
-        <Box sx={{ overflow: 'scroll' }}>
-            {JSON.stringify(preferences)}
+        <Box >
+   
         </Box>
 
 

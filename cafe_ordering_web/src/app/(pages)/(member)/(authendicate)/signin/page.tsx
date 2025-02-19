@@ -9,7 +9,7 @@ import { useUserContext } from '@/app/providers/global.providers/user.povider';
 
 const SigninPage: React.FC = () => {
   const { signIn } = useUserContext();
-  const [formData, setFormData] = useState({ username: '', password: '' });
+  const [formData, setFormData] = useState({ email: '', password: '' });
   const [error, setError] = useState<string | null>(null);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -23,7 +23,7 @@ const SigninPage: React.FC = () => {
     e.preventDefault();
     setError(null);
     const command: SigninCommand = {
-      email: formData.username,
+      email: formData.email,
       password: formData.password,
     };
     const response = await signIn(command);
@@ -43,9 +43,10 @@ const SigninPage: React.FC = () => {
           <TextField
             fullWidth
             margin="normal"
-            label="Username"
-            name="username"
-            value={formData.username}
+            label="Email"
+            name="email"
+            type='email'
+            value={formData.email}
             onChange={handleChange}
             required
           />

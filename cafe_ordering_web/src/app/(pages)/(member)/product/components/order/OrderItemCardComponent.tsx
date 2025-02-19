@@ -85,52 +85,51 @@ const OrderItemComponent: IComponent<OrderItemComponentProps> = ({
             }}
         >
 
-            <Box className="flex items-center w-full">
+            <Box className="flex items-start w-full">
                 {/* Ürün Resmi */}
 
-                {
-                    orderItem.product?.imagePath ?
-                        <><CardMedia
-                            component="img"
-                            sx={{
-                                width: isSmallScreen ? "50px" : "80px",
-                                height: isSmallScreen ? "50px" : "80px",
-                                objectFit: "cover", borderRadius: 2
-                            }}
-                            image={orderItem.product?.getImagePathForShow()}
-                            alt={orderItem.product?.name}
-                        /></>
-                        :
-                        <>
-                            <Box style={{
-                                width: isSmallScreen ? "50px" : "80px",
-                                height: isSmallScreen ? "50px" : "80px",
-                                objectFit: "cover", borderRadius: 2
-                            }}
-                                className="w-full object-cover  ">
-                                <Slider {...settings}>
-                                    {
-                                        orderItem!.product &&
-                                        orderItem!.product!.products && orderItem!.product!.products.map((prod: ProductModel, index) => (
-                                            <div key={prod.id || index}>
-                                                <CardMedia
-                                                    style={{
-
-                                                        objectFit: "cover", borderRadius: 2,
-                                                        width: isSmallScreen ? "50px" : "80px",
-                                                        height: isSmallScreen ? "50px" : "80px",
-                                                    }}
-                                                    component="img"
-                                                    image={prod.getImagePathForShow()!}
-                                                    alt={prod.name}
-                                                />
-                                            </div>
-                                        ))}
-                                </Slider>
-                            </Box>
-                        </>
+                {orderItem.product?.imagePath &&
+                    <><CardMedia
+                        component="img"
+                        sx={{
+                            width: isSmallScreen ? "50px" : "80px",
+                            height: isSmallScreen ? "50px" : "80px",
+                            objectFit: "cover", borderRadius: 2
+                        }}
+                        image={orderItem.product?.getImagePathForShow()}
+                        alt={orderItem.product?.name}
+                    /></>
                 }
+                {!orderItem.product?.imagePath &&
+                    <>
+                        <Box style={{
+                            width: isSmallScreen ? "50px" : "80px",
+                            height: isSmallScreen ? "50px" : "80px",
+                            objectFit: "cover", borderRadius: 2
+                        }}
+                            className="w-full object-cover  ">
+                            <Slider {...settings}>
+                                {
+                                    orderItem!.product &&
+                                    orderItem!.product!.products && orderItem!.product!.products.map((prod: ProductModel, index) => (
+                                        <div key={prod.id || index}>
+                                            <CardMedia
+                                                style={{
 
+                                                    objectFit: "cover", borderRadius: 2,
+                                                    width: isSmallScreen ? "50px" : "80px",
+                                                    height: isSmallScreen ? "50px" : "80px",
+                                                }}
+                                                component="img"
+                                                image={prod.getImagePathForShow()!}
+                                                alt={prod.name}
+                                            />
+                                        </div>
+                                    ))}
+                            </Slider>
+                        </Box>
+                    </>
+                }
 
 
                 {/* Ürün Bilgisi */}
@@ -140,12 +139,21 @@ const OrderItemComponent: IComponent<OrderItemComponentProps> = ({
                     <Box className=" w-full flex flex-col sm:flex-row  justify-around">
 
                         <Box>
-                            <Typography className="text-xs sm:text-sm" variant="h6" component="div" fontWeight="bold">
+                            <Typography className="text-xs sm:text-sm"
+                                variant="subtitle1" component="div" fontWeight="bold">
                                 {orderItem.product?.name}
                             </Typography>
 
-                            <Typography className="text-xs sm:text-sm" variant="body1" color="text.primary" fontWeight="bold" fontSize="1.1rem">
+                            <Typography className="text-xs sm:text-sm"
+                                variant="subtitle2" color="text.secondary"
+                                fontWeight="bold" >
                                 Fiyat: ${orderItem.product?.price?.toFixed(2)}
+                            </Typography>
+
+                            <Typography className="text-xs sm:text-sm"
+                                variant="subtitle2" color="text.secondary"
+                                fontWeight="bold" >
+                                Sipariş Adeti: {orderItem.quantity}
                             </Typography>
                         </Box>
 

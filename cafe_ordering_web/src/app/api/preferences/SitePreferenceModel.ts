@@ -3,6 +3,7 @@ export class SitePreferenceModel {
   denemeCount: number = 1;
   showInnerProductsOnProductDetailCard: boolean = true;
   useTransitionableProductCard: boolean = true;
+  showNameAndPriceOnProductCard: boolean = true;
 
   constructor(init?: Partial<SitePreferenceModel>) {
     if (init) {
@@ -31,7 +32,8 @@ export class SitePreferenceModel {
     return new SitePreferenceModel({
       showInnerProductsOnProductDetailCard: json.showInnerProductsOnProductDetailCard ?? true,
       useTransitionableProductCard: json.useTransitionableProductCard ?? true,
-      denemeCount: json.denemeCount ?? 0
+      denemeCount: json.denemeCount ?? 0,
+      showNameAndPriceOnProductCard: json.showNameAndPriceOnProductCard ?? true,
     });
   }
 }

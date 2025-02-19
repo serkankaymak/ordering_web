@@ -9,7 +9,7 @@ import { LoginCommand } from '@/application/httpRequests/user/LoginRequest';
 
 const LoginPage: React.FC = () => {
   const { login } = useUserContext();
-  const [formData, setFormData] = useState({ username: '', password: '' });
+  const [formData, setFormData] = useState({ email: '', password: '' });
   const [error, setError] = useState<string | null>(null);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -23,7 +23,7 @@ const LoginPage: React.FC = () => {
     e.preventDefault();
     setError(null);
     const command: LoginCommand = {
-      email: formData.username,
+      email: formData.email,
       password: formData.password,
     };
     const response = await login(command);
@@ -43,9 +43,10 @@ const LoginPage: React.FC = () => {
           <TextField
             fullWidth
             margin="normal"
-            label="Username"
-            name="username"
-            value={formData.username}
+            label="Email"
+            type='email'
+            name="email"
+            value={formData.email}
             onChange={handleChange}
             required
           />

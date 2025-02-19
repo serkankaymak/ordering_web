@@ -51,7 +51,7 @@ const DiscountSpecialBasedComponent: React.FC<DiscountSpecialtBasedComponentProp
                                 <Box className="flex flex-col">
                                     <div>  indirimOranı :   {discount.discountPercentage}</div>
                                     <div>  kaçKezUygulanabilir :   {discount.maxApplicableTimes}</div>
-                                    <div>  endDate :   {discount.endDateUtc ? discount.getLocaleDate()?.toLocaleString() : ""}</div>
+                                    <div>    Sona Erme Tarihi :   {discount.endDateUtc ? discount.getLocaleDate()?.toLocaleString() : ""}</div>
                                 </Box>
                             </Box>
 

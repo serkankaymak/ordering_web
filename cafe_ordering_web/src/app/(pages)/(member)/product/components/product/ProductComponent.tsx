@@ -73,8 +73,8 @@ const ProductComponent: IComponent<ProductComponentProps> = ({
 }) => {
 
 
-  const { sitePreferences: preferences } = useSitePreferencesContext();
-  const useTransition = preferences?.useTransitionableProductCard;
+  const { sitePreferences } = useSitePreferencesContext();
+  const useTransition = sitePreferences?.useTransitionableProductCard;
 
   return (
     <Box className={`${className}`}>
@@ -122,17 +122,21 @@ const ProductComponent: IComponent<ProductComponentProps> = ({
         `
           }
         >
-          <Box className="hidden sm:inline-block">
-            <Typography variant="body2" className="text-sm font-bold  whitespace-normal">
-              {product.name}
-            </Typography>
-            <Typography
-              variant="subtitle2"
-              className="text-sm whitespace-normal font-bold sm:mt-1 mt-0"
-            >
-              ${product.price.toFixed(2)}
-            </Typography>
-          </Box>
+
+
+          {sitePreferences?.showNameAndPriceOnProductCard && <>
+            <Box className="hidden sm:inline-block">
+              <Typography variant="body2" className="text-sm font-bold  whitespace-normal">
+                {product.name}
+              </Typography>
+              <Typography
+                variant="subtitle2"
+                className="text-sm whitespace-normal font-bold sm:mt-1 mt-0"
+              >
+                ${product.price.toFixed(2)}
+              </Typography>
+            </Box>
+          </>}
 
 
 

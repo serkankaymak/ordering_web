@@ -50,44 +50,63 @@ const ProductDetailCardHeaderComponent: IComponent<ProductDetailCardHeaderCompon
         <TableBody>
           <TableRow>
             {/* Görsel */}
-            <TableCell padding="none" sx={{ minWidth: "40px", maxWidth: "80px" }}>
-              <img
-                src={menu.getImagePathForShow()}
-                alt={menu.name}
-                style={{
-                  marginLeft: 3,
-                  width: isSmallScreen ? "40px" : "80px",
-                  height: isSmallScreen ? "40px" : "80px",
-                  objectFit: "cover",
-                  borderRadius: "4px",
-                }}
-              />
+            <TableCell>
+              <Box sx={{ position: "relative", overflow: "hidden", clear: "both" }}>
+                {/* Resmi sol tarafa float ediyoruz */}
+                <img
+                  src={menu.getImagePathForShow()}
+                  alt={menu.name}
+                  style={{
+                    float: "left",
+                    width: "40px",
+                    height: "40px",
+                    objectFit: "cover",
+                    borderRadius: "4px",
+                    marginRight: "8px",
+                  }}
+                />
+                {/* Ürün adı */}
+                <Box className="flex-1 flex justify-between gap-2">
+                  <Typography
+                    variant="subtitle2"
+                    sx={{
+                      whiteSpace: "normal",
+                      overflowWrap: "break-word",
+                      fontSize: "0.9rem",
+                    }}
+                  >
+                    {menu.name}
+                  </Typography>
+                  <Box className="flex gap-2">
+
+                    {
+                      menu.parent && <Chip size="small" label={"Adet:" + menu.quantity} />
+                    }
+
+                    <Chip size="small" label={"Fiyat:" + menu.price + " TL"} />
+                  </Box>
+
+                </Box>
+
+                {/* Ürün açıklaması; metin, resmin sağında başlayıp gerektiğinde altına geçecektir */}
+                <Typography
+                  variant="body2"
+                  sx={{
+                    mt: 1,
+                    whiteSpace: "normal",
+                    overflowWrap: "break-word",
+                    wordBreak: "break-word",
+                    fontSize: "0.8rem",
+                    color: "text.secondary",
+                  }}
+                >
+                  {menu.description}
+                </Typography>
+                {/* Fiyat */}
+
+              </Box>
             </TableCell>
 
-            {/* Başlık ve Açıklama */}
-            <TableCell padding="normal">
-              <Typography variant="subtitle2" sx={{ textWrap: "wrap", fontSize: "0.9rem" }}>
-                {menu.name}
-              </Typography>
-              <Typography
-                variant="body2"
-                sx={{ textWrap: "wrap", fontSize: "0.8rem", color: "text.secondary" }}
-              >
-                {menu.description}
-              </Typography>
-            </TableCell>
-
-            <TableCell align="right" padding="none" sx={{
-              paddingRight: 2,
-              maxWidth: "120px"
-            }}>
-              <Typography
-                variant="body2"
-                sx={{ textWrap: "nowrap", fontSize: "0.8rem", color: "text.secondary" }}
-              >
-                {menu.price + " TL"}
-              </Typography>
-            </TableCell>
           </TableRow>
 
           {/* Recursive: Alt Menü/Ürün Listeleme */}
@@ -106,11 +125,12 @@ const ProductDetailCardHeaderComponent: IComponent<ProductDetailCardHeaderCompon
           <TableBody>
             <TableRow>
 
-              <TableCell colSpan={3} align="right">
+              <TableCell align="right">
                 <Box className='flex justify-end'>
                   <Box className="text-xs" sx={{ display: "flex", flexDirection: "column" }}>
-                    <span>   Products Price Sum : 20.00</span>
-                    <span>   Menu Price : 20.00</span>
+
+                    {menu.productsPrice && <span>   Toplam Ürün Fiyatı : {menu.productsPrice} TL</span>}
+                    <span>   {menu.productsPrice ? "Menü" : "Ürün "} Fiyatı : {menu.price} TL </span>
                   </Box>
                 </Box>
 

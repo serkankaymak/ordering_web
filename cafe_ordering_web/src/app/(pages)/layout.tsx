@@ -23,7 +23,7 @@ export default function RootLayout({
         className={` antialiased  `}
       >
         <AppGlobalProviders>
-          <Paper elevation={4}>
+          <Paper className="px-2 md:px-0" elevation={4}>
             {children}
           </Paper>
           <ToastContainer aria-label={"toast-container"} />
