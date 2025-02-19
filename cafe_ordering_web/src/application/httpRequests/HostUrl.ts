@@ -4,6 +4,12 @@ const BASE_APİ_URL = process.env.NEXT_PUBLIC_HOST_URL + "/api";
 const PRODUCT_URL = `${BASE_APİ_URL}/Product`
 const MENU_URL = `${BASE_APİ_URL}/Menu`
 const DİSCOUNT_URL = `${BASE_APİ_URL}/Discount`
+const USER_URL = `${BASE_APİ_URL}/User`
+
+
+
+const GET_USERLOGİN_URL = `${USER_URL}/login`;
+const GET_USERSİGNİN_URL = `${USER_URL}/signin`;
 
 
 const PRODUCT_IMAGES_URL = `${PRODUCT_URL}/productimages`;
@@ -22,7 +28,20 @@ const GET_DİSCOUNTS_URL = `${DİSCOUNT_URL}/discounts`;
 const CREATE_DİSCOUNT_URL = `${DİSCOUNT_URL}/creatediscount`;
 const UPDATE_DİSCPUNT_URL = `${DİSCOUNT_URL}/updatediscount`;
 
+
+
+
+
+
+
+
 export default class ApiUrls {
+    static GetSigninUrl(): string {
+        return GET_USERSİGNİN_URL;
+    }
+    static GetLoginUrl(): string {
+        return GET_USERLOGİN_URL;
+    }
     static GetUpdateDiscountUrl(): string {
         return UPDATE_DİSCPUNT_URL;
     }

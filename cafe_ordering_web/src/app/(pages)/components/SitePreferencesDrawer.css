@@ -1,0 +1,73 @@
+@import url("https://pro.fontawesome.com/releases/v5.10.0/css/all.css");
+/* Ana stil */
+
+aside {
+    font-family: cursive;
+    z-index: 50;
+    width: 250px;
+    height: 100vh;
+    position: fixed;
+    top: 0%;
+    box-shadow: 3px 1px 5px 0px rgba(0, 0, 0, 0.75);
+}
+
+aside ul {
+    padding-inline-start: 0;
+}
+
+aside ul li {
+    list-style: none;
+    font-size: 18px;
+    padding: 10px 0;
+    cursor: pointer;
+}
+
+aside ul li .fas {
+    width: 50px;
+}
+
+.aside-wrapper {
+    padding: 0 20px;
+    box-sizing: border-box;
+}
+
+.logo-text {
+    font-family: cursive;
+    font-size: 25px;
+    position: relative;
+}
+
+.sidebar-toggle {
+    position: absolute;
+    top: 80px;
+    left: 215px;
+    padding: 4px 11px;
+    text-align: center;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+/* Sidebar açıldığında (input checked olduğunda) sol tarafa kayar */
+input:checked~aside {
+    left: 0;
+    /* Açılınca görünür olur */
+    transition: left 0.5s ease;
+    /* Kapanırken geçerli olacak animasyon */
+}
+
+/* Sidebar kapalı duruma geçtiğinde animasyonlu kapanma */
+input:not(:checked)~aside {
+    left: -250px;
+    transition: left 0.5s ease;
+    /* Açılırken de animasyonlu olacak */
+}
+
+
+
+
+.custom-checkbox-label input {
+    width: 20px;
+    height: 20px;
+    accent-color: #007bff;
+    /* Checkbox rengi */
+}
