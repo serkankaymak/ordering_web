@@ -4,6 +4,8 @@ export class SitePreferenceModel {
   showInnerProductsOnProductDetailCard: boolean = true;
   useTransitionableProductCard: boolean = true;
   showNameAndPriceOnProductCard: boolean = true;
+  showClientAwaibleDiscounts: boolean = true;
+  showClientDetailedAwaibleDiscounts: boolean = true;
 
   constructor(init?: Partial<SitePreferenceModel>) {
     if (init) {
@@ -34,6 +36,8 @@ export class SitePreferenceModel {
       useTransitionableProductCard: json.useTransitionableProductCard ?? true,
       denemeCount: json.denemeCount ?? 0,
       showNameAndPriceOnProductCard: json.showNameAndPriceOnProductCard ?? true,
+      showClientAwaibleDiscounts: json.showClientAwaibleDiscounts == true,
+      showClientDetailedAwaibleDiscounts: json.showClientDetailedAwaibleDiscounts ?? true
     });
   }
 }

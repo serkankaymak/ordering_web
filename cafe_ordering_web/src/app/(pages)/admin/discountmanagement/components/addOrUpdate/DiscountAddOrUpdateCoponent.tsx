@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { Box, Select, MenuItem, FormControl, InputLabel, SelectChangeEvent, Paper } from "@mui/material";
+import { Box, Select, MenuItem, FormControl, InputLabel, SelectChangeEvent, Paper, Card } from "@mui/material";
 import { IComponent } from "@/app/types/ViewTypes";
 import { DiscountModel, DiscountType } from "@/domain/DiscountModels";
 import DiscountComponent from "../listComponents/DiscountComponent";
@@ -31,7 +31,7 @@ const DiscountAddOrUpdateComponent: IComponent<DiscountAddOrUpdateComponentProps
     };
 
     return (
-        <Paper className=" p-5 flex flex-col items-center justify-center">
+        <Card className=" p-2 sm:p-10  flex-col items-center justify-center border inline-block">
             {isAddMode && (
                 <FormControl variant="outlined" sx={{ minWidth: 200, mb: 2 }}>
                     <InputLabel id="discount-type-select-label">Discount Type</InputLabel>
@@ -50,6 +50,19 @@ const DiscountAddOrUpdateComponent: IComponent<DiscountAddOrUpdateComponentProps
                         <MenuItem value={DiscountType.CategoryBasedDiscount}>
                             Ürün kategorisi bazlı indirim
                         </MenuItem>
+
+                        <MenuItem value={DiscountType.BirthdayDiscount}>
+                            Doğum günü indirimi
+                        </MenuItem>
+                        <MenuItem value={DiscountType.MilestoneDiscount}>
+                            Sipariş sayısı eşik indirimi
+                        </MenuItem>
+                        <MenuItem value={DiscountType.ThresholdDiscount}>
+                            Sipariş fiyatı eşik indirimi
+                        </MenuItem>
+
+
+
                     </Select>
                 </FormControl>
             )}
@@ -71,7 +84,7 @@ const DiscountAddOrUpdateComponent: IComponent<DiscountAddOrUpdateComponentProps
                 showUpdateActions={true}
                 discount={updatedDiscount}
             />
-        </Paper>
+        </Card>
     );
 };
 

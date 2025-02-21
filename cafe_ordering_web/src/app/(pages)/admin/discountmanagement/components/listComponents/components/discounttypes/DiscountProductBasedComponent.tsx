@@ -1,8 +1,8 @@
 import { DiscountModel, DiscountItemModel, DiscountType } from '@/domain/DiscountModels';
 import { Box, Button, FormControl, IconButton, Paper, Table, TableBody, TableCell, TableContainer, TableRow, TextField } from '@mui/material';
 import React, { useEffect, useState } from 'react';
-import DiscountItemProductComponent from './components/DiscountItemProductComponent';
-import DiscountItemComponent from './components/DiscountItemComponent';
+import DiscountItemProductComponent from '../DiscountItemProductComponent';
+import DiscountItemComponent from '../DiscountItemComponent';
 import { Update, Delete, Save, Add, Remove } from '@mui/icons-material';
 import { MyDatePicker, MyDateTimePicker } from '@/shared/components/MyDatePicker';
 import ArrayListStream from '@/shared/ArrayListStream';
@@ -60,16 +60,6 @@ const DiscountProductBasedComponent: React.FC<DiscountProductBasedComponentProps
                                 </Box>
                             </TableCell>
                         </TableRow>
-
-                        <TableRow>
-                            <TableCell>
-                                <div>  indirimOranı :   {discount.discountPercentage}</div>
-                                <div>  kaçKezUygulanabilir :   {discount.maxApplicableTimes}</div>
-                                <div>    Sona Erme Tarihi :   {discount.endDateUtc ? discount.getLocaleDate()?.toLocaleString() : ""}</div>
-                            </TableCell>
-                        </TableRow>
-
-
 
 
                         {
@@ -150,6 +140,7 @@ const DiscountProductBasedComponent: React.FC<DiscountProductBasedComponentProps
 
                                 {discount.discountItems.map((d, i) =>
                                     <DiscountItemComponent
+                                    discountPercentage={discount.discountPercentage}
                                         onRequiredQuantityChanged={(changeddiscountItem) => {
                                             let discountItems = discount.discountItems;
                                             // let anyExist = discountItems.find(x=>x.productId==changeddiscountItem.productId);

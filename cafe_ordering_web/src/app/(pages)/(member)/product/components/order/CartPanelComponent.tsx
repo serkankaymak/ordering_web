@@ -9,6 +9,7 @@ import CartPanelBottomSheet from "../BottomSheets/CartPanelBottomSheet";
 import { useProductContext } from "@/app/providers/product.provider";
 import { IComponent } from "@/app/types/ViewTypes";
 import DiscountsOfOrderBottomSheet from "../BottomSheets/DiscountsOfOrderBottomSheet";
+import { useUserContext } from '../../../../../providers/global.providers/user.provider';
 
 // Props arayüzü tanımı
 interface CartButtonComponentProps {
@@ -17,8 +18,9 @@ interface CartButtonComponentProps {
 
 // Ana Bileşen
 const CartButtonComponent: IComponent<CartButtonComponentProps> = ({ onViewClicked }) => {
+  const { user } = useUserContext();
   const [cartOpen, setCartOpen] = useState(false);
-  const { awaibleDiscounts, orderedProducts, addProductToOrder, removeProductFromOrder, clearProductFromOrder, clearOrder } = useProductContext();
+  const { awaibleOrderDiscounts, awaibleDiscounts, orderedProducts, addProductToOrder, removeProductFromOrder, clearProductFromOrder, clearOrder } = useProductContext();
   const [isDiscountsSheetOpen, setisDiscountsSheetOpen] = useState<boolean>(false);
 
   return (
@@ -46,7 +48,6 @@ const CartButtonComponent: IComponent<CartButtonComponentProps> = ({ onViewClick
       {/* Sepet Paneli */}
       <CartPanelBottomSheet
 
-        awaibleDiscounts={awaibleDiscounts}
         open={cartOpen}
         onClose={() => setCartOpen(false)}
         orderItems={orderedProducts}
@@ -61,8 +62,11 @@ const CartButtonComponent: IComponent<CartButtonComponentProps> = ({ onViewClick
 
 
       <DiscountsOfOrderBottomSheet
+        currentUser={user}
+        awaibleDiscounts={awaibleDiscounts}
+        awaibleOrderDiscounts={awaibleOrderDiscounts}
         onCloseClicked={() => { setisDiscountsSheetOpen(false) }}
-        isOpen={isDiscountsSheetOpen} awaibleDiscounts={[]}></DiscountsOfOrderBottomSheet>
+        isOpen={isDiscountsSheetOpen} ></DiscountsOfOrderBottomSheet>
 
     </>
   );

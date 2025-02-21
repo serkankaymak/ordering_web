@@ -18,13 +18,11 @@ const CartPanelBottomSheet: IComponent<{
     onOrderSendClicked: () => void;
     onOrderClearClicked?: () => void;
     onViewClicked: (productId: number) => void;
-    awaibleDiscounts?: DiscountModel[];
     onDiscountsButonClicked?: () => void;
     lang?: string
 
 }> = ({
     onDiscountsButonClicked,
-    awaibleDiscounts,
     open, onClose, orderItems, onIncrease, onDecrease, onRemove, onOrderSendClicked, onOrderClearClicked,
     onViewClicked, lang = "tr" }) => {
         // Toplam fiyatı hesapla
@@ -111,8 +109,6 @@ const CartPanelBottomSheet: IComponent<{
                                         variant="h6" fontWeight="bold">
                                         Toplam: ${totalPrice.toFixed(2)}
                                     </Typography>
-
-
 
                                 </Box>
                             }

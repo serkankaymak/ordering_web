@@ -49,8 +49,7 @@ export class OrderModel {
   userId?: number;
   tableId?: number = 0;
   price: number = 0;
-  indirimsizToplamFiyat: number = 0;
-  indirimliToplamFiyat: number = 0;
+  discountedPrice: number = 0;
 
   constructor(init?: Partial<OrderModel>) {
     Object.assign(this, init);

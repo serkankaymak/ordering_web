@@ -104,8 +104,9 @@ const DiscountManagementPageContent: IPageContent<DiscountManagementPageContentP
 
 
             {/* Silme Onay Modalı */}
-            <Box>
+            <Box >
                 <MyModal
+                    className="w-[100%] md:w-[70%]"
                     isOpen={isDeleteModalShouldOpen()}
                     onCloseClicked={() => {
                         setDeleteRequestDiscountId(0);
@@ -114,7 +115,6 @@ const DiscountManagementPageContent: IPageContent<DiscountManagementPageContentP
                     <Box>
 
                         <DiscountComponent discount={discounts.filter(x => x.id == deleteRequestDiscountId)[0]}></DiscountComponent>
-
                         <Typography sx={{ mt: 1 }} variant="subtitle2">
                             Bu ürünü silmeyi onaylıyor musunuz?
                         </Typography>

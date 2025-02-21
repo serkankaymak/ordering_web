@@ -7,6 +7,7 @@ import { Add, Delete, Padding, Remove } from '@mui/icons-material';
 
 interface DiscountItemComponentProps {
     discountItem: DiscountItemModel;
+    discountPercentage?: number;
     showActions?: boolean;
     useTopDiscount?: boolean;
     onRequiredQuantityChanged?: (item: DiscountItemModel) => void;
@@ -16,7 +17,8 @@ const DiscountItemComponent: React.FC<DiscountItemComponentProps> = ({
     discountItem,
     showActions = true,
     useTopDiscount = true,
-    onRequiredQuantityChanged
+    onRequiredQuantityChanged,
+    discountPercentage
 
 }) => {
 
@@ -27,10 +29,10 @@ const DiscountItemComponent: React.FC<DiscountItemComponentProps> = ({
                     <TableRow>
                         <TableCell>
                             <Box className="flex w-full">
-                                <Box className="flex flex-col  items-center justify-center  ">
-                                    <div>  requiredQuantity :   {discountItem.requiredQuantity}</div>
+                                <Box className="flex flex-col  items-start justify-center  ">
+                                    <div>gerekliTutar :   {discountItem.requiredQuantity}</div>
                                     {useTopDiscount == false && <div>  discountPercentage :   {discountItem.discountPercentage}</div>}
-                                    {discountItem.requiredQuantity != 1 && <div>  sonÜrünİndirimi :   {discountItem.lastProductDiscountPercentage}</div>}
+                                    {discountItem.requiredQuantity != 1 && <div>  sonÜrünİndirimi :   {discountItem.discountPercentage ?? (discountPercentage ?? 0) * discountItem.requiredQuantity}%</div>}
 
                                 </Box>
 

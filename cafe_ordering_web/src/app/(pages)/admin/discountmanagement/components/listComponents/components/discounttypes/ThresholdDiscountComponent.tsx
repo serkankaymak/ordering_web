@@ -2,14 +2,14 @@
 import { DiscountModel, DiscountItemModel, DiscountType } from '@/domain/DiscountModels';
 import { Box, Button, Chip, FormControl, IconButton, Paper, Table, TableBody, TableCell, TableContainer, TableRow, TextField } from '@mui/material';
 import React, { useEffect, useState } from 'react';
-import DiscountItemProductComponent from './components/DiscountItemProductComponent';
-import DiscountItemComponent from './components/DiscountItemComponent';
+import DiscountItemProductComponent from '../DiscountItemProductComponent';
+import DiscountItemComponent from '../DiscountItemComponent';
 import { Update, Delete, Add, Remove, Save, Category, Check } from '@mui/icons-material';
 import { MyDatePicker, MyDateTimePicker } from '@/shared/components/MyDatePicker';
 import { CategoryModel } from '@/domain/ProductModels';
 import { ProductService } from '@/application/services/product/ProductService';
 
-interface DiscountCategoryBasedComponentProps {
+interface ThresholdDiscountComponentProps {
     discount: DiscountModel;
     showUpdateActions?: boolean;
     onUpdateClicked?: (discountId: number) => void;
@@ -21,22 +21,12 @@ interface DiscountCategoryBasedComponentProps {
 
 const productService = new ProductService();
 
-const DiscountCategoryBasedComponent: React.FC<DiscountCategoryBasedComponentProps> = ({
+const ThresholdDiscountComponent: React.FC<ThresholdDiscountComponentProps> = ({
     discount,
     showUpdateActions = true,
     onUpdateClicked, onDeleteClicked,
     onSaveClicked, onAnyPropertyChanged
 }) => {
-
-    const [categories, setCategories] = useState<CategoryModel[]>([]);
-
-    useEffect(() => {
-        productService.loadCategories().then(response => {
-            if (response.isSuccess) {
-                setCategories(response.data!)
-            }
-        })
-    }, [])
 
 
     return (
@@ -59,36 +49,9 @@ const DiscountCategoryBasedComponent: React.FC<DiscountCategoryBasedComponentPro
                     </TableRow>
 
 
-                    <TableRow>
-                        <TableCell>
-                            <Box className="flex w-full">
-                                <Box className="flex flex-col">
-                                    <div>  indirimOranı :  {discount.discountPercentage}</div>
-                                    <div>  kaçKezUygulanabilir :  {discount.maxApplicableTimes}</div>
-                                    <div>  Sona Erme Tarihi :   {discount.endDateUtc ? discount.getLocaleDate()?.toLocaleString() : ""}</div>
-                                </Box>
-                            </Box>
+                 
 
-                        </TableCell>
-                    </TableRow>
 
-                    {showUpdateActions && <TableRow>
-                        <TableCell sx={{ padding: 1 }}>
-                            <Box className="flex w-full" sx={{ gap: 1, flexWrap: 'wrap' }}>
-                                {categories.map((option) => (
-                                    <Chip
-                                        size="small"
-                                        key={option.id}
-                                        label={option.name}
-                                        clickable
-                                        color={discount.categoryId === option.id ? 'primary' : 'default'}
-                                        onClick={() => onAnyPropertyChanged && onAnyPropertyChanged("categoryId", option.id)}
-                                        icon={discount.categoryId === option.id ? <Check /> : undefined}
-                                    />
-                                ))}
-                            </Box>
-                        </TableCell>
-                    </TableRow>}
 
                     <TableRow>
                         <TableCell sx={{ padding: 1 }}>
@@ -158,15 +121,6 @@ const DiscountCategoryBasedComponent: React.FC<DiscountCategoryBasedComponentPro
 
 
 
-                    {/** special ın discount item ı olmaz  */}
-                    {false && <TableRow>
-                        <TableCell>
-                            {discount.discountItems.map((d, i) =>
-                                <DiscountItemComponent
-                                    showActions={false} key={i} discountItem={d}></DiscountItemComponent>
-                            )}
-                        </TableCell>
-                    </TableRow>}
 
 
 
@@ -207,4 +161,4 @@ const DiscountCategoryBasedComponent: React.FC<DiscountCategoryBasedComponentPro
     );
 };
 
-export default React.memo(DiscountCategoryBasedComponent);
+export default React.memo(ThresholdDiscountComponent);

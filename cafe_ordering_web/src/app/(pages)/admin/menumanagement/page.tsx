@@ -88,6 +88,7 @@ const MenuManagementPage: React.FC = () => {
             </Box>
             <Box>
                 <MyModal
+                    className="w-[100%] md:w-[70%]"
                     isOpen={isDeleteModalShouldOpen()}
                     children={<>
                         <Box>

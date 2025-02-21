@@ -76,6 +76,32 @@ const SitePreferencesDrawerComponent: React.FC<SitePreferencesComponentProps> = 
                   label="Show product name and price on product card"
                 />
 
+                <FormControlLabel
+                  sx={{ "& .MuiTypography-root": { fontSize: 15 }, }}
+                  className='text-wrap text-sm'
+                  onChange={(e: any) => {
+                    const previous = sitePreferences;
+                    const updated = sitePreferences?.copy({ showClientAwaibleDiscounts: !previous?.showClientAwaibleDiscounts })
+                    updatePreferences(updated!);
+                  }}
+                  control={<Checkbox checked={sitePreferences?.showClientAwaibleDiscounts} />}
+                  label="showClient Awaible Discounts"
+                />
+
+                <FormControlLabel
+                  sx={{ "& .MuiTypography-root": { fontSize: 15 }, }}
+                  className='text-wrap text-sm'
+                  onChange={(e: any) => {
+                    const previous = sitePreferences;
+                    const updated = sitePreferences?.copy({ showClientDetailedAwaibleDiscounts: !previous?.showClientDetailedAwaibleDiscounts })
+                    updatePreferences(updated!);
+                  }}
+                  control={<Checkbox checked={sitePreferences?.showClientDetailedAwaibleDiscounts} />}
+                  label="showClient Detailed Awaible Discounts"
+                />
+
+
+
               </Box>
 
               <ul className='pl-0 pb-10'>

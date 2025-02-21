@@ -7,6 +7,7 @@ import { DiscountService } from '@/application/services/discount/DiscountService
 import { CreateDiscountCommand } from '@/application/httpRequests/discount/CreateDiscountRequest';
 import { CreateDiscountItemCommand } from '@/application/httpRequests/discount/CreateDiscountRequest';
 import Toast from '@/shared/Toast';
+import { Box } from '@mui/material';
 
 interface AddDiscountPageContentProps { }
 const discountService = new DiscountService();
@@ -14,8 +15,9 @@ const discountService = new DiscountService();
 const AddDiscountPageContent: IPageContent<AddDiscountPageContentProps> = ({ }) => {
 
     return (
-        <div>
+        <Box className="flex flex-col justify-center items-center m-10">
             <DiscountAddOrUpdateComponent
+
                 discount={DiscountModel.getEmptyInstance()}
                 onSubmitClicked={
                     (updatedDiscount: DiscountModel, imageFile: File | null): void => {
@@ -45,7 +47,9 @@ const AddDiscountPageContent: IPageContent<AddDiscountPageContentProps> = ({ }) 
                     }
                 }>
             </DiscountAddOrUpdateComponent>
-        </div>
+        </Box>
+
+
     );
 };
 
