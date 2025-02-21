@@ -1,7 +1,7 @@
 'use client'
 
 import { createContext, useContext, useEffect, useState, ReactNode } from 'react';
-import { useUserContext } from './user.povider';
+import { useUserContext } from './user.provider';
 import { SitePreferenceModel } from '@/app/api/preferences/SitePreferenceModel';
 import { PreferencesClientService } from '@/application/services/sitepreference/PreferencesClientService';
 

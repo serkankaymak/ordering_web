@@ -17,10 +17,12 @@ export class TokenDto {
 }
 
 interface DecodedToken {
+  id?: number;
   email?: string;
   role?: string[];
   claims?: Record<string, string>;
   exp?: number;
+
 }
 
 export enum UserRolesEnum {
@@ -38,6 +40,7 @@ export enum RoleClaimsEnum {
 }
 
 export class UserModel {
+  id: number = 0;
   token?: TokenDto;
   email: string = "";
   roles: string[] = [];
@@ -48,6 +51,7 @@ export class UserModel {
       Object.assign(this, init);
     }
     const decoded: DecodedToken = this.token ? this.parseToken() : {};
+    this.id = decoded.id ?? 0;
     this.email = decoded.email ?? "";
     this.roles = decoded.role ?? [];
     this.claims = decoded.claims ?? {};

@@ -41,3 +41,39 @@ export class OrderItemModel {
     });
   }
 }
+
+
+
+export class OrderModel {
+  orderItems: OrderItemModel[] = [];
+  userId?: number;
+  tableId?: number = 0;
+  price: number = 0;
+  indirimsizToplamFiyat: number = 0;
+  indirimliToplamFiyat: number = 0;
+
+  constructor(init?: Partial<OrderModel>) {
+    Object.assign(this, init);
+  }
+
+
+  static fromJson(json: any): OrderModel {
+    try {
+      var order = new OrderModel({
+        ...json,
+        orderItems: Array.isArray(json.orderItems)
+          ? json.orderItems.map((item: any) => new OrderItemModel(item))
+          : [],
+      });
+      return order;
+    }
+    catch (e: any) {
+      console.log("error parsing...", e)
+      return OrderModel.getEmptyIntance();
+    }
+
+  }
+  static getEmptyIntance(): OrderModel {
+    return new OrderModel();
+  }
+}

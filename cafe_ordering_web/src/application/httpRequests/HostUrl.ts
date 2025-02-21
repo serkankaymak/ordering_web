@@ -27,8 +27,8 @@ const UPDATE_MENU_URL = `${MENU_URL}/updatemenu`;
 const GET_DİSCOUNTS_URL = `${DİSCOUNT_URL}/discounts`;
 const CREATE_DİSCOUNT_URL = `${DİSCOUNT_URL}/creatediscount`;
 const UPDATE_DİSCPUNT_URL = `${DİSCOUNT_URL}/updatediscount`;
-
-
+const GET_awaibleDiscountsOfOrderedItems_URL = `${DİSCOUNT_URL}/awaibleDiscountsOfOrderedItems`;
+const GET_orderedItemsHasDiscounts_URL = `${DİSCOUNT_URL}/orderedItemsHasDiscounts`;
 
 
 
@@ -36,6 +36,14 @@ const UPDATE_DİSCPUNT_URL = `${DİSCOUNT_URL}/updatediscount`;
 
 
 export default class ApiUrls {
+  
+    static GetOrderItemsCanHaveDiscountsUrl(): string {
+        return GET_orderedItemsHasDiscounts_URL;
+      }
+  
+    static GetAwaibleDiscountsOfOrderedItemsUrl(): string {
+      return GET_awaibleDiscountsOfOrderedItems_URL;
+    }
     static GetSigninUrl(): string {
         return GET_USERSİGNİN_URL;
     }

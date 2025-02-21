@@ -33,7 +33,7 @@ export default function DiscountComponent({
       onSaveClicked={onSaveClicked && onSaveClicked}
     />
   }
-  if (discount.discountType === DiscountType.DynamicDiscount) {
+  if (discount.discountType === DiscountType.SpecialDayDiscount) {
     return <DiscountSpecialBasedComponent
       onDeleteClicked={onDeleteClicked}
       onUpdateClicked={onUpdateClicked}

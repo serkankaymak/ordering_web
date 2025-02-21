@@ -14,8 +14,9 @@ import { CategoryModel, ProductModel } from '@/domain/ProductModels';
 import { IPageContent } from '@/app/types/ViewTypes';
 import { CheckBox } from '@mui/icons-material';
 import { useSitePreferencesContext } from '@/app/providers/global.providers/sitePreferences.provider';
-import { useUserContext } from '@/app/providers/global.providers/user.povider';
+import { useUserContext } from '@/app/providers/global.providers/user.provider';
 import { SitePreferenceModel } from '@/app/api/preferences/SitePreferenceModel';
+import DiscountsOfOrderBottomSheet from './components/BottomSheets/DiscountsOfOrderBottomSheet';
 
 interface MenuPageContentProps { }
 
@@ -183,6 +184,8 @@ const MenuPageContent: IPageContent<MenuPageContentProps> = () => {
                         performOnCloseClicked={() => setAddOrUpdateCommentBottomSheetOpen(false)}
                         onSaved={() => setAddOrUpdateCommentBottomSheetOpen(false)}
                     />
+
+                   
 
                 </Box>
             </Box>

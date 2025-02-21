@@ -4,7 +4,7 @@ import React, { useEffect } from 'react';
 import { Box, Checkbox, FormControlLabel, Paper } from '@mui/material';
 import "./SitePreferencesDrawer.css";
 import { useSitePreferencesContext } from '@/app/providers/global.providers/sitePreferences.provider';
-import { useUserContext } from '@/app/providers/global.providers/user.povider';
+import { useUserContext } from '@/app/providers/global.providers/user.provider';
 import { he, tr } from 'date-fns/locale';
 
 interface SitePreferencesComponentProps { }

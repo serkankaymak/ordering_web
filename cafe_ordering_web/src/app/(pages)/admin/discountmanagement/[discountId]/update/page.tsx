@@ -25,7 +25,6 @@ const UpdateDiscountPage: React.FC = ({ }) => {
         if (discount != null && discount.id == Number(discountId!)) return;
         if (discountId) {
             discountService.RequestDiscountById(Number(discountId!)).then(response => {
-                console.log(response);
                 if (response.isSuccess)
                     setDiscount(response.data!);
             })

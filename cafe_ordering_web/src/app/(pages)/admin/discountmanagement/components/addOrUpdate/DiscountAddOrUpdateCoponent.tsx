@@ -44,7 +44,7 @@ const DiscountAddOrUpdateComponent: IComponent<DiscountAddOrUpdateComponentProps
                         <MenuItem value={DiscountType.ProductBasedDiscount}>
                             Ürün bazlı indirim
                         </MenuItem>
-                        <MenuItem value={DiscountType.DynamicDiscount}>
+                        <MenuItem value={DiscountType.SpecialDayDiscount}>
                             Özel indirim
                         </MenuItem>
                         <MenuItem value={DiscountType.CategoryBasedDiscount}>

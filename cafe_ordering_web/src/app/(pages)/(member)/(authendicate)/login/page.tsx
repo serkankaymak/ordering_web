@@ -4,7 +4,7 @@ import React, { useState, ChangeEvent, FormEvent } from 'react';
 import NextLink from 'next/link';
 
 import { Container, Box, Typography, TextField, Button, Link } from '@mui/material';
-import { useUserContext } from '@/app/providers/global.providers/user.povider';
+import { useUserContext } from '@/app/providers/global.providers/user.provider';
 import { LoginCommand } from '@/application/httpRequests/user/LoginRequest';
 
 const LoginPage: React.FC = () => {

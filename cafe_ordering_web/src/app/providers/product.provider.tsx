@@ -7,8 +7,15 @@ import ArrayListStream from '@/shared/ArrayListStream';
 import { Logcat } from '@/shared/LogCat';
 import { OrderItemModel } from '@/domain/OrderModels';
 import { OrderService } from '@/application/services/product/OrderService';
+import { DiscountModel } from '@/domain/DiscountModels';
+import { DiscountService } from '@/application/services/discount/DiscountService';
+import { useUserContext } from './global.providers/user.provider';
+import { GetAwaibleDiscountsOfOrderedItemsRequestPayload } from '@/application/httpRequests/discount/GetAwaibleDiscountsOfOrderedItemsRequest';
+import { OrderCanHaveDiscountDto } from '@/application/dtos/OrderCanHaveDiscountDto';
+import { GetOrderItemsHasDiscountsRequestPayload } from '@/application/httpRequests/discount/GetOrderItemsHasDiscountsRequest';
 
 interface ProductContextType {
+  awaibleDiscounts: DiscountModel[];
   products: ProductModel[];
   orderedProducts: OrderItemModel[];
   addProductToOrder: (productId: number) => void;
@@ -25,17 +32,21 @@ interface ProductProviderProps {
 
 export const ProductProvider: React.FC<ProductProviderProps> = ({ children }) => {
 
+  const { user } = useUserContext();
   //useMemo --> sayesinde useEffect gereksiz yere çalışmaz ve performans kaybı yaşamazsın.
   const productService = useMemo(() => new ProductService(), []);
   const orderService = useMemo(() => new OrderService(), []);
-  const [products, setProducts] = useState<ProductModel[]>([]);
+  const discountService = useMemo(() => new DiscountService(), []);
 
+  const [products, setProducts] = useState<ProductModel[]>([]);
   const [orderedProducts, setOrderedProducts] = useState<OrderItemModel[]>(
     orderService.orderedProducts
       .map(p => { p.product = products.find(x => x.id == p.productId) ?? null; return p })
       .filter(x => x.quantity != 0)
   );
 
+  const [awaibleDiscounts, setAwaibleDiscounts] = useState<DiscountModel[]>([]);
+  const [awaibleOrderDiscounts, setAwaibleOrderDiscounts] = useState<OrderCanHaveDiscountDto[]>([]);
 
   const loadProducts = () => {
     productService.loadAllProductsAndMenus().then((response) => {
@@ -43,8 +54,55 @@ export const ProductProvider: React.FC<ProductProviderProps> = ({ children }) =>
     })
   }
 
+  const loadAwaibleDiscounts = (orderedProducts: OrderItemModel[]) => {
+    if (orderedProducts == undefined || orderedProducts == null || orderedProducts.length == 0) {
+      setAwaibleDiscounts([]);
+      return;
+    }
+    console.log(orderedProducts);
+    var payload = { userId: user ? user.id : null, orderItems: [] } as GetAwaibleDiscountsOfOrderedItemsRequestPayload;
+    orderedProducts.forEach(oi => {
+      var item = { productId: oi.productId, quantity: oi.quantity };
+      payload.orderItems.push(item);
+    })
+    discountService.getAwabileDiscountsOfOrderedItems(payload).then(response => {
+      if (response.isSuccess) {
+        setAwaibleDiscounts(response.data!)
+      }
+      else { setAwaibleDiscounts([]) }
+    })
+  }
+
+
+  const loadAwaibleOrderDiscounts = (orderedProducts: OrderItemModel[]) => {
+    if (orderedProducts == undefined || orderedProducts == null || orderedProducts.length == 0) {
+      setAwaibleOrderDiscounts([]);
+      return;
+    }
+    console.log(orderedProducts);
+    var payload = { userId: user ? user.id : null, orderItems: [] } as GetOrderItemsHasDiscountsRequestPayload;
+    orderedProducts.forEach(oi => {
+      var item = { productId: oi.productId, quantity: oi.quantity };
+      payload.orderItems.push(item);
+    })
+    discountService.getOrderItemsHasDiscounts(payload).then(response => {
+      if (response.isSuccess) {
+        setAwaibleOrderDiscounts(response.data!)
+      }
+      else { setAwaibleDiscounts([]) }
+    })
+  }
+
+
+  const productAddedOrRemovedOrCleanedFromOrderListener = (product: ProductModel) => {
+    performOnOrderedProductsChanged();
+    Logcat.Debug(`product added|removed|cleaned from basket.   ${JSON.stringify(product.id)}`);
+  };
+
   useEffect(() => {
     loadProducts();
+    loadAwaibleDiscounts(orderedProducts);
+    loadAwaibleOrderDiscounts(orderedProducts);
     Logcat.Debug(`productProvider useEffect executed`);
     orderService.addProductAddedToOrderListener(productAddedOrRemovedOrCleanedFromOrderListener);
     orderService.addProductRemovedFromOrderListener(productAddedOrRemovedOrCleanedFromOrderListener);
@@ -58,12 +116,13 @@ export const ProductProvider: React.FC<ProductProviderProps> = ({ children }) =>
     const _orderedProducts = orderService.orderedProducts.filter(x => x.quantity != 0);
     _orderedProducts.forEach(oP => { oP.product = products.find(x => x.id == oP.productId)! })
     setOrderedProducts(_orderedProducts);
+    console.log("yeni", _orderedProducts);
+    console.log("sanırım prev state", orderedProducts);
+    loadAwaibleDiscounts(_orderedProducts);
+    loadAwaibleOrderDiscounts(_orderedProducts);
   }
 
-  const productAddedOrRemovedOrCleanedFromOrderListener = (product: ProductModel) => {
-    performOnOrderedProductsChanged();
-    Logcat.Debug(`product added|removed|cleaned from basket.   ${JSON.stringify(product.id)}`);
-  };
+
 
 
   // order a product ekle
@@ -76,7 +135,7 @@ export const ProductProvider: React.FC<ProductProviderProps> = ({ children }) =>
   const clearOrder = () => { orderService.clearOrder(); }
 
   return (
-    <ProductContext.Provider value={{ products, orderedProducts, addProductToOrder, removeProductFromOrder, clearProductFromOrder, clearOrder }}>
+    <ProductContext.Provider value={{ awaibleDiscounts, products, orderedProducts, addProductToOrder, removeProductFromOrder, clearProductFromOrder, clearOrder }}>
       {children}
     </ProductContext.Provider>
   );

@@ -5,7 +5,7 @@ import NextLink from 'next/link';
 
 import { Container, Box, Typography, TextField, Button, Link } from '@mui/material';
 import { SigninCommand } from '@/application/httpRequests/user/SigninRequest';
-import { useUserContext } from '@/app/providers/global.providers/user.povider';
+import { useUserContext } from '@/app/providers/global.providers/user.provider';
 
 const SigninPage: React.FC = () => {
   const { signIn } = useUserContext();

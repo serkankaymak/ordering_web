@@ -4,8 +4,11 @@ import { th } from "date-fns/locale";
 
 export enum DiscountType {
   ProductBasedDiscount = 1,
-  DynamicDiscount = 2,
-  CategoryBasedDiscount = 3
+  SpecialDayDiscount = 2,
+  CategoryBasedDiscount = 3,
+  ThresholdDiscount = 4,
+  BirthdayDiscount = 5,
+  MilestoneDiscount = 6
   // Diğer indirim türleri eklenebilir...
 }
 
@@ -41,16 +44,25 @@ export class DiscountItemModel {
 
 
   static fromJson(json: Partial<DiscountItemModel>): DiscountItemModel {
-    return new DiscountItemModel({
-      id: json.id ?? 0,
-      discountId: json.discountId ?? 0,
-      productId: json.productId ?? 0,
-      requiredQuantity: json.requiredQuantity ?? 1,
-      discountPercentage: json.discountPercentage ?? null,
-      product: json.product ? ProductModel.fromJson(json.product) : null,
-      productsPrice: json.productsPrice ?? 0,
-      lastProductDiscountPercentage: json.discountPercentage ?? null
-    });
+    console.log(json);
+    try {
+      var d = new DiscountItemModel({
+        id: json.id ?? 0,
+        discountId: json.discountId ?? 0,
+        productId: json.productId ?? 0,
+        requiredQuantity: json.requiredQuantity ?? 1,
+        discountPercentage: json.discountPercentage ?? null,
+        product: json.product ? ProductModel.fromJson(json.product) : null,
+        productsPrice: json.productsPrice ?? 0,
+        lastProductDiscountPercentage: json.discountPercentage ?? null
+      });
+      return d;
+    }
+    catch (e: any) {
+      console.log(e);
+      return new DiscountItemModel();
+    }
+
   }
 
   static getExample(id?: number): DiscountItemModel {
@@ -93,7 +105,7 @@ export class DiscountModel {
   categoryId: number = 0;
 
 
-  getLocaleDate() {  if(this.endDateUtc==null) return null;  return new Date(this.endDateUtc!); }
+  getLocaleDate() { if (this.endDateUtc == null) return null; return new Date(this.endDateUtc!); }
 
   getProductsPrice() {
     if (this.discountType != DiscountType.ProductBasedDiscount) throw Error(" sadece ürün bazlı için ");
@@ -124,7 +136,6 @@ export class DiscountModel {
   }
 
   static fromJson(json: Partial<DiscountModel>): DiscountModel {
-    console.log(json)
     var discount = new DiscountModel({
       id: json.id ?? 0,
       name: json.name ?? "",
@@ -137,7 +148,6 @@ export class DiscountModel {
       endDateUtc: json.endDateUtc ? (json.endDateUtc) : null,
       categoryId: json.categoryId ?? 0,
     });
-    console.log(discount);
     return discount;
   }
 
@@ -178,7 +188,7 @@ export class DiscountModel {
     return new DiscountModel({
       id: 2,
       name: "Special Based Discount",
-      discountType: DiscountType.DynamicDiscount,
+      discountType: DiscountType.SpecialDayDiscount,
       discountPercentage: 25,
       maxApplicableTimes: 1,
       discountItems: [],

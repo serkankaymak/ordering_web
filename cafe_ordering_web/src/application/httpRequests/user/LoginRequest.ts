@@ -39,7 +39,6 @@ export class LoginRequest extends ABaseHttpRequest<ApiResponse<TokenDto>> {
                 }
             );
 
-            console.log(response);
 
             if (this.isSuccessStatusCode(response.status)) {
                 return ApiResponse.success<TokenDto>(response.data);

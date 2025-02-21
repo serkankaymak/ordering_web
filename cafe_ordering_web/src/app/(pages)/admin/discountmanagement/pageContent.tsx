@@ -33,7 +33,6 @@ const DiscountManagementPageContent: IPageContent<DiscountManagementPageContentP
     const isDeleteModalShouldOpen = (): boolean => deleteRequestDiscountId !== 0;
     useEffect(() => {
         discountService.loadDiscounts().then(response => {
-            console.log(response);
             if (response.isSuccess) {
                 setDiscounts(discountService.discounts!);
             } else {

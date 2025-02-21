@@ -5,6 +5,9 @@ import { GetDiscountsRequest } from '@/application/httpRequests/discount/GetDisc
 import { GetDiscountByIdRequest } from '@/application/httpRequests/discount/GetDiscountByIdRequest';
 import { CreateDiscountCommand, CreateDiscountRequest } from '@/application/httpRequests/discount/CreateDiscountRequest';
 import { UpdateDiscountCommand, UpdateDiscountRequest } from '@/application/httpRequests/discount/UpdateDiscountRequest';
+import { GetAwaibleDiscountsOfOrderedItemsRequestPayload, GetAwaibleDiscountsRequest } from '@/application/httpRequests/discount/GetAwaibleDiscountsOfOrderedItemsRequest';
+import { GetOrderItemsHasDiscountsRequest, GetOrderItemsHasDiscountsRequestPayload } from '@/application/httpRequests/discount/GetOrderItemsHasDiscountsRequest';
+import { OrderCanHaveDiscountDto } from '@/application/dtos/OrderCanHaveDiscountDto';
 
 export interface IDiscountService {
   loadDiscounts(): Promise<ServiceResponse<DiscountModel[]>>;
@@ -42,7 +45,6 @@ export class DiscountService implements IDiscountService {
 
   public async RequestDiscountById(discountId: number): Promise<ServiceResponse<DiscountModel>> {
     const response = await GetDiscountByIdRequest.send(discountId);
-    console.log(response);
     if (response.isSuccess) {
       return ServiceResponse.success(response.data!);
     }
@@ -59,6 +61,21 @@ export class DiscountService implements IDiscountService {
     const response = UpdateDiscountRequest.send(command);
     if ((await response).isSuccess) return ServiceResponse.success(null);
     return ServiceResponse.failure((await response).error!);
+  }
+
+
+
+  public async getAwabileDiscountsOfOrderedItems(payload: GetAwaibleDiscountsOfOrderedItemsRequestPayload) {
+    const response = await GetAwaibleDiscountsRequest.send(payload);
+    if ((response).isSuccess) return ServiceResponse.success(response.data!);
+    return ServiceResponse.failure<DiscountModel[]>((response).error!);
+  }
+
+
+  public async getOrderItemsHasDiscounts(payload: GetOrderItemsHasDiscountsRequestPayload) {
+    const response = await GetOrderItemsHasDiscountsRequest.send(payload);
+    if ((response).isSuccess) return ServiceResponse.success(response.data!);
+    return ServiceResponse.failure<OrderCanHaveDiscountDto[]>((response).error!);
   }
 
 

@@ -17,7 +17,7 @@ import "./HeaderComponent.css";
 import ReactCountryFlag from 'react-country-flag';
 import { useRouter } from 'next/navigation';
 import { IComponent } from '@/app/types/ViewTypes';
-import { useUserContext } from '@/app/providers/global.providers/user.povider';
+import { useUserContext } from '@/app/providers/global.providers/user.provider';
 import { Router } from 'next/router';
 
 interface HeaderComponentProps {
