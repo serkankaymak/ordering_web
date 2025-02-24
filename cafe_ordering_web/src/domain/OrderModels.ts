@@ -55,6 +55,7 @@ export class OrderModel {
   isReady: boolean = false;
   isDelivered: boolean = false;
   isPayed: boolean = false;
+  orderNumber: string="";
 
 
   constructor(init?: Partial<OrderModel>) {

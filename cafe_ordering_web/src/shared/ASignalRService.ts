@@ -1,4 +1,4 @@
-import { HubConnection, HubConnectionBuilder } from '@microsoft/signalr';
+import { HubConnection, HubConnectionBuilder, HubConnectionState } from '@microsoft/signalr';
 
 export abstract class ASignalRService {
   private connection: HubConnection;
@@ -9,20 +9,37 @@ export abstract class ASignalRService {
       .withUrl(this.hubUrl) // Hub URL’inizi buraya girin
       .withAutomaticReconnect() // Otomatik yeniden bağlanma özelliği
       .build();
+    this.connection.onreconnected((conntectionId) => {
+      console.log("signalr reconnected")
+    });
   }
 
   // Bağlantıyı başlatmak için
   public async start(): Promise<void> {
+
+    if (this.connection.state == HubConnectionState.Connecting ||
+      this.connection.state == HubConnectionState.Connected ||
+      this.connection.state == HubConnectionState.Reconnecting
+    ) return;
     try {
-      await this.connection.start();
-      console.log('SignalR bağlantısı başarılı!');
+      await this.connection.start().then(() => {
+        console.log('SignalR bağlantısı başarılı!');
+      });
+
     } catch (error) {
       console.error('SignalR bağlantısı başlatılamadı:', error);
     }
+
   }
 
   // Bağlantıyı durdurmak için
   public async stop(): Promise<void> {
+
+
+    if (this.connection.state == HubConnectionState.Disconnected ||
+      this.connection.state == HubConnectionState.Disconnecting
+    ) return;
+
     try {
       await this.connection.stop();
       console.log('SignalR bağlantısı sonlandırıldı.');
@@ -54,6 +71,11 @@ export abstract class ASignalRService {
 
 
 
-export  class SignalRService extends ASignalRService {}
+export class SignalRService extends ASignalRService { }
 
-export interface IHubService {}
+export interface IHubService {
+
+  start(): Promise<void>;
+  stop(): Promise<void>;
+
+}

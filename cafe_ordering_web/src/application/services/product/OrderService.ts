@@ -4,6 +4,7 @@ import { ServiceResponse } from '../ServiceResponse';
 import { GetUnCompletedOrderRequest } from '@/application/httpRequests/order/GetUnCompletedOrders';
 import { UpdateOrderCommand, UpdateOrderRequest } from '@/application/httpRequests/order/UpdateOrderRequest';
 import { CreateOrderCommand, CreateOrderRequest } from '@/application/httpRequests/order/CreateOrderRequest';
+import { GetOrderByOrderIdRequest } from '@/application/httpRequests/order/GetOrderByIdRequest';
 
 export interface IOrderService {
     readonly orderedProducts: OrderItemModel[];
@@ -137,5 +138,13 @@ export class OrderService implements IOrderService {
         if (response.isSuccess) { return ServiceResponse.success(response.data!); }
         else { return ServiceResponse.failure(response.error!) }
     }
+
+    public async GetOrder(orderId: number): Promise<ServiceResponse<OrderModel>> {
+        var response = await GetOrderByOrderIdRequest.send(orderId);
+        if (response.isSuccess) { return ServiceResponse.success(response.data!); }
+        else { return ServiceResponse.failure(response.error!) }
+    }
+
+
 
 }

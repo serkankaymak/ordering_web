@@ -43,6 +43,9 @@ const GET_orderedItemsHasDiscounts_URL = `${DİSCOUNT_URL}/orderedItemsHasDiscou
 
 
 export default class ApiUrls {
+    static GetOrderUrl() {
+        return ORDER_URL;
+    }
     static GetCreateOrderUrl(): string {
         return CREATE_ORDER_URL;
     }

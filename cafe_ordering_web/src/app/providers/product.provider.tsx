@@ -16,7 +16,7 @@ import { GetOrderItemsHasDiscountsRequestPayload } from '@/application/httpReque
 
 interface ProductContextType {
   awaibleDiscounts: DiscountModel[];
-  awaibleOrderDiscounts:OrderCanHaveDiscountDto[];
+  awaibleOrderDiscounts: OrderCanHaveDiscountDto[];
   products: ProductModel[];
   orderedProducts: OrderItemModel[];
   addProductToOrder: (productId: number) => void;
@@ -117,8 +117,6 @@ export const ProductProvider: React.FC<ProductProviderProps> = ({ children }) =>
     const _orderedProducts = orderService.orderedProducts.filter(x => x.quantity != 0);
     _orderedProducts.forEach(oP => { oP.product = products.find(x => x.id == oP.productId)! })
     setOrderedProducts(_orderedProducts);
-    console.log("yeni", _orderedProducts);
-    console.log("sanırım prev state", orderedProducts);
     loadAwaibleDiscounts(_orderedProducts);
     loadAwaibleOrderDiscounts(_orderedProducts);
   }
@@ -136,7 +134,7 @@ export const ProductProvider: React.FC<ProductProviderProps> = ({ children }) =>
   const clearOrder = () => { orderService.clearOrder(); }
 
   return (
-    <ProductContext.Provider value={{  awaibleOrderDiscounts , awaibleDiscounts, products, orderedProducts, addProductToOrder, removeProductFromOrder, clearProductFromOrder, clearOrder }}>
+    <ProductContext.Provider value={{ awaibleOrderDiscounts, awaibleDiscounts, products, orderedProducts, addProductToOrder, removeProductFromOrder, clearProductFromOrder, clearOrder }}>
       {children}
     </ProductContext.Provider>
   );

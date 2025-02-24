@@ -100,6 +100,7 @@ const OrderCard: React.FC<OrderCardProps> = ({
         className="text-center"
         titleTypographyProps={{ variant: 'h6', className: 'font-bold' }}
       />
+      <h6 className='text-center'> Sipariş Numarası : {order.orderNumber}</h6>
       <hr />
       <CardContent>
         <Typography variant="body1" className="mb-2">

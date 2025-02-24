@@ -13,6 +13,7 @@ import { OrderService } from '@/application/services/product/OrderService';
 import { OrderItemModel } from '@/domain/OrderModels';
 import Masonry from 'react-masonry-css';
 import MyMasonry from '@/shared/components/MyMasonary';
+import { useOrderEvents } from '@/app/providers/orderEvents.provider';
 
 const productService = new ProductService();
 const orderService = new OrderService();
@@ -24,6 +25,8 @@ const OrderPageContent: IPageContent<OrderPageContentProps> = ({ }) => {
     const [orders, setOrders] = useState<OrderModel[]>([]);
     // Seçili siparişi tutan state; null ise modal kapalı.
     const [selectedOrder, setSelectedOrder] = useState<OrderModel | null>(null);
+    const { addOnOrderCreatedListener } = useOrderEvents();
+
 
     useEffect(() => {
         productService.loadAllProductsAndMenus().then((res) => {
@@ -32,11 +35,24 @@ const OrderPageContent: IPageContent<OrderPageContentProps> = ({ }) => {
         orderService.GetUnCompletedOrders().then((response) => {
             setOrders(response.data!);
         });
+
+
+        addOnOrderCreatedListener("OrderPageContent", (orderEvent) => {
+            console.log(orderEvent);
+           orderService.GetOrder(orderEvent.orderId).then(response=>{
+            console.log(response);
+            if (response.isSuccess) {
+                setOrders((prevOrders) => [...prevOrders, response.data!]);
+              }
+           })
+        });
+
+
     }, []);
 
 
 
-    const defaultBreakpoints = { default: 4, 1600: 3, 1000: 2, 800: 2, 500: 1 };
+    const defaultBreakpoints = { default: 3, 1800: 3, 1000: 2, 800: 1, 500: 1 };
 
     // Parent state'i güncellemek için fonksiyon.
     const updateOrder = (updatedOrder: OrderModel) => {
