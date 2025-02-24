@@ -13,4 +13,12 @@ export class AppRoutes {
     static readonly DiscountManagement = '/admin/discountmanagement';
     static DiscountManagementAdd(): string { return `${this.DiscountManagement}/add`; }
     static DiscountManagementAddUpdate(id: string): string { return `${this.DiscountManagement}/update/${id}`; }
+
+
+      // **İndirim Yönetimi**
+      static readonly OrderManagement = '/admin/ordermanagement';
+      static OrderManagementAdd(): string { return `${this.OrderManagement}/add`; }
+      static OrderManagementUpdate(id: string): string { return `${this.OrderManagement}/update/${id}`; }
+
+
 }

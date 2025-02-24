@@ -10,6 +10,9 @@ import { useProductContext } from "@/app/providers/product.provider";
 import { IComponent } from "@/app/types/ViewTypes";
 import DiscountsOfOrderBottomSheet from "../BottomSheets/DiscountsOfOrderBottomSheet";
 import { useUserContext } from '../../../../../providers/global.providers/user.provider';
+import { OrderService } from "@/application/services/product/OrderService";
+import { CreateOrderCommand } from "@/application/httpRequests/order/CreateOrderRequest";
+import Toast from "@/shared/Toast";
 
 // Props arayüzü tanımı
 interface CartButtonComponentProps {
@@ -18,6 +21,7 @@ interface CartButtonComponentProps {
 
 // Ana Bileşen
 const CartButtonComponent: IComponent<CartButtonComponentProps> = ({ onViewClicked }) => {
+  const orderService = new OrderService();
   const { user } = useUserContext();
   const [cartOpen, setCartOpen] = useState(false);
   const { awaibleOrderDiscounts, awaibleDiscounts, orderedProducts, addProductToOrder, removeProductFromOrder, clearProductFromOrder, clearOrder } = useProductContext();
@@ -54,10 +58,29 @@ const CartButtonComponent: IComponent<CartButtonComponentProps> = ({ onViewClick
         onIncrease={(productId: number) => addProductToOrder(productId)}
         onDecrease={(productId: number) => removeProductFromOrder(productId)}
         onRemove={(productId: number) => clearProductFromOrder(productId)}
-        onOrderSendClicked={() => { }}
+
         onOrderClearClicked={clearOrder}
         onViewClicked={onViewClicked}
         onDiscountsButonClicked={() => { setisDiscountsSheetOpen(true) }}
+        onOrderSendClicked={() => {
+
+          let command = {
+            tableId: 5,
+            userId: user ? user.id : 0,
+            orderMenuItems: orderedProducts.map(x => ({ productId: x.productId, quantity: x.quantity }))
+          } as CreateOrderCommand;
+
+          orderService.CreateOrder(command).then(response => {
+            if (response.isSuccess) {
+              Toast.success();
+              clearOrder();
+            }
+            else {
+              Toast.error();
+            }
+          })
+
+        }}
       />
 
 

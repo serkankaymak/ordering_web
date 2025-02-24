@@ -14,7 +14,8 @@ import { AppRoutes } from '@/app/routes/PageRoutes';
 const navItems = [
   { label: 'Menüler', path: AppRoutes.MenuManagement },
   { label: 'Ürünler', path: AppRoutes.ProductManagement },
-  { label: 'İndirimler', path: AppRoutes.DiscountManagement }
+  { label: 'İndirimler', path: AppRoutes.DiscountManagement },
+  { label: 'Siparişler', path: AppRoutes.OrderManagement }
 ];
 
 const AdminHeaderComponent: React.FC = () => {

@@ -24,7 +24,7 @@ const AddDiscountPageContent: IPageContent<AddDiscountPageContentProps> = ({ }) 
                         const command = {
                             discountName: updatedDiscount.name,
                             discountType: updatedDiscount.discountType,
-                            endDateAsUtc: updatedDiscount.getLocaleDate()?.toISOString(),
+                            endDateAsUtc: updatedDiscount.getEndDateLocale()?.toISOString(),
                             categoryId: updatedDiscount.categoryId ?? 0,
                             discountPercentage: updatedDiscount.discountPercentage,
                             maxApplicableTimes: updatedDiscount.maxApplicableTimes,

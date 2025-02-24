@@ -37,7 +37,7 @@ const BirthdayDiscountComponent: React.FC<BirthdayDiscountComponentProps> = ({
                     <TableRow className=''>
                         <TableCell>
                             <Box className='flex flex-col'>
-                            {!showUpdateActions && <h5 className='uppercase'  >  {discount.name}</h5>}
+                                {!showUpdateActions && <h5 className='uppercase'  >  {discount.name}</h5>}
                                 {showUpdateActions && <FormControl>
                                     <TextField
                                         value={discount.name}
@@ -106,15 +106,30 @@ const BirthdayDiscountComponent: React.FC<BirthdayDiscountComponentProps> = ({
                     {showUpdateActions &&
                         <TableRow>
                             <TableCell sx={{ padding: 1 }}>
-                                <MyDateTimePicker
-                                    valueAsUtc={discount.getLocaleDate() ?? new Date()}
-                                    onValueChanged={(date) => {
-                                        console.log(date?.toUTCString())
-                                        onAnyPropertyChanged &&
-                                            onAnyPropertyChanged("endDateUtc", date!.toUTCString())
-                                    }}
-                                    slotProps={{ textField: { variant: "outlined", fullWidth: true } }}
-                                    label={'İndirimBitişTarihi'} />
+                                <Box className="flex flex-col sm:flex-row ">
+                                    <MyDateTimePicker
+                                        valueAsUtc={discount.getStartDateLocale() ?? new Date()}
+                                        onValueChanged={(date) => {
+                                            console.log(date?.toUTCString())
+                                            onAnyPropertyChanged &&
+                                                onAnyPropertyChanged("StartDateUtc", date!.toUTCString())
+                                        }}
+                                        slotProps={{ textField: { variant: "outlined", fullWidth: true } }}
+                                        label={'İndirimBaşlamaTarihi'} />
+
+                                    <MyDateTimePicker
+                                        valueAsUtc={discount.getEndDateLocale() ?? new Date()}
+                                        onValueChanged={(date) => {
+                                            console.log(date?.toUTCString())
+                                            onAnyPropertyChanged &&
+                                                onAnyPropertyChanged("endDateUtc", date!.toUTCString())
+                                        }}
+                                        slotProps={{ textField: { variant: "outlined", fullWidth: true } }}
+                                        label={'İndirimBitişTarihi'} />
+                                </Box>
+
+
+
                             </TableCell>
                         </TableRow>
                     }

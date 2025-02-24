@@ -1,7 +1,6 @@
 import React from 'react';
 import {
   Dialog,
-  DialogTitle,
   DialogContent,
   IconButton,
   Box,
@@ -12,27 +11,34 @@ interface MyModalProps {
   isOpen: boolean;
   title?: string;
   onCloseClicked: () => void;
-  children: React.ReactNode; // ✅ İçeriği props yerine component arasından alır
+  children: React.ReactNode;
+  isfullScreen?: boolean;
   className?: string;
 }
 
-const MyModal: React.FC<MyModalProps> = ({ isOpen, children, onCloseClicked, className }) => {
+const MyModal: React.FC<MyModalProps> = ({
+  isfullScreen = true,
+  isOpen,
+  children,
+  onCloseClicked,
+  className,
+}) => {
   return (
-    <Box component="div" className={className}>
+    <Box component="div" className={`${className ?? ''}`}>
       <Dialog
         open={isOpen}
         onClose={onCloseClicked}
-        style={{ overflow: 'hidden' }}
+        fullScreen={isfullScreen}
         sx={{ backgroundColor: 'rgba(0, 0, 0, 0.8)' }}
         PaperProps={{
           sx: {
             margin: 0,
-            padding: 2,
-            width: 'auto',
+            padding: 0,
+            width: '100%',
+            height: '100%',
           },
         }}
       >
-        {/* Kapatma Butonu */}
         <IconButton
           aria-label="close"
           onClick={onCloseClicked}
@@ -46,7 +52,6 @@ const MyModal: React.FC<MyModalProps> = ({ isOpen, children, onCloseClicked, cla
           <Close />
         </IconButton>
 
-        {/* Modal İçeriği */}
         <Box
           className="scrollbar-none scrollbar-track-gray-200 scrollbar-thumb-gray-500"
           style={{ overflowY: 'scroll' }}

@@ -45,14 +45,23 @@ export class OrderItemModel {
 
 
 export class OrderModel {
+  id: number = 0;
   orderItems: OrderItemModel[] = [];
   userId?: number;
   tableId?: number = 0;
   price: number = 0;
   discountedPrice: number = 0;
 
+  isReady: boolean = false;
+  isDelivered: boolean = false;
+  isPayed: boolean = false;
+
+
   constructor(init?: Partial<OrderModel>) {
     Object.assign(this, init);
+  }
+  copy(updatedFields: Partial<OrderModel>): OrderModel {
+    return new OrderModel({ ...this, ...updatedFields });
   }
 
 
@@ -61,7 +70,7 @@ export class OrderModel {
       var order = new OrderModel({
         ...json,
         orderItems: Array.isArray(json.orderItems)
-          ? json.orderItems.map((item: any) => new OrderItemModel(item))
+          ? json.orderItems.map((item: any) => OrderItemModel.fromJson(item))
           : [],
       });
       return order;

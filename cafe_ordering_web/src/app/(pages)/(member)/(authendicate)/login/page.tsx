@@ -7,10 +7,13 @@ import { Container, Box, Typography, TextField, Button, Link } from '@mui/materi
 import { useUserContext } from '@/app/providers/global.providers/user.provider';
 import { LoginCommand } from '@/application/httpRequests/user/LoginRequest';
 
+import { useRouter, useParams } from "next/navigation"; // Next.js 13 hook'ları
+
 const LoginPage: React.FC = () => {
   const { login } = useUserContext();
   const [formData, setFormData] = useState({ email: '', password: '' });
   const [error, setError] = useState<string | null>(null);
+  const router = useRouter();
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setFormData(prev => ({
@@ -30,6 +33,7 @@ const LoginPage: React.FC = () => {
     if (!response.isSuccess) {
       setError(response.errorMessage!);
     }
+    else { router.push('/'); }
   };
 
   return (
@@ -38,8 +42,8 @@ const LoginPage: React.FC = () => {
         <Typography variant="h4" component="h1" gutterBottom>
           Login
         </Typography>
-        <Box component="form" onSubmit={handleSubmit} 
-        className="w-full flex flex-col" noValidate>
+        <Box component="form" onSubmit={handleSubmit}
+          className="w-full flex flex-col" noValidate>
           <TextField
             fullWidth
             margin="normal"

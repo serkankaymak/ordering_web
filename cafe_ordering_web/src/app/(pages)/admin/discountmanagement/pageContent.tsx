@@ -38,7 +38,6 @@ const DiscountManagementPageContent: IPageContent<DiscountManagementPageContentP
             } else {
                 Toast.error();
             }
-            console.log(discounts);
         });
     }, []);
 

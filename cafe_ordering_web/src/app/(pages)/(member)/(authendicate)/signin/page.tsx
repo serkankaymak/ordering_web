@@ -6,11 +6,15 @@ import NextLink from 'next/link';
 import { Container, Box, Typography, TextField, Button, Link } from '@mui/material';
 import { SigninCommand } from '@/application/httpRequests/user/SigninRequest';
 import { useUserContext } from '@/app/providers/global.providers/user.provider';
+import { useRouter, useParams } from "next/navigation"; // Next.js 13 hook'ları
+
 
 const SigninPage: React.FC = () => {
   const { signIn } = useUserContext();
   const [formData, setFormData] = useState({ email: '', password: '' });
   const [error, setError] = useState<string | null>(null);
+
+  const router = useRouter();
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setFormData(prev => ({
@@ -30,6 +34,7 @@ const SigninPage: React.FC = () => {
     if (!response.isSuccess) {
       setError(response.errorMessage!);
     }
+    else { router.push('/'); }
   };
 
   return (

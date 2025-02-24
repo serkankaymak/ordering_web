@@ -4,13 +4,14 @@ import React, { useEffect, useState } from 'react';
 import { ProductModel } from '@/domain/ProductModels';
 import { Container, TextField, Typography, Box, Button, } from '@mui/material';
 import { Add } from '@mui/icons-material';
-import AdminProductTableComponent from './components/serverSideComponents/AdminProductTableComponent';
+
 import { useRouter } from 'next/navigation';
 import MyModal from '@/shared/components/MyModal';
 import { AppRoutes } from '@/app/routes/PageRoutes';
 import Toast from '@/shared/Toast';
 import { IPageContent } from '@/app/types/ViewTypes';
 import { ProductService } from '@/application/services/product/ProductService';
+import AdminProductTableComponent from '../productmanagement/components/serverSideComponents/AdminProductTableComponent';
 
 
 const productService = new ProductService();

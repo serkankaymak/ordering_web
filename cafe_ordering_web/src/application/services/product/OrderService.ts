@@ -1,6 +1,9 @@
-'use client'
-import { OrderItemModel } from '@/domain/OrderModels';
+import { OrderItemModel, OrderModel } from '@/domain/OrderModels';
 import { ProductModel } from '@/domain/ProductModels';
+import { ServiceResponse } from '../ServiceResponse';
+import { GetUnCompletedOrderRequest } from '@/application/httpRequests/order/GetUnCompletedOrders';
+import { UpdateOrderCommand, UpdateOrderRequest } from '@/application/httpRequests/order/UpdateOrderRequest';
+import { CreateOrderCommand, CreateOrderRequest } from '@/application/httpRequests/order/CreateOrderRequest';
 
 export interface IOrderService {
     readonly orderedProducts: OrderItemModel[];
@@ -55,7 +58,7 @@ export class OrderService implements IOrderService {
 
     // Ürünü sipariş listesine ekleme
     public clearProductFromOrder(product: ProductModel): void {
-        if(product.id==null) {this.clearOrder(); return;}
+        if (product.id == null) { this.clearOrder(); return; }
         const existingOrderItem = this._orderedProducts.find(orderItem => orderItem.productId === product.id);
         if (existingOrderItem) { this._orderedProducts = this._orderedProducts.filter(x => x.productId != product.id); }
         else { throw new Error(""); }
@@ -111,6 +114,28 @@ export class OrderService implements IOrderService {
             console.error('Veriler localStorage\'dan yüklenirken bir hata oluştu:', error);
             this._orderedProducts = [];
         }
+    }
+
+
+
+
+    public async GetUnCompletedOrders(): Promise<ServiceResponse<OrderModel[]>> {
+        var response = await GetUnCompletedOrderRequest.send();
+        if (response.isSuccess) { return ServiceResponse.success(response.data!); }
+        else { return ServiceResponse.failure(response.error!) }
+    }
+
+    public async UpdateOrder(command: UpdateOrderCommand): Promise<ServiceResponse<void>> {
+        var response = await UpdateOrderRequest.send(command);
+        if (response.isSuccess) { return ServiceResponse.success(response.data!); }
+        else { return ServiceResponse.failure(response.error!) }
+    }
+
+
+    public async CreateOrder(command: CreateOrderCommand): Promise<ServiceResponse<void>> {
+        var response = await CreateOrderRequest.send(command);
+        if (response.isSuccess) { return ServiceResponse.success(response.data!); }
+        else { return ServiceResponse.failure(response.error!) }
     }
 
 }

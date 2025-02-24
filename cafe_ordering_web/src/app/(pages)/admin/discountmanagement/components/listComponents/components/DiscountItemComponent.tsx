@@ -30,7 +30,7 @@ const DiscountItemComponent: React.FC<DiscountItemComponentProps> = ({
                         <TableCell>
                             <Box className="flex w-full">
                                 <Box className="flex flex-col  items-start justify-center  ">
-                                    <div>gerekliTutar :   {discountItem.requiredQuantity}</div>
+                                    <div>gerekliMinimumMiktar :   {discountItem.requiredQuantity}</div>
                                     {useTopDiscount == false && <div>  discountPercentage :   {discountItem.discountPercentage}</div>}
                                     {discountItem.requiredQuantity != 1 && <div>  sonÜrünİndirimi :   {discountItem.discountPercentage ?? (discountPercentage ?? 0) * discountItem.requiredQuantity}%</div>}
 

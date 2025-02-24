@@ -21,7 +21,7 @@ import MyBottomSheet from "@/shared/components/MyBottomSheet";
 import { useProductContext } from "@/app/providers/product.provider";
 import { ProductModel } from "@/domain/ProductModels";
 import Slider from "react-slick";
-import ProductDetailCardHeaderComponent from "../product/ProductDetailCardHeaderComponent";
+import ProductDetailCardHeaderComponent from "./components/ProductDetailCardHeaderComponent";
 import { IComponent } from "@/app/types/ViewTypes";
 import { randomInt, randomUUID } from "node:crypto";
 

@@ -17,7 +17,7 @@ export default function RootLayout({
     <html
       lang="en" suppressHydrationWarning={true}>
       <head>
-        <title>Başlık Buraya</title>
+        <title>Cafe Delux</title>
       </head>
       <body style={{ overflow: 'hidden' }}
         className={` antialiased  `}

@@ -51,7 +51,7 @@ const UpdateMenuPage: IPage = () => {
 
     return (
         <Box className="flex flex-col items-center justify-center">
-            <Box className="w-[100%] md:w-[70%]">
+            <Box className="w-[100%] ">
                 {menu && (
                     <MenuItemAddOrUpdateComponent
                         menu={menu}

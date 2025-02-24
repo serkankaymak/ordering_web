@@ -36,7 +36,7 @@ const UpdateDiscountPage: React.FC = ({ }) => {
     if (discount.id == 0) return <></>
     return (
 
-        <Container>
+        <Container  className='flex flex-col items-center mt-5'>
             <DiscountAddOrUpdateComponent
                 discount={discount}
                 onSubmitClicked={
@@ -46,7 +46,7 @@ const UpdateDiscountPage: React.FC = ({ }) => {
                             discountId: updatedDiscount.id,
                             discountName: updatedDiscount.name,
                             discountType: updatedDiscount.discountType,
-                            endDateAsUtc: updatedDiscount.getLocaleDate()?.toISOString() ,
+                            endDateAsUtc: updatedDiscount.getEndDateLocale()?.toISOString() ,
                             categoryId: updatedDiscount.categoryId ?? 0,
 
                             discountPercentage: updatedDiscount.discountPercentage,

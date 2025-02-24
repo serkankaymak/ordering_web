@@ -112,11 +112,23 @@ const DiscountProductBasedComponent: React.FC<DiscountProductBasedComponentProps
 
                         }
 
-                        {showUpdateActions &&
-                            <TableRow>
-                                <TableCell sx={{ padding: 1 }}>
+
+                    {showUpdateActions &&
+                        <TableRow>
+                            <TableCell sx={{ padding: 1 }}>
+                                <Box className="flex flex-col sm:flex-row gap-2 ">
                                     <MyDateTimePicker
-                                        valueAsUtc={discount.getLocaleDate() ?? new Date()}
+                                        valueAsUtc={discount.getStartDateLocale() ?? new Date()}
+                                        onValueChanged={(date) => {
+                                            console.log(date?.toUTCString())
+                                            onAnyPropertyChanged &&
+                                                onAnyPropertyChanged("StartDateUtc", date!.toUTCString())
+                                        }}
+                                        slotProps={{ textField: { variant: "outlined", fullWidth: true } }}
+                                        label={'İndirimBaşlamaTarihi'} />
+
+                                    <MyDateTimePicker
+                                        valueAsUtc={discount.getEndDateLocale() ?? new Date()}
                                         onValueChanged={(date) => {
                                             console.log(date?.toUTCString())
                                             onAnyPropertyChanged &&
@@ -124,9 +136,15 @@ const DiscountProductBasedComponent: React.FC<DiscountProductBasedComponentProps
                                         }}
                                         slotProps={{ textField: { variant: "outlined", fullWidth: true } }}
                                         label={'İndirimBitişTarihi'} />
-                                </TableCell>
-                            </TableRow>
-                        }
+                                </Box>
+
+
+
+                            </TableCell>
+                        </TableRow>
+                    }
+
+
 
 
                         <TableRow>

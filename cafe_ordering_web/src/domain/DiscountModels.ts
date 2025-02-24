@@ -101,11 +101,13 @@ export class DiscountModel {
   discountType: DiscountType = DiscountType.ProductBasedDiscount;
   maxApplicableTimes: number = 1;
   discountItems: DiscountItemModel[] = [];
+  StartDateUtc?:string|null;
   endDateUtc?: string | null = null;
   categoryId: number = 0;
 
 
-  getLocaleDate() { if (this.endDateUtc == null) return null; return new Date(this.endDateUtc!); }
+  getEndDateLocale() { if (this.endDateUtc == null) return null; return new Date(this.endDateUtc!); }
+  getStartDateLocale() { if (this.StartDateUtc == null) return null; return new Date(this.StartDateUtc!); }
 
   getProductsPrice() {
     if (this.discountType != DiscountType.ProductBasedDiscount) throw Error(" sadece ürün bazlı için ");

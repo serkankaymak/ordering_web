@@ -1,7 +1,7 @@
 
 import { DragHandle, Close, Send, Clear, Delete, Discount } from "@mui/icons-material";
 import { SwipeableDrawer, Box, IconButton, Typography, Button, useTheme, Card, Chip } from "@mui/material";
-import OrderItemComponent from "../order/OrderItemCardComponent";
+import OrderItemComponent from "../order/OrderItemComponent";
 import React from "react";
 import { OrderItemModel } from "@/domain/OrderModels";
 import MyBottomSheet from "@/shared/components/MyBottomSheet";
@@ -71,6 +71,7 @@ const CartPanelBottomSheet: IComponent<{
                                     sx={{ overflowY: "auto", flex: 1 }}> {/* Kaydırma için */}
                                     {orderItems.map((item) => (
                                         <OrderItemComponent
+                                            showActions={true}
                                             key={item.productId}
                                             orderItem={item ?? new OrderItemModel({ productId: 0 })}
                                             onIncreaseClicked={() => onIncrease(item.productId)}
@@ -83,14 +84,6 @@ const CartPanelBottomSheet: IComponent<{
                             </>
                         )}
                     </Box>
-
-
-
-
-
-
-
-
 
                     <Box sx={{
                         mt: 2, pt: 2,
