@@ -24,6 +24,7 @@ export const LocaleProvider = ({ children }: { children: ReactNode }) => {
   };
 
   useEffect(() => {
+      Logcat.Debug(`localeProvider useEffect executed`);
     setMounted(true); // Client mount olduktan sonra mounted true olacak.
     localizationService.addOnChangeListener(listener);
     return () => { };

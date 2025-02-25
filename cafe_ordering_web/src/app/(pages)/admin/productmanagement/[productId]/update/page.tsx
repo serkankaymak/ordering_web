@@ -16,7 +16,7 @@ const UpdateProductPage: React.FC = () => {
   const router = useRouter();
   const params = useParams(); // Dinamik parametreleri almak için
   const productId = params?.productId;
-  const [product, setProduct] = useState<ProductModel>(ProductModel.getEmptyInstance());
+  const [product, setProduct] = useState<ProductModel>(ProductModel.getEmptyProductInstance());
   const [productsImages, setProductsImages] = useState<string[]>([]);
   const [categories, setCategories] = useState<CategoryModel[]>([]);
 
@@ -55,13 +55,13 @@ const UpdateProductPage: React.FC = () => {
     })
       .then(isSuccess => {
         if (isSuccess) {
-          Toast.success("Product updated");
+
         } else {
-          Toast.error("Product updated unsuccessful");
+
         }
       })
       .catch((e: any) => {
-        Toast.error("Product updated unsuccessful");
+
       });
   };
 

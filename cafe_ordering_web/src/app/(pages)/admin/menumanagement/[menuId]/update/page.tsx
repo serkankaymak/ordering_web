@@ -22,7 +22,7 @@ const UpdateMenuPage: IPage = () => {
     const [products, setProducts] = useState<ProductModel[]>([]);
     const [avaibleProductImages, setAvaibleProductImages] = useState<string[]>([]);
     const [productCategories, setProductCategories] = useState<CategoryModel[]>([]);
-    const [menu, setMenu] = useState<ProductModel>(ProductModel.getEmptyInstance());
+    const [menu, setMenu] = useState<ProductModel>(ProductModel.getEmptyProductInstance());
 
 
     useEffect(() => {

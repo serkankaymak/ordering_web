@@ -176,7 +176,7 @@ const MenuPageContent: IPageContent<MenuPageContentProps> = () => {
                     <ProductDetailBottomSheet
                         onAddCommentClicked={() => setAddOrUpdateCommentBottomSheetOpen(true)}
                         onCloseClicked={() => setOpenProductDetailBottomSheet(false)}
-                        product={productDetail ?? ProductModel.getEmptyInstance()}
+                        product={productDetail ?? ProductModel.getEmptyProductInstance()}
                         isOpen={isOpenProductDetailBottomSheet}
                     />
                     <AddOrUpdateCommentBottomSheet

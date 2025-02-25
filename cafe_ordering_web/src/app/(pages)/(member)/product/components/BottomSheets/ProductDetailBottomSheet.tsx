@@ -68,7 +68,7 @@ const ProductDetailBottomSheet: IComponent<ProductDetailBottomSheetProps> = ({
           style={{ display: !isProductInTheBasket ? '' : 'none' }}
           onClick={() => {
             addProductToOrder(product?.id!);
-            Toast.success("added");
+            Toast.success("Ürün sepete eklendi");
           }}
         >
           <AddShoppingCart className="" />
@@ -82,7 +82,7 @@ const ProductDetailBottomSheet: IComponent<ProductDetailBottomSheetProps> = ({
             disabled={orderedProducts.find(x => x.productId == product.id)?.quantity == 0}
             onClick={() => {
               removeProductFromOrder(product?.id!);
-              Toast.success("removed");
+             
             }}
 
           >
@@ -95,7 +95,7 @@ const ProductDetailBottomSheet: IComponent<ProductDetailBottomSheetProps> = ({
 
           <IconButton onClick={() => {
             addProductToOrder(product?.id!);
-            Toast.success("added");
+     
           }}
           >
             <AddIcon />

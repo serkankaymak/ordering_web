@@ -21,12 +21,17 @@ import { Add, Delete, Remove, Save } from "@mui/icons-material";
 import ImageSelectorComponent from "@/shared/components/ImageSelectorComponent";
 import MyModal from "@/shared/components/MyModal";
 import ProductSelector from "@/app/(pages)/components/ProductSelector";
+import ProductSelector2 from "@/app/(pages)/components/ProductSelector2";
+import ImageSelectorComponent2 from "@/shared/components/ImageSelectorComponent2";
+import ImageSelectorComponent3 from "@/app/(pages)/components/ImageSelectorComponent3";
+import { ProductImageDto } from "@/application/dtos/ProductImageDto";
 
 interface MenuItemAddOrUpdateComponentContentProps {
     rootId?: number,
     productsForProductSelector?: ProductModel[],
     categories: CategoryModel[],
-    avaibleProductImagePaths: string[];
+    avaibleProductImagePaths?: string[];
+    avaibleProductImageDtos?: ProductImageDto[];
     menu: ProductModel;
     onSubmitClicked?: (updatedMenu: ProductModel) => void;
     onInputChange?: (key: keyof ProductModel, value: any) => void;
@@ -50,7 +55,8 @@ const MenuItemAddOrUpdateComponentContent:
         onCategoryToggle,
         onImageFileUploaded,
         categories,
-        avaibleProductImagePaths
+        avaibleProductImagePaths = [],
+        avaibleProductImageDtos = []
     }) => {
 
         const [isOpenImageSelectorModal, setOpenImageSelectorModal] = useState<boolean>(false);
@@ -338,8 +344,6 @@ const MenuItemAddOrUpdateComponentContent:
                         </Table>
                     </TableContainer>
 
-
-
                     {menu.parentBoxId == null &&
                         <Box>
 
@@ -347,23 +351,34 @@ const MenuItemAddOrUpdateComponentContent:
                                 isOpen={isOpenImageSelectorModal}
                                 onCloseClicked={() => { setOpenImageSelectorModal(false) }}
                             >
-                                <ImageSelectorComponent
+                                {false && <ImageSelectorComponent2
+                                    pageSize={24}
                                     imageUrlList={avaibleProductImagePaths}
                                     onChooseButtonClicked={function (imageUrl: string): void {
                                         handleImageSelect(imageUrl);
-                                    }} />
+                                    }} />}
+
+
+                                {true && <ImageSelectorComponent3
+                                    pageSize={24}
+                                    avaibleProductImageDtos={avaibleProductImageDtos}
+                                    onChooseButtonClicked={function (imageUrl: string): void {
+                                        handleImageSelect(imageUrl);
+                                    }} />}
+
                             </MyModal>
 
                             <MyModal isOpen={isOpenProductSelectorModal}
                                 onCloseClicked={() => { setOpenProductSelectorModal(false) }} >
-                                <ProductSelector
+                                <ProductSelector2
+                                    pageSize={3}
                                     products={productsForProductSelector ?? []}
                                     onChooseButtonClicked={function (selectedProduct: ProductModel): void {
                                         setOpenProductSelectorModal(false)
                                         console.log(selectedProduct.id);
                                         onAddProduct && onAddProduct(selectedProduct.id);
 
-                                    }} ></ProductSelector>
+                                    }} ></ProductSelector2>
 
                             </MyModal>
 

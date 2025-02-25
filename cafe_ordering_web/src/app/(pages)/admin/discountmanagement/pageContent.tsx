@@ -36,7 +36,7 @@ const DiscountManagementPageContent: IPageContent<DiscountManagementPageContentP
             if (response.isSuccess) {
                 setDiscounts(discountService.discounts!);
             } else {
-                Toast.error();
+ 
             }
         });
     }, []);

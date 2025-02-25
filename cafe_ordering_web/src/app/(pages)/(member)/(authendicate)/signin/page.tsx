@@ -65,6 +65,21 @@ const SigninPage: React.FC = () => {
             onChange={handleChange}
             required
           />
+
+
+          <TextField
+            fullWidth
+            margin="normal"
+            label="Birthday"
+            name="birthday"
+            type="date"
+            onChange={handleChange}
+            InputLabelProps={{
+              shrink: true,
+            }}
+            required
+          />
+
           {error && (
             <Typography color="error" variant="body2" className="mt-2">
               {error}

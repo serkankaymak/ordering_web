@@ -114,7 +114,7 @@ export class ProductModel {
     });
   }
 
-  static getEmptyInstance(): ProductModel {
+  static getEmptyProductInstance(): ProductModel {
     return new ProductModel({
       id: 0,
       name: "",
@@ -123,6 +123,13 @@ export class ProductModel {
       imagePath: null,
     });
   }
+
+  static getEmptyBoxInstance(): ProductModel {
+    var p = this.getEmptyProductInstance();
+    p.products = [];
+    return p;
+  }
+
 
   static getExample(index: number = 1): ProductModel {
     const product = new ProductModel({

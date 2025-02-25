@@ -101,7 +101,7 @@ const ProductManagementPageContent: IPageContent<ProductManagementPageContentPro
                     <Box>
                         <AdminProductTableComponent
                             showActions={false}
-                            product={products.filter(x => x.id == deleteRequestProductId)[0] ?? ProductModel.getEmptyInstance()}
+                            product={products.filter(x => x.id == deleteRequestProductId)[0] ?? ProductModel.getEmptyProductInstance()}
                         />
 
                         <Typography sx={{ mt: 1 }} variant="subtitle2">

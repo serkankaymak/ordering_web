@@ -44,11 +44,11 @@ const AddProductPage: React.FC = () => {
           router.push(AppRoutes.ProductManagement);
           Toast.success("Product created");
         } else {
-          Toast.error("Product creating unsuccessful");
+     
         }
       })
       .catch((e: any) => {
-        Toast.error("Product creating unsuccessful");
+
       });
   };
 

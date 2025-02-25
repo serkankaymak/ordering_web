@@ -32,18 +32,20 @@ export default function AdminLayout({
                     <AdminHeaderComponent></AdminHeaderComponent>
 
                     {/* AppBar yüksekliğini telafi etmek için boş bir Toolbar */}
-                    <Toolbar />
+                    <Toolbar className="mt-2" />
 
                     {/* İçerik Alanı */}
                     <Box
                         ref={scrollableDivRef}
                         sx={{
-                            p: 2,
+                            p: 0,
                             height: isSmallScreen ? '95vh' : '100vh',
                             maxHeight: "calc(100vh - 65px)",
                             overflowY: "auto",
                         }}
-                        className="whitespace-nowrap scrollbar-none sm:scrollbar-thin scrollbar-track-gray-200 scrollbar-thumb-gray-500"
+                        className="whitespace-nowrap 
+                           sm:scrollbar scrollbar-thin
+                         scrollbar-track-gray-200 scrollbar-thumb-gray-500"
                     >
                         {children}
                         {/* Scroll To Top Butonu */}

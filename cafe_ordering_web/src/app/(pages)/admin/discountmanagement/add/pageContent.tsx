@@ -40,7 +40,7 @@ const AddDiscountPageContent: IPageContent<AddDiscountPageContentProps> = ({ }) 
                         discountService.createDiscount(command).then(
                             response => {
                                 if (response.isSuccess) { Toast.success() }
-                                else { Toast.error() }
+                                else {  }
                             }
                         );
 

@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { Box, Container } from '@mui/material';
+import { Box, Container, Button, ButtonGroup } from '@mui/material';
 import { IPageContent } from '@/app/types/ViewTypes';
 import { OrderModel } from '@/domain/OrderModels';
 import OrderCard from './components/OrderCard';
@@ -14,43 +14,43 @@ import { OrderItemModel } from '@/domain/OrderModels';
 import Masonry from 'react-masonry-css';
 import MyMasonry from '@/shared/components/MyMasonary';
 import { useOrderEvents } from '@/app/providers/orderEvents.provider';
+import { Check } from '@mui/icons-material';
 
 const productService = new ProductService();
 const orderService = new OrderService();
 
 interface OrderPageContentProps { }
 
+type SortOption = 'id' | 'createdDate' | 'tableId';
+
 const OrderPageContent: IPageContent<OrderPageContentProps> = ({ }) => {
     const [products, setProducts] = useState<ProductModel[]>([]);
     const [orders, setOrders] = useState<OrderModel[]>([]);
     // Seçili siparişi tutan state; null ise modal kapalı.
     const [selectedOrder, setSelectedOrder] = useState<OrderModel | null>(null);
+    const [sortOption, setSortOption] = useState<SortOption>('id');
     const { addOnOrderCreatedListener } = useOrderEvents();
-
 
     useEffect(() => {
         productService.loadAllProductsAndMenus().then((res) => {
             setProducts(res.data!);
         });
         orderService.GetUnCompletedOrders().then((response) => {
+            // Initially set orders without sorting—the render will handle the sort.
             setOrders(response.data!);
         });
 
-
         addOnOrderCreatedListener("OrderPageContent", (orderEvent) => {
             console.log(orderEvent);
-           orderService.GetOrder(orderEvent.orderId).then(response=>{
-            console.log(response);
-            if (response.isSuccess) {
-                setOrders((prevOrders) => [...prevOrders, response.data!]);
-              }
-           })
+            orderService.GetOrder(orderEvent.orderId).then(response => {
+                console.log(response);
+                if (response.isSuccess) {
+                    // Add the new order; sorting is applied in the render.
+                    setOrders((prevOrders) => [...prevOrders, response.data!]);
+                }
+            })
         });
-
-
     }, []);
-
-
 
     const defaultBreakpoints = { default: 3, 1800: 3, 1000: 2, 800: 1, 500: 1 };
 
@@ -58,49 +58,80 @@ const OrderPageContent: IPageContent<OrderPageContentProps> = ({ }) => {
     const updateOrder = (updatedOrder: OrderModel) => {
         setOrders((prevOrders) => {
             const otherOrders = prevOrders.filter((o) => o.id !== updatedOrder.id);
-            const newOrders = [...otherOrders, updatedOrder].sort((a, b) => (a.tableId || 0) - (b.tableId || 0));
-            return newOrders;
+            return [...otherOrders, updatedOrder];
         });
     };
 
+    // Compute sorted orders based on selected sort option
+    const sortedOrders = orders.slice().sort((a, b) => {
+        switch (sortOption) {
+            case 'createdDate':
+                return new Date(a.CreatedAt).getTime() - new Date(b.CreatedAt).getTime();
+            case 'tableId':
+                return (a.tableId || 0) - (b.tableId || 0);
+            default:
+                return a.id - b.id;
+        }
+    });
+
     return (
         <Container className="flex flex-col mt-5">
-            {false &&
+            {/* Sort options UI */}
+            <>
+                <h6 className='text-center'>Sort By</h6>
+                <Box display="flex" justifyContent="center" mb={2}>
+                    <ButtonGroup size='small' className='gap-2 overflow-x-scroll' variant="contained" color="secondary">
+                        <Button type='button' onClick={() => setSortOption('createdDate')}>
+                            {sortOption === 'createdDate' && (
+                                <Check fontSize="small" style={{ marginRight: 4 }} />
+                            )}
+                            Created
+                        </Button>
+                        <Button type='button' onClick={() => setSortOption('tableId')}>
+                            {sortOption === 'tableId' && (
+                                <Check fontSize="small" style={{ marginRight: 4 }} />
+                            )}
+                            Table ID
+                        </Button>
+                        <Button type='button' onClick={() => setSortOption('id')}>
+                            {sortOption === 'id' && (
+                                <Check fontSize="small" style={{ marginRight: 4 }} />
+                            )}
+                            ID
+                        </Button>
+                    </ButtonGroup>
+                </Box>
+            </>
 
+
+            {false &&
                 <Box className="grid grid-cols-1 md:grid-cols-3 sm:grid-cols-2 gap-1">
-                    {orders
-                        .sort((a, b) => (a.tableId || 0) - (b.tableId || 0))
-                        .map((order) => (
+                    {sortedOrders.map((order) => (
+                        <OrderCard
+                            key={order.id}
+                            order={order}
+                            onOrderModified={(modifiedOrder) => updateOrder(modifiedOrder)}
+                            onAddProductClicked={(order) => setSelectedOrder(order)}
+                        />
+                    ))}
+                </Box>
+            }
+
+            {true &&
+                <MyMasonry
+                    breakpointCols={defaultBreakpoints}
+                    items={
+                        sortedOrders.map((order) => (
                             <OrderCard
                                 key={order.id}
                                 order={order}
                                 onOrderModified={(modifiedOrder) => updateOrder(modifiedOrder)}
                                 onAddProductClicked={(order) => setSelectedOrder(order)}
                             />
-                        ))}
-                </Box>
-
+                        ))
+                    }
+                ></MyMasonry>
             }
-
-            {true &&
-
-                <MyMasonry
-                    breakpointCols={defaultBreakpoints}
-                    items={
-                        orders
-                            .sort((a, b) => (a.tableId || 0) - (b.tableId || 0))
-                            .map((order) => (
-                                <OrderCard
-                                    key={order.id}
-                                    order={order}
-                                    onOrderModified={(modifiedOrder) => updateOrder(modifiedOrder)}
-                                    onAddProductClicked={(order) => setSelectedOrder(order)}
-                                />
-                            ))
-                    } ></MyMasonry>
-
-            }
-
 
             <MyModal
                 className=""

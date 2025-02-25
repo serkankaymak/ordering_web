@@ -88,4 +88,9 @@ export class OrderHubService implements IOrderHubService {
         this.onOrderPayedListener = undefined;
     }
 
+
+    public joinTable(tableId: number): Promise<any> {
+        var response = this.signalRService.invoke("JoinTable", tableId.toString());
+        return response;
+    }
 } 

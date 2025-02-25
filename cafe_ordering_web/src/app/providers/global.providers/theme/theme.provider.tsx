@@ -6,6 +6,7 @@ import { ThemeMode, themeService } from "@/application/services/theme/ThemeServi
 import { darkTheme } from "@/application/services/theme/DarkTheme";
 import { lightTheme } from "@/application/services/theme/LightTheme";
 import CssBaseline from '@mui/material/CssBaseline';
+import { Logcat } from "@/shared/LogCat";
 
 interface ThemeContextProps {
   themeMode: ThemeMode;
@@ -27,6 +28,7 @@ export const ThemeProvider = ({ children }: { children: ReactNode; }) => {
   const theme = createTheme(themeMode === ThemeMode.DARK ? darkTheme : lightTheme);
 
   useEffect(() => {
+    Logcat.Debug(`localeProvider useEffect executed`);
     setMounted(true); // Client mount olduktan sonra mounted true olacak.
     const listener = (newThemeMode: ThemeMode) => {
       setThemeMode(newThemeMode);

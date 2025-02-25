@@ -119,7 +119,7 @@ const OrderCard: React.FC<OrderCardProps> = ({
               <Checkbox
                 size="small"
                 onChange={() => handleCheckboxChange('isDelivered')}
-                checked={order.isDelivered}
+                checked={order.isDelivered ?? false}
                 color="primary"
               />
             }
@@ -130,7 +130,7 @@ const OrderCard: React.FC<OrderCardProps> = ({
               <Checkbox
                 size="small"
                 onChange={() => handleCheckboxChange('isPayed')}
-                checked={order.isPayed}
+                checked={order.isPayed ?? false}
                 color="primary"
               />
             }
@@ -141,7 +141,7 @@ const OrderCard: React.FC<OrderCardProps> = ({
               <Checkbox
                 size="small"
                 onChange={() => handleCheckboxChange('isReady')}
-                checked={order.isReady}
+                checked={order.isReady ?? false}
                 color="primary"
               />
             }

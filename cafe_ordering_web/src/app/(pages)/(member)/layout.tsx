@@ -35,7 +35,7 @@ export default function MemberLayout({
               height: isSmallScreen ? 'calc(100vh - 55px)' : '100vh'
             }}
             className=" flex flex-col overflow-auto   whitespace-nowrap  
-             scrollbar-none sm:scrollbar-thin scrollbar-track-gray-200 scrollbar-thumb-gray-500"
+             sm:scrollbar scrollbar-thin scrollbar-track-gray-200 scrollbar-thumb-gray-500"
           >
             <InitColorSchemeScript attribute="class" />
             <HeaderComponent className="z-0  absolute " />

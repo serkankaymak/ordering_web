@@ -1,14 +1,12 @@
 import React from "react";
-import { Box, Typography, Card, CardMedia, IconButton, } from "@mui/material";
+import { Box, Typography, Card, IconButton, } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
-import { Analytics, Delete, Preview } from "@mui/icons-material";
+import { Delete, Preview } from "@mui/icons-material";
 import { OrderItemModel } from "@/domain/OrderModels";
 // react-slick'in düzgün çalışması için gerekli CSS dosyaları
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import Slider from "react-slick";
-import { ProductModel } from "@/domain/ProductModels";
 import useMyMediaQuery, { Breakpoints } from "@/shared/hooks/UseMediaQuery";
 import { IComponent } from "@/app/types/ViewTypes";
 import OrderCardOrderItemProductComponent from "./OrderCard_OrderItemProductComponent";
@@ -58,7 +56,6 @@ const settings = {
     prevArrow: <SamplePrevArrow />,
 };
 
-
 // Props için interface tanımı
 interface OrderCardOrderItemComponentProps {
     className?: string; // Dışarıdan eklenebilir className
@@ -69,7 +66,6 @@ interface OrderCardOrderItemComponentProps {
     onRemoveClicked?: () => void;
     onViewClicked?: (productId: number) => void;
 }
-
 
 // Fonksiyonel bileşen tanımı
 const OrderCardOrderItemComponent: IComponent<OrderCardOrderItemComponentProps> = ({
@@ -89,7 +85,7 @@ const OrderCardOrderItemComponent: IComponent<OrderCardOrderItemComponentProps> 
         >
 
             <Box className="flex items-start w-full">
-                
+
                 {/* Ürün Bilgisi */}
                 <Box className="w-full "
                     sx={{ flex: 1 }}>
@@ -97,11 +93,9 @@ const OrderCardOrderItemComponent: IComponent<OrderCardOrderItemComponentProps> 
                     <Box className=" w-full flex flex-col sm:flex-col  justify-around">
                         <OrderCardOrderItemProductComponent
                             menu={orderItem.product!}
-                        ></OrderCardOrderItemProductComponent>
+                        />
 
                         <Box className=" mt-1 flex w-full flex-row justify-end items-center  ">
-
-
                             {showActions &&
                                 <>
                                     {/* Miktar Kontrolü */}
@@ -146,10 +140,8 @@ const OrderCardOrderItemComponent: IComponent<OrderCardOrderItemComponentProps> 
                                 </>
                             }
 
-
-
                             <IconButton onClick={() => { onViewClicked && onViewClicked(orderItem.productId) }} color="primary">
-                                <Preview></Preview>
+                                <Preview/>
                             </IconButton>
 
                         </Box>

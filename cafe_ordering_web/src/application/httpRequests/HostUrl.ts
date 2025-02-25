@@ -88,6 +88,9 @@ export default class ApiUrls {
     static GetDeleteProductUrl(): string { return DELETE_PRODUCT_URL; }
     static Host(): string { return HOST_URL || ""; }
     static GetProductImagesUrl(): string { return PRODUCT_IMAGES_URL; }
+
+    static GetProductImagesWithTagsUrl(): string { return PRODUCT_URL + "/productimagesWithTags"; }
+
     static GetProductUrl(): string { return PRODUCT_URL; }
     static GetMenuUrl(): string { return MENU_URL; }
 

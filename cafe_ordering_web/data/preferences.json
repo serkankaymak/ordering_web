@@ -1,8 +1,8 @@
 {
   "denemeCount": 0,
   "showInnerProductsOnProductDetailCard": false,
-  "useTransitionableProductCard": false,
-  "showNameAndPriceOnProductCard": true,
+  "useTransitionableProductCard": true,
+  "showNameAndPriceOnProductCard": false,
   "showClientAwaibleDiscounts": true,
   "showClientDetailedAwaibleDiscounts": true
 }

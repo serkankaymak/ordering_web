@@ -13,6 +13,7 @@ import { useUserContext } from '../../../../../providers/global.providers/user.p
 import { OrderService } from "@/application/services/product/OrderService";
 import { CreateOrderCommand } from "@/application/httpRequests/order/CreateOrderRequest";
 import Toast from "@/shared/Toast";
+import { useOrderEvents } from "@/app/providers/orderEvents.provider";
 
 // Props arayüzü tanımı
 interface CartButtonComponentProps {
@@ -22,11 +23,12 @@ interface CartButtonComponentProps {
 // Ana Bileşen
 const CartButtonComponent: IComponent<CartButtonComponentProps> = ({ onViewClicked }) => {
   const orderService = new OrderService();
+  const { joinTable } = useOrderEvents();
   const { user } = useUserContext();
   const [cartOpen, setCartOpen] = useState(false);
   const { awaibleOrderDiscounts, awaibleDiscounts, orderedProducts, addProductToOrder, removeProductFromOrder, clearProductFromOrder, clearOrder } = useProductContext();
   const [isDiscountsSheetOpen, setisDiscountsSheetOpen] = useState<boolean>(false);
-
+  const [selectedTableId, setselectedTableId] = useState<number>(0);
   return (
     <>
       {/* Float Button */}
@@ -62,17 +64,20 @@ const CartButtonComponent: IComponent<CartButtonComponentProps> = ({ onViewClick
         onOrderClearClicked={clearOrder}
         onViewClicked={onViewClicked}
         onDiscountsButonClicked={() => { setisDiscountsSheetOpen(true) }}
-        onOrderSendClicked={() => {
+        onTableSelectValueChanged={(tableId) => { setselectedTableId(tableId) }}
+        onOrderSendClicked={async () => {
 
           let command = {
-            tableId: 5,
+            tableId: selectedTableId,
             userId: user ? user.id : 0,
             orderMenuItems: orderedProducts.map(x => ({ productId: x.productId, quantity: x.quantity }))
           } as CreateOrderCommand;
 
+          try { await joinTable(selectedTableId); }
+          catch (e: any) { console.log(e); }
+
           orderService.CreateOrder(command).then(response => {
             if (response.isSuccess) {
-              Toast.success();
               clearOrder();
             }
             else {

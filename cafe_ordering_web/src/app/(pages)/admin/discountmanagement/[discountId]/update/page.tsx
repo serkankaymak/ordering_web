@@ -62,7 +62,7 @@ const UpdateDiscountPage: React.FC = ({ }) => {
                         console.log(command);
                         discountService.updateDiscount(command).then(
                             response => {
-                                if (response.isSuccess) { Toast.success() }
+                                if (response.isSuccess) {  }
                                 else { Toast.error() }
                             }
                         );

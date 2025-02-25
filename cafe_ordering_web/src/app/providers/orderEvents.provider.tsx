@@ -6,6 +6,7 @@ import { OrderEvent } from "@/application/socketServices/events/OrderEvents";
 
 interface OrderEventsContextProps {
 
+    joinTable(tableId: number): Promise<any>;
     addOnOrderCreatedListener: (key: string, listener: (orderEvent: OrderEvent) => void) => void;
     addOnOrderUpdatedListener: (key: string, listener: (orderEvent: OrderEvent) => void) => void;
 
@@ -35,6 +36,13 @@ export const OrderEventsProvider = ({ children }: { children: ReactNode }) => {
     const orderPreparedListenersRef = useRef<Map<string, (orderEvent: OrderEvent) => void>>(new Map());
     const orderDeliveredListenersRef = useRef<Map<string, (orderEvent: OrderEvent) => void>>(new Map());
     const orderPayedListenersRef = useRef<Map<string, (orderEvent: OrderEvent) => void>>(new Map());
+
+
+    const joinTable = (tableId: number) => {
+        if (tableId == 0) return;
+        return service.joinTable(tableId)
+    };
+
 
     // Listener ekleme fonksiyonları: aynı key için ekleme yapıldığında, mevcut listener üzerine yazılır.
     const addOnOrderCreatedListener = (key: string, listener: (orderEvent: OrderEvent) => void) => {
@@ -88,6 +96,7 @@ export const OrderEventsProvider = ({ children }: { children: ReactNode }) => {
     return (
         <OrderEventsContext.Provider
             value={{
+                joinTable,
                 addOnOrderCreatedListener,
                 addOnOrderUpdatedListener,
                 addOnOrderPreparedListener,

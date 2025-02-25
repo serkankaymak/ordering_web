@@ -5,20 +5,23 @@ import { CategoryModel, ProductModel } from "@/domain/ProductModels";
 import { Box } from "@mui/material";
 import { IComponent } from "@/app/types/ViewTypes";
 import MenuItemAddOrUpdateComponentContent from "./MenuItemAddOrUpdateComponentContent";
+import { ProductImageDto } from "@/application/dtos/ProductImageDto";
 
 interface MenuItemAddOrUpdateComponentProps {
     products: ProductModel[],
     menu?: ProductModel
     productCategories: CategoryModel[]
-    avaibleProductImages: string[]
+    avaibleProductImages: string[],
+    avaibleProductImageDtos:ProductImageDto[],
     onSubmitClicked: (menu: ProductModel, imageFile: File | null) => void
 }
 
 const MenuItemAddOrUpdateComponent: IComponent<MenuItemAddOrUpdateComponentProps> = ({
-    menu = ProductModel.getEmptyInstance(),
+    menu = ProductModel.getEmptyBoxInstance(),
     productCategories,
     products,
     avaibleProductImages,
+    avaibleProductImageDtos,
     onSubmitClicked
 }) => {
 
@@ -47,6 +50,7 @@ const MenuItemAddOrUpdateComponent: IComponent<MenuItemAddOrUpdateComponentProps
 
     // Recursive yapıda ürün ekleme işlemi (örnek: üst menünün altındaki ürünleri güncelleme)
     const handleAddProduct = (productId: number) => {
+        console.log(productId);
         setUpdatedMenu(prevState => {
             if (!prevState.products) return prevState;
             if (prevState.products.some(x => x.id == productId)) {
@@ -56,6 +60,7 @@ const MenuItemAddOrUpdateComponent: IComponent<MenuItemAddOrUpdateComponentProps
                 return prevState.copy({ products: updatedProducts });
             }
             var newProduct = products.find(x => x.id == productId);
+            console.log(newProduct);
             if (newProduct) {
                 newProduct.parentBoxId = updatedMenu.id;
                 newProduct.parent = updatedMenu;
@@ -91,8 +96,10 @@ const MenuItemAddOrUpdateComponent: IComponent<MenuItemAddOrUpdateComponentProps
             <Box className="w-[100%] md:w-[70%]">
                 {menu && (
                     <MenuItemAddOrUpdateComponentContent
+
                         menu={updatedMenu}
                         avaibleProductImagePaths={avaibleProductImages}
+                        avaibleProductImageDtos={avaibleProductImageDtos}
                         categories={productCategories}
                         onAddProduct={handleAddProduct}
                         onCategoryToggle={handleCategoryToggle}

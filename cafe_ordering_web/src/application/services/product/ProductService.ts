@@ -15,6 +15,8 @@ import { Logcat } from '@/shared/LogCat';
 import { ServiceResponse } from '../ServiceResponse';
 import { CreateMenuCommand, CreateMenuRequest } from '@/application/httpRequests/menu/CreateMenuRequest';
 import { UpdateMenuCommand, UpdateMenuRequest } from '@/application/httpRequests/menu/UpdateMenuRequest';
+import { ProductImageDto } from '@/application/dtos/ProductImageDto';
+import { GetAvaibleProductImagesWithTagsRequest } from '@/application/httpRequests/GetAvaibleProductImagesWithTagsRequest';
 
 export interface IProductService {
     readonly products: ProductModel[];
@@ -103,6 +105,20 @@ export class ProductService implements IProductService {
             return ServiceResponse.failure<string[]>(response.error || "Ürün görselleri yüklenemedi.");
         }
     }
+
+
+    // Ürün görsellerini API'den yükler ve ServiceResponse olarak döner.
+    public async loadProductImagesWithTags(): Promise<ServiceResponse<ProductImageDto[]>> {
+        const response = await GetAvaibleProductImagesWithTagsRequest.send();
+        if (response.isSuccess && response.data) {
+            //Logcat.Debug(`IProductService --> load product images: ${JSON.stringify(this._avaibleProductImages)}`);
+            return ServiceResponse.success<ProductImageDto[]>(response.data!);
+        } else {
+            Logcat.Error(`IProductService --> Failed to load product images: ${response.error}`);
+            return ServiceResponse.failure<ProductImageDto[]>(response.error || "Ürün görselleri yüklenemedi.");
+        }
+    }
+
 
     public async DeleteProductAsync(productId: number): Promise<ServiceResponse<void>> {
         const response = await DeleteProductRequest.send(productId);

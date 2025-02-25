@@ -1,13 +1,17 @@
 
 import { DragHandle, Close, Send, Clear, Delete, Discount } from "@mui/icons-material";
-import { SwipeableDrawer, Box, IconButton, Typography, Button, useTheme, Card, Chip } from "@mui/material";
+import { SwipeableDrawer, Box, IconButton, Typography, Button, useTheme, Card, Chip, FormControl, InputLabel, MenuItem, Select } from "@mui/material";
 import OrderItemComponent from "../order/OrderItemComponent";
 import React from "react";
 import { OrderItemModel } from "@/domain/OrderModels";
 import MyBottomSheet from "@/shared/components/MyBottomSheet";
 import { IComponent } from "@/app/types/ViewTypes";
-import { DiscountModel } from "@/domain/DiscountModels";
-
+import { DiscountModel, DiscountType } from "@/domain/DiscountModels";
+import { useUserContext } from "@/app/providers/global.providers/user.provider";
+import { useSitePreferencesContext } from "@/app/providers/global.providers/sitePreferences.provider";
+import SelectInput, { SelectChangeEvent } from "@mui/material/Select/SelectInput";
+import ArrayListStream from "@/shared/ArrayListStream";
+import { useOrderEvents } from "@/app/providers/orderEvents.provider";
 const CartPanelBottomSheet: IComponent<{
     open: boolean;
     onClose: () => void;
@@ -19,11 +23,13 @@ const CartPanelBottomSheet: IComponent<{
     onOrderClearClicked?: () => void;
     onViewClicked: (productId: number) => void;
     onDiscountsButonClicked?: () => void;
+    onTableSelectValueChanged?: (tableId: number) => void;
     lang?: string
 
 }> = ({
     onDiscountsButonClicked,
-    open, onClose, orderItems, onIncrease, onDecrease, onRemove, onOrderSendClicked, onOrderClearClicked,
+    open, onClose, orderItems,
+    onIncrease, onDecrease, onRemove, onOrderSendClicked, onOrderClearClicked, onTableSelectValueChanged,
     onViewClicked, lang = "tr" }) => {
         // Toplam fiyatı hesapla
         const totalPrice = orderItems.reduce(
@@ -32,31 +38,67 @@ const CartPanelBottomSheet: IComponent<{
         const drawerBleeding = 0;
         const isBasketEmpty = orderItems.filter(x => x.quantity != 0).length == 0;
         const theme = useTheme();
+        const { user } = useUserContext();
+        const { sitePreferences } = useSitePreferencesContext();
+        const { joinTable} = useOrderEvents();
         return (
             <MyBottomSheet className='z-40' isOpen={open} onCloseButtonClicked={function (): void {
                 if (onClose != null) onClose();
             }} drawerBleeding={drawerBleeding}
             >
                 <>
+                    <Box className="flex justify-start">
+
+
+                        <FormControl variant="outlined" sx={{ minWidth: 200, mb: 2 }}>
+                            <InputLabel id="table-id-select-label">Masa Numarası</InputLabel>
+                            <Select
+                                size="small"
+                                defaultValue="0" // value yerine defaultValue kullanılıyor
+                                onChange={(event: SelectChangeEvent) => {
+                                    const tableId = Number(event.target.value);
+                                    onTableSelectValueChanged && onTableSelectValueChanged(tableId);
+                                }}
+                                labelId="table-id-select-label"
+                                label="Masa Numarası"
+                            >
+                                {ArrayListStream.fromNumbers(20).toList().map((num) => (
+                                    <MenuItem key={num} value={num}>
+                                        {`Masa No : ${num}`}
+                                    </MenuItem>
+                                ))}
+                            </Select>
+                        </FormControl>
+
+
+                    </Box>
                     {/* Başlık ve Kapatma Düğmesi */}
                     <Box
-                        className="gap-2 my-2"
+                        className="gap-2 my-0 mt-0 mb-2"
                         display="flex" justifyContent="space-between"
                         alignItems="center"
                     >
                         <Typography variant="h6" fontWeight="bold">
                             Sepetim
                         </Typography>
-                        <Button
+                        {
+                            (
+                                true ||
+                                (sitePreferences?.showClientAwaibleDiscounts ||
+                                    sitePreferences?.showClientDetailedAwaibleDiscounts ||
+                                    user?.canChangeSitePreferences()
+                                )
+                            ) &&
+                            <Button
+                                onClick={(e: any) => { onDiscountsButonClicked && onDiscountsButonClicked(); }}
+                                color="success" variant="contained" endIcon={
+                                    <>
+                                        <Discount></Discount>
+                                        <Discount></Discount>
+                                    </>
+                                } >Discounts</Button>
+                        }
 
-                            onClick={(e: any) => { onDiscountsButonClicked && onDiscountsButonClicked(); }}
-                            color="success" variant="contained" endIcon={
-                                <>
-                                    <Discount></Discount>
-                                    <Discount></Discount>
-                                </>
-
-                            } >Discounts</Button>
                     </Box>
 
                     {/* Sepet İçeriği */}
@@ -106,7 +148,7 @@ const CartPanelBottomSheet: IComponent<{
                                 </Box>
                             }
                             {!isBasketEmpty &&
-                                <Box className="  flex flex-row gap-1  justify-end">
+                                <Box className="  flex flex-col sm:flex-row  gap-1  justify-end">
 
                                     <Button
                                         startIcon={<Delete></Delete>}

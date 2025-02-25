@@ -60,7 +60,6 @@ export const ProductProvider: React.FC<ProductProviderProps> = ({ children }) =>
       setAwaibleDiscounts([]);
       return;
     }
-    console.log(orderedProducts);
     var payload = { userId: user ? user.id : null, orderItems: [] } as GetAwaibleDiscountsOfOrderedItemsRequestPayload;
     orderedProducts.forEach(oi => {
       var item = { productId: oi.productId, quantity: oi.quantity };
@@ -80,7 +79,7 @@ export const ProductProvider: React.FC<ProductProviderProps> = ({ children }) =>
       setAwaibleOrderDiscounts([]);
       return;
     }
-    console.log(orderedProducts);
+
     var payload = { userId: user ? user.id : null, orderItems: [] } as GetOrderItemsHasDiscountsRequestPayload;
     orderedProducts.forEach(oi => {
       var item = { productId: oi.productId, quantity: oi.quantity };
@@ -101,17 +100,18 @@ export const ProductProvider: React.FC<ProductProviderProps> = ({ children }) =>
   };
 
   useEffect(() => {
+    Logcat.Debug(`productProvider useEffect executed`);
     loadProducts();
     loadAwaibleDiscounts(orderedProducts);
     loadAwaibleOrderDiscounts(orderedProducts);
-    Logcat.Debug(`productProvider useEffect executed`);
+
     orderService.addProductAddedToOrderListener(productAddedOrRemovedOrCleanedFromOrderListener);
     orderService.addProductRemovedFromOrderListener(productAddedOrRemovedOrCleanedFromOrderListener);
     orderService.addProductClearedFromOrderListener(productAddedOrRemovedOrCleanedFromOrderListener);
     orderService.addOrderClearedListener(performOnOrderedProductsChanged);
     return () => { };
     //Bu useEffect’in her render'da tetiklenmesine neden olabilir çünkü ProductService ve OrderService her render'da yeniden oluşturuluyor. Sürekli event listener eklenmesi ve olası bellek sızıntısı (memory leak) olabilir.
-  }, [productService, orderService]); // instance daki değişiklikleri algıla...
+  }, []); // instance daki değişiklikleri algıla...
 
   const performOnOrderedProductsChanged = () => {
     const _orderedProducts = orderService.orderedProducts.filter(x => x.quantity != 0);

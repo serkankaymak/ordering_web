@@ -10,6 +10,7 @@ import { Box } from "@mui/material";
 import MenuItemAddOrUpdateComponent from "../components/MenuItemAddOrUpdateComponent";
 import { CreateMenuCommand, CreateMenuItemCommand } from "@/application/httpRequests/menu/CreateMenuRequest";
 import Toast from "@/shared/Toast";
+import { ProductImageDto } from "@/application/dtos/ProductImageDto";
 
 
 const productService = new ProductService();
@@ -18,11 +19,19 @@ const AddMenuPage: React.FC = () => {
 
     const [products, setProducts] = useState<ProductModel[]>([]);
     const [avaibleProductImages, setAvaibleProductImages] = useState<string[]>([]);
+    const [avaibleProductImageDtos, setavaibleProductImageDtos] = useState<ProductImageDto[]>([]);
+
+
+
     const [productCategories, setProductCategories] = useState<CategoryModel[]>([]);
-    const [menu, setMenu] = useState<ProductModel>(ProductModel.getEmptyInstance());
+    const [menu, setMenu] = useState<ProductModel>(ProductModel.getEmptyBoxInstance());
 
 
     useEffect(() => {
+        productService.loadProductImagesWithTags().then(res => {
+            if (res.isSuccess) { setavaibleProductImageDtos(res.data!); }
+            else { console.log(res.errorMessage) }
+        })
         productService.loadProductImages().then(() => { setAvaibleProductImages(productService.avaibleProductImages); });
         productService.loadCategories().then(() => {
             setProductCategories(productService.categories);
@@ -47,6 +56,7 @@ const AddMenuPage: React.FC = () => {
                         menu={menu}
                         products={products}
                         productCategories={productCategories}
+                        avaibleProductImageDtos={avaibleProductImageDtos}
                         avaibleProductImages={avaibleProductImages}
                         onSubmitClicked={(menu, imageFile) => {
 
@@ -60,20 +70,20 @@ const AddMenuPage: React.FC = () => {
 
 
                             _command.menuItems = _menuItems!;
-                            _command.categoryIds
+                            _command.categoryIds;
                             _command.description = menu.description;
                             _command.name = menu.name;
-                            _command.price=menu.price;
+                            _command.price = menu.price;
                             _command.imagePath = menu.getImagePathWithoutHost();
                             _command.imageFile = imageFile;
-                            _command.categoryIds = menu.categories.map(x=>x.id);
+                            _command.categoryIds = menu.categories.map(x => x.id);
 
                             productService.CreateMenuAsync(_command).then(response => {
                                 if (response.isSuccess) { Toast.success(); }
                                 else { Toast.error(); }
                             });
 
-                        }}>
+                        }} >
                     </MenuItemAddOrUpdateComponent>
                 )}
             </Box>

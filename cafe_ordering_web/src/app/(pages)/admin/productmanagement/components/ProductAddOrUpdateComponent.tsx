@@ -20,7 +20,7 @@ interface AdminProductAddOrUpdateComponentProps {
 }
 
 const AdminProductAddOrUpdateComponent: IComponent<AdminProductAddOrUpdateComponentProps> = ({
-    product = ProductModel.getEmptyInstance(), onSubmitClicked, imageUrlList, categories
+    product = ProductModel.getEmptyProductInstance(), onSubmitClicked, imageUrlList, categories
 }) => {
 
     useEffect(() => { }, [])

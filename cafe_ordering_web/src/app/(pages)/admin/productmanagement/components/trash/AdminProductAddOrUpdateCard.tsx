@@ -82,7 +82,7 @@ const AdminProductAddOrUpdateCard: React.FC<AdminProductAddOrUpdateCardProps> = 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
-        const updatedProduct = ProductModel.getEmptyInstance();
+        const updatedProduct = ProductModel.getEmptyProductInstance();
 
         onSaveClicked(updatedProduct, imageFile || undefined);
     };

@@ -46,6 +46,7 @@ export class OrderItemModel {
 
 export class OrderModel {
   id: number = 0;
+  CreatedAt : Date = new Date();
   orderItems: OrderItemModel[] = [];
   userId?: number;
   tableId?: number = 0;
