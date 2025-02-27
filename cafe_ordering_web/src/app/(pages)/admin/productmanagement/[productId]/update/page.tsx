@@ -7,6 +7,7 @@ import ProductAddOrUpdateComponent from "../../components/ProductAddOrUpdateComp
 import { ProductService } from "@/application/services/product/ProductService";
 import Toast from "@/shared/Toast";
 import { UpdateProductValidator } from "@/domain/validators/UpdateProductValidator";
+import { ProductImageDto } from "@/application/dtos/ProductImageDto";
 
 
 
@@ -19,6 +20,7 @@ const UpdateProductPage: React.FC = () => {
   const [product, setProduct] = useState<ProductModel>(ProductModel.getEmptyProductInstance());
   const [productsImages, setProductsImages] = useState<string[]>([]);
   const [categories, setCategories] = useState<CategoryModel[]>([]);
+  const [avaibleProductImageDtos, setavaibleProductImageDtos] = useState<ProductImageDto[]>([]);
 
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
@@ -28,6 +30,11 @@ const UpdateProductPage: React.FC = () => {
 
     productService.loadProductImages().then(() => { setProductsImages(productService.avaibleProductImages) })
     productService.loadCategories().then(() => { setCategories(productService.categories) })
+    productService.loadProductImagesWithTags().then(response => {
+      if (response.isSuccess) {
+        setavaibleProductImageDtos(response.data!);
+      }
+    })
 
     if (productId) {
       productService.GetProductWithCategoriesById(Number(productId)).then(p => {
@@ -72,11 +79,14 @@ const UpdateProductPage: React.FC = () => {
 
   return (
     <>
-      <ProductAddOrUpdateComponent product={product!} onSubmitClicked={(updatedProduct, formfile) => {
-        const validationResult = new UpdateProductValidator(updatedProduct as ProductModel).validate();
-        if (validationResult.isValid == false) { Toast.error(validationResult.message!); return; }
-        updateProductHandler(updatedProduct, formfile);
-      }} imageUrlList={productsImages} categories={categories} />
+      <ProductAddOrUpdateComponent
+        avaibleProductImageDtos={avaibleProductImageDtos}
+        product={product!}
+        onSubmitClicked={(updatedProduct, formfile) => {
+          const validationResult = new UpdateProductValidator(updatedProduct as ProductModel).validate();
+          if (validationResult.isValid == false) { Toast.error(validationResult.message!); return; }
+          updateProductHandler(updatedProduct, formfile);
+        }} avaibleProductImagePaths={productsImages} categories={categories} />
     </>
   );
 };

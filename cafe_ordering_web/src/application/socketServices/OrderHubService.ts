@@ -20,9 +20,10 @@ export class OrderHubService implements IOrderHubService {
     private onOrderDeliveredListener?: (orderEvent: OrderEvent) => void;
 
 
-    constructor() {
+    constructor(identityToken?: string) {
         // HOST_URL + "/orderHub" şeklinde bağlantı URL'si oluşturuluyor.
-        this.signalRService = new SignalRService(`${HOST_URL}/orderHub`);
+        const connectionOptions = identityToken ? { accessTokenFactory: () => identityToken, } : {};
+        this.signalRService = new SignalRService(`${HOST_URL}/orderHub`, connectionOptions);
     }
 
     public async start(): Promise<void> {

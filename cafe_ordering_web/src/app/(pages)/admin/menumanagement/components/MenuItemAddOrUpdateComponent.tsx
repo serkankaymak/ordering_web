@@ -11,8 +11,8 @@ interface MenuItemAddOrUpdateComponentProps {
     products: ProductModel[],
     menu?: ProductModel
     productCategories: CategoryModel[]
-    avaibleProductImages: string[],
-    avaibleProductImageDtos:ProductImageDto[],
+    avaibleProductImages?: string[],
+    avaibleProductImageDtos?:ProductImageDto[],
     onSubmitClicked: (menu: ProductModel, imageFile: File | null) => void
 }
 

@@ -38,12 +38,12 @@ const AdminMenuItemTableComponent: IComponent<AdminMenuItemTableComponentProps> 
 
     <Box>
       <TableContainer
-        className="border my-1"
+        className="border my-0"
         component={Paper}
         sx={{
           mb: 0,
-          px: menu.parentBoxId == null ? 1 : 0,
-          py: menu.parentBoxId == null ? 2 : 0,
+          px: menu.parentBoxId == null ? 0 : 0,
+          py: menu.parentBoxId == null ? 0 : 0,
         }}
       >
         <Table sx={{ "& td, & th": { borderBottom: "none" } }} size="small">
@@ -71,12 +71,12 @@ const AdminMenuItemTableComponent: IComponent<AdminMenuItemTableComponentProps> 
                       sx={{
                         whiteSpace: "normal",
                         overflowWrap: "break-word",
-                        fontSize: "0.9rem",
+                        fontSize: "0.8rem",
                       }}
                     >
                       {menu.name}
                     </Typography>
-                    <Box className="flex gap-2">
+                    <Box className="flex gap-2 flex-wrap">
 
                       {
                         menu.parent && <Chip size="small" label={"Adet:" + menu.quantity} />

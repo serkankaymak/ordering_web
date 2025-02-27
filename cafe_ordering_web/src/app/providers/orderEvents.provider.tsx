@@ -3,6 +3,7 @@
 import React, { createContext, ReactNode, useContext, useEffect, useMemo, useRef, useState } from "react";
 import { OrderHubService } from "@/application/socketServices/OrderHubService";
 import { OrderEvent } from "@/application/socketServices/events/OrderEvents";
+import { useUserContext } from "./global.providers/user.provider";
 
 interface OrderEventsContextProps {
 
@@ -19,11 +20,14 @@ const OrderEventsContext = createContext<OrderEventsContextProps | undefined>(un
 
 export const OrderEventsProvider = ({ children }: { children: ReactNode }) => {
     const [mounted, setMounted] = useState(false);
+    const { user } = useUserContext();
 
     const serviceRef = useRef<OrderHubService | null>(null);
 
     if (!serviceRef.current) {
-        serviceRef.current = new OrderHubService();
+        if (user && user.token)
+            serviceRef.current = new OrderHubService(user?.token?.identityToken);
+        else serviceRef.current = new OrderHubService();
     }
 
     const service = serviceRef.current;
@@ -39,8 +43,9 @@ export const OrderEventsProvider = ({ children }: { children: ReactNode }) => {
 
 
     const joinTable = (tableId: number) => {
-        if (tableId == 0) return;
-        return service.joinTable(tableId)
+        if (tableId == 0) throw Error("table id 0 olamaz");
+        var result = service.joinTable(tableId)
+        return result;
     };
 
 

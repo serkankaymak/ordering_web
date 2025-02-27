@@ -64,14 +64,21 @@ const ProductSelector2Component: IComponent<ProductSelector2Props> = ({ products
     };
 
     return (
-        <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 2, width: "100%" }}>
+        <Box
+            className="h-full overflow-hidden "
+            sx={{
+                display: 'flex', flexDirection: 'column',
+                justifyContent: 'space-between',
+                alignItems: 'center', gap: 0,
+                width: "100%",
+            }}>
             {/* Search Bar */}
             <TextField
+                size='small'
                 sx={{ margin: 2, marginBottom: 0, padding: 0 }}
                 fullWidth
                 label="Search Products"
                 variant="outlined"
-                size="small"
                 value={searchTerm}
                 onChange={(e) => {
                     setSearchTerm(e.target.value);
@@ -80,28 +87,34 @@ const ProductSelector2Component: IComponent<ProductSelector2Props> = ({ products
             />
 
             {/* Masonry Grid */}
-            <MyMasonry breakpointCols={defaultBreakpoints} items={getContents(currentProducts)} />
+            <Box className="overflow-y-auto  sm:scrollbar scrollbar-thin scrollbar-track-gray-200 scrollbar-thumb-gray-500">
+                <MyMasonry breakpointCols={defaultBreakpoints} items={getContents(currentProducts)} />
+            </Box>
 
-            {/* Pagination */}
-            {totalPages > 1 && (
-                <Pagination
-                    count={totalPages}
-                    page={currentPage}
-                    onChange={handlePageChange}
-                    color="primary"
-                    sx={{ marginTop: 2 }}
-                />
-            )}
+            <Box className="flex flex-col items-center gap-5">
+                {/* Pagination */}
+                {totalPages > 1 && (
+                    <Pagination
+                        className=''
+                        count={totalPages}
+                        page={currentPage}
+                        onChange={handlePageChange}
+                        color="primary"
+                        sx={{ marginTop: 2 }}
+                    />
+                )}
 
-            {/* Choose Selected Product Button */}
-            <Button
-                variant="contained"
-                size="medium"
-                disabled={!selectedProduct}
-                onClick={() => selectedProduct && onChooseButtonClicked(selectedProduct)}
-            >
-                Choose Selected Product
-            </Button>
+                {/* Choose Selected Product Button */}
+                <Button
+                    variant="contained"
+                    size="medium"
+                    disabled={!selectedProduct}
+                    onClick={() => selectedProduct && onChooseButtonClicked(selectedProduct)}
+                >
+                    Choose Selected Product
+                </Button>
+            </Box>
+
         </Box>
     );
 };

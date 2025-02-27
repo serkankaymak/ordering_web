@@ -10,30 +10,40 @@ import {
   IconButton,
   Button,
   Collapse,
+  Paper,
 } from '@mui/material';
 import { OrderItemModel, OrderModel } from '@/domain/OrderModels';
-import { Add, Save, ArrowUpward, ArrowDownward } from '@mui/icons-material';
+import { Add, Save, ArrowUpward, ArrowDownward, Reviews, ReviewsOutlined, Discount } from '@mui/icons-material';
 import OrderCardOrderItemComponent from './OrderCard_OrderItemComponent';
 import ArrayListStream from '@/shared/ArrayListStream';
 import { OrderService } from '@/application/services/product/OrderService';
 import { UpdateOrderCommand } from '@/application/httpRequests/order/UpdateOrderRequest';
 import Toast from '@/shared/Toast';
+import MyModal from '@/shared/components/MyModal';
+import { DiscountService } from '@/application/services/discount/DiscountService';
+import { GetOrderItemsHasDiscountsRequestPayload } from '@/application/httpRequests/discount/GetOrderItemsHasDiscountsRequest';
+import { useUserContext } from '@/app/providers/global.providers/user.provider';
+import { OrderCanHaveDiscountDto } from '@/application/dtos/OrderCanHaveDiscountDto';
 
 interface OrderCardProps {
   order: OrderModel;
   onAddProductClicked: (order: OrderModel) => void;
   onOrderModified: (order: OrderModel) => void;
 }
-
+const orderService = new OrderService();
+const discountService = new DiscountService();
 const OrderCard: React.FC<OrderCardProps> = ({
   order,
   onAddProductClicked,
   onOrderModified,
 }) => {
 
+  const [orderHasDiscounts, setorderHasDiscounts] = useState<OrderCanHaveDiscountDto[]>();
+  const { user } = useUserContext();
   const [isModified, setisModified] = useState<boolean>(false);
   const [showProducts, setShowProducts] = useState<boolean>(false);
-  const orderService = new OrderService();
+  const [isOpendiscountModal, setisOpendiscountModal] = useState<boolean>(false);
+
 
   // Güncelleme işlemlerinde, props order üzerinden yeni bir kopya oluşturup parent'a gönderiyoruz.
   const handleCheckboxChange = (field: keyof OrderModel) => {
@@ -100,7 +110,67 @@ const OrderCard: React.FC<OrderCardProps> = ({
         className="text-center"
         titleTypographyProps={{ variant: 'h6', className: 'font-bold' }}
       />
-      <h6 className='text-center'> Sipariş Numarası : {order.orderNumber}</h6>
+      <Box className="flex justify-around items-center">
+
+        <IconButton
+          onClick={() => {
+            setisOpendiscountModal(true);
+            let payload = {} as GetOrderItemsHasDiscountsRequestPayload;
+            payload.orderItems = [];
+            order.orderItems.forEach(oi => {
+              var item = { productId: oi.productId, quantity: oi.quantity };
+              payload.orderItems.push(item);
+            })
+            payload.userId = user?.id;
+            discountService.getOrderItemsHasDiscounts(payload).then(response => {
+              setorderHasDiscounts(response.data!);
+            })
+          }}
+        >
+          <Discount />
+        </IconButton>
+
+        <h6 className='text-center'> Sipariş Numarası : {order.orderNumber}</h6>
+        <div></div>
+
+
+        <MyModal isOpen={isOpendiscountModal}
+          onCloseClicked={() => { setisOpendiscountModal(false); }}
+        >
+          <Box className="grid  grid-cols-1 sm:grid-cols-2 gap-5">
+            {orderHasDiscounts?.map((item, index) => (
+              <Card
+                elevation={10}
+                variant='elevation'
+                key={index}
+                className="flex flex-col p-6  rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 my-3"
+              >
+                <h3 className="font-bold text-xl my-4">{item.discount.name}</h3>
+                <div className="space-y-2 ">
+                  <p className="text-sm">
+                    <span className="font-medium">İndirim Yüzdesi:</span>{" "}
+                    <strong className="">{item.discount.discountPercentage}%</strong>
+                  </p>
+                  <p className="text-sm">
+                    <span className="font-medium">Sipariş Fiyatı:</span>{" "}
+                    <strong className="">{order.price} TL</strong>
+                  </p>
+                  <p className="text-sm">
+                    <span className="font-medium">İndirim Tutarı:</span>{" "}
+                    <strong className="">{item.discountAmount} TL</strong>
+                  </p>
+                  <p className="text-sm">
+                    <span className="font-medium">Net Toplam:</span>{" "}
+                    <strong className="">{item.netTotalPrice} TL</strong>
+                  </p>
+                </div>
+              </Card>
+            ))}
+          </Box>
+        </MyModal>
+
+
+      </Box>
       <hr />
       <CardContent>
         <Typography variant="body1" className="mb-2">

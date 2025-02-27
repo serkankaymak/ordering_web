@@ -2,7 +2,7 @@
   "denemeCount": 0,
   "showInnerProductsOnProductDetailCard": false,
   "useTransitionableProductCard": true,
-  "showNameAndPriceOnProductCard": false,
+  "showNameAndPriceOnProductCard": true,
   "showClientAwaibleDiscounts": true,
   "showClientDetailedAwaibleDiscounts": true
 }

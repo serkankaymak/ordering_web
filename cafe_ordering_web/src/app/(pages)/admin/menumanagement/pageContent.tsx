@@ -94,12 +94,11 @@ const ProductManagementPageContent: IPageContent<ProductManagementPageContentPro
 
             <Box>
                 <MyModal
+                    isfullScreen={false}
                     isOpen={isDeleteModalShouldOpen()}
-                    onCloseClicked={() => {
-                        setDeleteRequestProductId(0);
-                    }}
+                    onCloseClicked={() => { setDeleteRequestProductId(0); }}
                 >
-                    <Box>
+                    <Box className="mt-5 ">
                         <AdminProductTableComponent
                             showActions={false}
                             product={products.filter(x => x.id == deleteRequestProductId)[0] ?? ProductModel.getEmptyProductInstance()}

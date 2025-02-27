@@ -67,6 +67,11 @@ const CartButtonComponent: IComponent<CartButtonComponentProps> = ({ onViewClick
         onTableSelectValueChanged={(tableId) => { setselectedTableId(tableId) }}
         onOrderSendClicked={async () => {
 
+          if (selectedTableId == 0) {
+            Toast.error("Masa Numarası seçmelisiniz.")
+            return;
+          }
+
           let command = {
             tableId: selectedTableId,
             userId: user ? user.id : 0,

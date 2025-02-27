@@ -1,4 +1,6 @@
+import ImageSelectorComponent3 from "@/app/(pages)/components/ImageSelectorComponent3";
 import { IComponent } from "@/app/types/ViewTypes";
+import { ProductImageDto } from "@/application/dtos/ProductImageDto";
 import { CategoryModel, ProductModel } from "@/domain/ProductModels";
 import ImageSelectorComponent from "@/shared/components/ImageSelectorComponent";
 import MyModal from "@/shared/components/MyModal";
@@ -14,13 +16,16 @@ import React, { ChangeEvent, useState, useRef, useEffect } from "react";
 interface AdminProductAddOrUpdateComponentProps {
     categories: CategoryModel[];
     product?: ProductModel;
-    imageUrlList: string[],
+    avaibleProductImagePaths?: string[],
+    avaibleProductImageDtos?: ProductImageDto[],
     onSubmitClicked?: (updatedProduct: ProductModel, formFile: File | null) => void;
 
 }
 
 const AdminProductAddOrUpdateComponent: IComponent<AdminProductAddOrUpdateComponentProps> = ({
-    product = ProductModel.getEmptyProductInstance(), onSubmitClicked, imageUrlList, categories
+    product = ProductModel.getEmptyProductInstance(), onSubmitClicked,
+    avaibleProductImagePaths = [], avaibleProductImageDtos = [],
+    categories
 }) => {
 
     useEffect(() => { }, [])
@@ -180,15 +185,32 @@ const AdminProductAddOrUpdateComponent: IComponent<AdminProductAddOrUpdateCompon
 
             {/* Görsel Seçme Modal */}
             <MyModal isOpen={isOpenImageSelectorModal} onCloseClicked={() => { setOpenImageSelectorModal(false) }} >
-                <ImageSelectorComponent
-                    imageUrlList={imageUrlList}
-                    onChooseButtonClicked={function (imageUrl: string): void {
+                {false && <ImageSelectorComponent
+                    imageUrlList={avaibleProductImagePaths}
+                    onChooseButtonClicked={(imageUrl: string): void => {
                         handleInputChange("imagePath", imageUrl);
                         setImagePreviewPath(imageUrl);
                         setUploadedFile(null); // Varolan görsellerden seçildiği için dosyayı null yap
                         setOpenImageSelectorModal(false);
                     }}
-                />
+                />}
+
+
+                {true && <ImageSelectorComponent3
+                    avaibleProductImageDtos={avaibleProductImageDtos}
+
+                    onChooseButtonClicked={(imageUrl: string): void => {
+                        handleInputChange("imagePath", imageUrl);
+                        setImagePreviewPath(imageUrl);
+                        setUploadedFile(null); // Varolan görsellerden seçildiği için dosyayı null yap
+                        setOpenImageSelectorModal(false);
+                    }}
+
+                >
+
+                </ImageSelectorComponent3>}
+
+
             </MyModal>
         </Box>
     );

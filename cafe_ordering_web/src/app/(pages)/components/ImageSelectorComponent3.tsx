@@ -35,9 +35,16 @@ const ImageSelector3: React.FC<ImageSelector3Props> = ({ avaibleProductImageDtos
 
 
   return (
-    <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 2 }}>
+    <Box
+      className="h-full overflow-hidden "
+      sx={{
+        display: 'flex', flexDirection: 'column',
+        justifyContent: 'space-between', width: "100%",
+        alignItems: 'center', gap: 2
+      }}>
       {/* Arama Alanı */}
       <TextField
+      size='small'
         label="Search Images"
         variant="outlined"
         value={searchTerm}
@@ -49,7 +56,9 @@ const ImageSelector3: React.FC<ImageSelector3Props> = ({ avaibleProductImageDtos
       />
 
       {/* Görsellerin Gösterildiği Alan */}
-      <Box sx={{ display: 'flex', gap: 2, flexWrap: 'wrap', justifyContent: 'center' }}>
+      <Box
+        className="overflow-y-auto  sm:scrollbar scrollbar-thin scrollbar-track-gray-200 scrollbar-thumb-gray-500"
+        sx={{ display: 'flex', gap: 2, flexWrap: 'wrap', justifyContent: 'center' }}>
         {currentImages.map((image, index) => (
           <Box
             key={index}
@@ -65,8 +74,8 @@ const ImageSelector3: React.FC<ImageSelector3Props> = ({ avaibleProductImageDtos
               src={image.path}
               alt={`image-${index}`}
               style={{
-                width: "100px",
-                height: "100px",
+                width: "150px",
+                height: "150px",
                 objectFit: "cover",
                 borderRadius: "8px",
                 border: selectedImage === image.path ? "3px solid blue" : "2px solid transparent",
@@ -77,26 +86,32 @@ const ImageSelector3: React.FC<ImageSelector3Props> = ({ avaibleProductImageDtos
         ))}
       </Box>
 
-      {/* Pagination Bileşeni */}
-      {totalPages > 1 && (
-        <Pagination
-          count={totalPages}
-          page={currentPage}
-          onChange={handlePageChange}
-          color="primary"
-          sx={{ mt: 2 }}
-        />
-      )}
 
-      {/* Seçilen Görseli Gönderme Butonu */}
-      <Button
-        variant="contained"
-        size="medium"
-        disabled={!selectedImage}
-        onClick={() => selectedImage && onChooseButtonClicked(selectedImage)}
-      >
-        Choose Selected Image
-      </Button>
+      <Box className="flex flex-col items-center gap-5">
+        {/* Pagination Bileşeni */}
+        {totalPages > 1 && (
+          <Pagination
+            count={totalPages}
+            page={currentPage}
+            onChange={handlePageChange}
+            color="primary"
+            sx={{ mt: 2 }}
+          />
+        )}
+
+        {/* Seçilen Görseli Gönderme Butonu */}
+        <Button
+          variant="contained"
+          size="medium"
+          disabled={!selectedImage}
+          onClick={() => selectedImage && onChooseButtonClicked(selectedImage)}
+        >
+          Choose Selected Image
+        </Button>
+      </Box>
+
+
+
     </Box>
   );
 };

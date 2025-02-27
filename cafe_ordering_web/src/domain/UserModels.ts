@@ -1,7 +1,9 @@
+import { th } from "date-fns/locale";
 import { jwtDecode } from "jwt-decode";
 
 export class TokenDto {
-  tokenValue: string = "";
+  claimsToken: string = "";
+  identityToken: string = "";
 
   constructor(init?: Partial<TokenDto>) {
     if (init) {
@@ -11,7 +13,8 @@ export class TokenDto {
 
   static fromJson(json: Partial<TokenDto>): TokenDto {
     return new TokenDto({
-      tokenValue: json.tokenValue ?? "",
+      claimsToken: json.claimsToken ?? "",
+      identityToken: json.identityToken ?? "",
     });
   }
 }
@@ -61,7 +64,7 @@ export class UserModel {
   public isTokenValid(): boolean {
     try {
       if (!this.token) return false;
-      const decoded = jwtDecode<{ exp: number }>(this.token.tokenValue);
+      const decoded = jwtDecode<{ exp: number }>(this.token.claimsToken);
       return decoded.exp * 1000 > Date.now();
     } catch (error) {
       console.error("Token decode hatası:", error);
@@ -72,21 +75,22 @@ export class UserModel {
   // Token'ı decode edip, email, role ve diğer claim'leri döndürür.
   public parseToken(): DecodedToken {
     try {
+      console.log(this);
       if (!this.token) return {};
-      const decoded: any = jwtDecode(this.token.tokenValue);
-      const email: string | undefined = decoded["email"];
+      const decoded: any = jwtDecode(this.token.claimsToken);
+      const emailKey = "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress";
+
+      const email: string | undefined = decoded[emailKey];
       // "role" alanı tekil ya da dizi olabilir, bunu diziye çeviriyoruz.
       let role: string[] | undefined = undefined;
-      if (decoded["role"]) {
-        role = Array.isArray(decoded["role"]) ? decoded["role"] : [decoded["role"]];
+      const roleKey = "http://schemas.microsoft.com/ws/2008/06/identity/claims/role";
+      if (decoded[roleKey]) {
+        role = Array.isArray(decoded[roleKey]) ? decoded[roleKey] : [decoded[roleKey]];
       }
       // "exp", "iss", "aud", "email" ve "role" dışındaki tüm alanları claim olarak alıyoruz.
       const claims: Record<string, string> = {};
       Object.keys(decoded).forEach(key => {
-        if (!["exp", "iss", "aud", "email", "role"].includes(key)) {
-          // Herhangi bir değer, stringe çevrilerek claims'e ekleniyor.
-          claims[key] = decoded[key]?.toString();
-        }
+        claims[key] = decoded[key]?.toString();
       });
       return { email, role, claims, exp: decoded["exp"] };
     } catch (error) {

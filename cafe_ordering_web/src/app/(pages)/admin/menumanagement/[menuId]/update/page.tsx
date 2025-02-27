@@ -10,6 +10,7 @@ import { IPage } from "@/app/types/ViewTypes";
 import MenuItemAddOrUpdateComponent from "../../components/MenuItemAddOrUpdateComponent";
 import { UpdateMenuCommand, UpdateMenuItemCommand } from "@/application/httpRequests/menu/UpdateMenuRequest";
 import Toast from "@/shared/Toast";
+import { ProductImageDto } from "@/application/dtos/ProductImageDto";
 
 
 const productService = new ProductService();
@@ -21,6 +22,7 @@ const UpdateMenuPage: IPage = () => {
 
     const [products, setProducts] = useState<ProductModel[]>([]);
     const [avaibleProductImages, setAvaibleProductImages] = useState<string[]>([]);
+    const [avaibleProductImageDtos, setavaibleProductImageDtos] = useState<ProductImageDto[]>([]);
     const [productCategories, setProductCategories] = useState<CategoryModel[]>([]);
     const [menu, setMenu] = useState<ProductModel>(ProductModel.getEmptyProductInstance());
 
@@ -43,7 +45,13 @@ const UpdateMenuPage: IPage = () => {
                         if (res.isSuccess) { setProducts([...productService.products, ...productService.menus]) }
                     })
                 }
+            });
+            productService.loadProductImagesWithTags().then(response => {
+                if (response.isSuccess) {
+                    setavaibleProductImageDtos(response.data!);
+                }
             })
+
         }
     }, [productId]);
 
@@ -58,6 +66,7 @@ const UpdateMenuPage: IPage = () => {
                         products={products}
                         productCategories={productCategories}
                         avaibleProductImages={avaibleProductImages}
+                        avaibleProductImageDtos={avaibleProductImageDtos}
                         onSubmitClicked={function (menu: ProductModel, imageFile) {
                             console.log(menu);
                             var _command = {} as UpdateMenuCommand;

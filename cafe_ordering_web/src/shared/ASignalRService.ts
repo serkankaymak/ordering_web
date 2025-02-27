@@ -1,12 +1,12 @@
-import { HubConnection, HubConnectionBuilder, HubConnectionState } from '@microsoft/signalr';
+import { HubConnection, HubConnectionBuilder, HubConnectionState, IHttpConnectionOptions } from '@microsoft/signalr';
 
 export abstract class ASignalRService {
   private connection: HubConnection;
 
-  constructor(private hubUrl: string) {
+  constructor(private hubUrl: string, private connectionOptions?: IHttpConnectionOptions) {
     // SignalR bağlantısını oluşturuyoruz.
     this.connection = new HubConnectionBuilder()
-      .withUrl(this.hubUrl) // Hub URL’inizi buraya girin
+      .withUrl(this.hubUrl, connectionOptions ?? {}) // Hub URL’inizi buraya girin
       .withAutomaticReconnect() // Otomatik yeniden bağlanma özelliği
       .build();
     this.connection.onreconnected((conntectionId) => {

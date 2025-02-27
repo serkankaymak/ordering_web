@@ -103,9 +103,9 @@ export default function DiscountComponent({
   };
 
   return (
-    <Card  className="border">
+    <Card className="border">
 
-      <CardHeader title={discount.name??""} />
+      <CardHeader title={discount.name ?? ""} />
       <CardContent>
         {false && <h5>{DiscountType[discount.discountType]}</h5>}
 
@@ -117,8 +117,8 @@ export default function DiscountComponent({
         </Typography>
         <Typography variant="body2" color="textSecondary">
           Başlama Tarihi:{" "}
-          {discount.endDateUtc
-            ? new Date(discount.endDateUtc).toLocaleDateString()
+          {discount.StartDateUtc
+            ? new Date(discount.StartDateUtc).toLocaleDateString()
             : "Belirtilmemiş"}
         </Typography>
         <Typography variant="body2" color="textSecondary">

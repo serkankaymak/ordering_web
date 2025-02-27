@@ -15,7 +15,7 @@ const MyMasonry: React.FC<MyMasonryProps> = ({ items, breakpointCols }) => {
         <div style={styles.masonryWrapper}>
             <Masonry
                 breakpointCols={breakpointCols ?? defaultBreakpoints} // Eğer null ise varsayılan kullanılır
-                className="masonry-grid"
+                className="masonry-grid overflow-hidden"
                 columnClassName="masonry-column"
                 style={styles.masonryGrid}
             >
@@ -32,15 +32,15 @@ const MyMasonry: React.FC<MyMasonryProps> = ({ items, breakpointCols }) => {
 // CSS Objeleri
 const styles = {
     masonryWrapper: {
-        padding: "16px",
+        padding: "1px",
     },
     masonryGrid: {
         display: "flex",
-        marginLeft: "-16px",
+        marginLeft: "-5px",
         width: "auto",
     },
     masonryColumn: {
-        paddingLeft: "16px",
+        paddingLeft: "5px",
         backgroundClip: "padding-box",
     },
     masonryItem: {

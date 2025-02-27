@@ -24,8 +24,10 @@ const MyModal: React.FC<MyModalProps> = ({
   className,
 }) => {
   return (
-    <Box component="div" className={`${className ?? ''}`}>
+    <Box component="div" className={`${className ?? ''}  overflow-hidden `}>
       <Dialog
+        className=''
+        key={"dialog"}
         open={isOpen}
         onClose={onCloseClicked}
         fullScreen={isfullScreen}
@@ -35,7 +37,6 @@ const MyModal: React.FC<MyModalProps> = ({
             margin: 0,
             padding: 0,
             width: '100%',
-            height: '100%',
           },
         }}
       >
@@ -53,11 +54,10 @@ const MyModal: React.FC<MyModalProps> = ({
         </IconButton>
 
         <Box
-          className="scrollbar-none scrollbar-track-gray-200 scrollbar-thumb-gray-500"
-          style={{ overflowY: 'scroll' }}
-          sx={{ minWidth: '120px', padding: 0, margin: 0 }}
+          className="bg-red-600 p-14 "
         >
-          <DialogContent sx={{ marginTop: 0 }}>{children}</DialogContent>
+          <DialogContent className=' '>
+            {children}</DialogContent>
         </Box>
       </Dialog>
     </Box>

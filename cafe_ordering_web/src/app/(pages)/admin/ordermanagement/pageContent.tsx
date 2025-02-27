@@ -14,7 +14,7 @@ import { OrderItemModel } from '@/domain/OrderModels';
 import Masonry from 'react-masonry-css';
 import MyMasonry from '@/shared/components/MyMasonary';
 import { useOrderEvents } from '@/app/providers/orderEvents.provider';
-import { Check } from '@mui/icons-material';
+import { Check, ArrowUpward, ArrowDownward } from '@mui/icons-material';
 
 const productService = new ProductService();
 const orderService = new OrderService();
@@ -22,13 +22,14 @@ const orderService = new OrderService();
 interface OrderPageContentProps { }
 
 type SortOption = 'id' | 'createdDate' | 'tableId';
+type SortDirection = 'asc' | 'desc';
 
 const OrderPageContent: IPageContent<OrderPageContentProps> = ({ }) => {
     const [products, setProducts] = useState<ProductModel[]>([]);
     const [orders, setOrders] = useState<OrderModel[]>([]);
-    // Seçili siparişi tutan state; null ise modal kapalı.
     const [selectedOrder, setSelectedOrder] = useState<OrderModel | null>(null);
     const [sortOption, setSortOption] = useState<SortOption>('id');
+    const [sortDirection, setSortDirection] = useState<SortDirection>('asc');
     const { addOnOrderCreatedListener } = useOrderEvents();
 
     useEffect(() => {
@@ -36,7 +37,6 @@ const OrderPageContent: IPageContent<OrderPageContentProps> = ({ }) => {
             setProducts(res.data!);
         });
         orderService.GetUnCompletedOrders().then((response) => {
-            // Initially set orders without sorting—the render will handle the sort.
             setOrders(response.data!);
         });
 
@@ -45,7 +45,6 @@ const OrderPageContent: IPageContent<OrderPageContentProps> = ({ }) => {
             orderService.GetOrder(orderEvent.orderId).then(response => {
                 console.log(response);
                 if (response.isSuccess) {
-                    // Add the new order; sorting is applied in the render.
                     setOrders((prevOrders) => [...prevOrders, response.data!]);
                 }
             })
@@ -54,7 +53,6 @@ const OrderPageContent: IPageContent<OrderPageContentProps> = ({ }) => {
 
     const defaultBreakpoints = { default: 3, 1800: 3, 1000: 2, 800: 1, 500: 1 };
 
-    // Parent state'i güncellemek için fonksiyon.
     const updateOrder = (updatedOrder: OrderModel) => {
         setOrders((prevOrders) => {
             const otherOrders = prevOrders.filter((o) => o.id !== updatedOrder.id);
@@ -62,17 +60,25 @@ const OrderPageContent: IPageContent<OrderPageContentProps> = ({ }) => {
         });
     };
 
-    // Compute sorted orders based on selected sort option
     const sortedOrders = orders.slice().sort((a, b) => {
+        let comparison = 0;
         switch (sortOption) {
             case 'createdDate':
-                return new Date(a.CreatedAt).getTime() - new Date(b.CreatedAt).getTime();
+                comparison = new Date(a.CreatedAt).getTime() - new Date(b.CreatedAt).getTime();
+                break;
             case 'tableId':
-                return (a.tableId || 0) - (b.tableId || 0);
+                comparison = (a.tableId || 0) - (b.tableId || 0);
+                break;
             default:
-                return a.id - b.id;
+                comparison = a.id - b.id;
+                break;
         }
+        return sortDirection === 'asc' ? comparison : -comparison;
     });
+
+    const toggleSortDirection = () => {
+        setSortDirection((prevDirection) => (prevDirection === 'asc' ? 'desc' : 'asc'));
+    };
 
     return (
         <Container className="flex flex-col mt-5">
@@ -80,7 +86,7 @@ const OrderPageContent: IPageContent<OrderPageContentProps> = ({ }) => {
             <>
                 <h6 className='text-center'>Sort By</h6>
                 <Box display="flex" justifyContent="center" mb={2}>
-                    <ButtonGroup size='small' className='gap-2 overflow-x-scroll' variant="contained" color="secondary">
+                    <ButtonGroup size='small' className='gap-2 ' variant="contained" color="secondary">
                         <Button type='button' onClick={() => setSortOption('createdDate')}>
                             {sortOption === 'createdDate' && (
                                 <Check fontSize="small" style={{ marginRight: 4 }} />
@@ -93,16 +99,12 @@ const OrderPageContent: IPageContent<OrderPageContentProps> = ({ }) => {
                             )}
                             Table ID
                         </Button>
-                        <Button type='button' onClick={() => setSortOption('id')}>
-                            {sortOption === 'id' && (
-                                <Check fontSize="small" style={{ marginRight: 4 }} />
-                            )}
-                            ID
+                        <Button type='button' onClick={toggleSortDirection}>
+                            {sortDirection === 'asc' ? <ArrowUpward fontSize="small" /> : <ArrowDownward fontSize="small" />}
                         </Button>
                     </ButtonGroup>
                 </Box>
             </>
-
 
             {false &&
                 <Box className="grid grid-cols-1 md:grid-cols-3 sm:grid-cols-2 gap-1">
