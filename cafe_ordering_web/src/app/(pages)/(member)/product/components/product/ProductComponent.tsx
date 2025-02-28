@@ -133,7 +133,8 @@ const ProductComponent: IComponent<ProductComponentProps> = ({
                 variant="subtitle2"
                 className="text-sm whitespace-normal font-bold sm:mt-1 mt-0"
               >
-                ${product.price.toFixed(2)}
+         
+               {product.currency.symbol}  {product.price.toFixed(2)}
               </Typography>
             </Box>
           </>}

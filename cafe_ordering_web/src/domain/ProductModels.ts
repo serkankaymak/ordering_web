@@ -43,11 +43,28 @@ export class ProductCommentModel {
   }
 }
 
+export class CurrencyModel {
+  type: string = "";
+  symbol: string = "";
+  constructor(init?: Partial<CurrencyModel>) {
+    if (init) {
+      Object.assign(this, init);
+    }
+  }
+  static fromJson(json: Partial<CurrencyModel>): CurrencyModel {
+    return new CurrencyModel({
+      type: json.type ?? "",
+      symbol: json.symbol ?? "",
+    });
+  }
+}
+
 export class ProductModel {
   id: number = 0;
   name: string = "";
   description: string = "";
   quantity: number = 1;
+  currency!: CurrencyModel;
   price: number = 0;
   imagePath: string | null = null;
   categories: CategoryModel[] = [];
@@ -99,7 +116,7 @@ export class ProductModel {
   }
 
   static fromJson(json: Partial<ProductModel>): ProductModel {
-    return new ProductModel({
+    const p = new ProductModel({
       id: json.id ?? 0,
       name: json.name ?? "",
       description: json.description ?? "",
@@ -111,7 +128,9 @@ export class ProductModel {
       productComments: json.productComments?.map(c => ProductCommentModel.fromJson(c)) ?? [],
       products: json.products?.map(p => ProductModel.fromJson(p)) ?? null,
       productsPrice: json.productsPrice ?? null,
+      currency: json!.currency ?? new CurrencyModel(),
     });
+    return p;
   }
 
   static getEmptyProductInstance(): ProductModel {
